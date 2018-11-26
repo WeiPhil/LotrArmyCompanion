@@ -9,12 +9,22 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import MainContent from "./components/MainContent";
 
 import MainContentHolder from "./components/MainContentHolder";
-import blueGrey from "@material-ui/core/colors/blueGrey";
 
 const theme = createMuiTheme({
   palette: {
-    type: "light",
-    primary: blueGrey
+    type: "dark",
+    primary: {
+      light: "#428e92",
+      main: "#006064",
+      dark: "#00363a",
+      contrastText: "#ffffff"
+    },
+    secondary: {
+      light: "#be9c91",
+      main: "#8d6e63",
+      dark: "#5f4339",
+      contrastText: "#ffffff"
+    }
   },
   typography: {
     useNextVariants: true

@@ -14,57 +14,51 @@ const CustomTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-let id = 0;
-function createData(
-  move,
-  fight,
-  strength,
-  defense,
-  attack,
-  wounds,
-  courage,
-  mightWillFaith
-) {
+function createData(characteristics) {
   return {
-    id,
-    move,
-    fight,
-    strength,
-    defense,
-    attack,
-    wounds,
-    courage,
-    mightWillFaith
+    move: characteristics["move"] + '"',
+    fight: characteristics["fight"] + "/" + characteristics["shoot"] + "+",
+    strength: characteristics["strength"],
+    defense: characteristics["defense"],
+    attacks: characteristics["attacks"],
+    wounds: characteristics["wounds"],
+    courage: characteristics["courage"],
+    mightWillFaith:
+      characteristics["might"] +
+      "/" +
+      characteristics["will"] +
+      "/" +
+      characteristics["faith"]
   };
 }
-
-const characteristics = createData('10"', "3/-", 3, 3, 1, 1, 2, "-/-/-");
 
 const styles = theme => ({
   root: {
     width: "100%",
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
     overflowX: "auto",
-    marginBottom: theme.spacing.unit * 3
+    marginBottom: theme.spacing.unit * 2
   },
-  table: {
-    minWidth: 200
-  },
-  row: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.background.default
-    }
+  head: {
+    color: "white",
+    backgroundColor:
+      theme.palette.type === "dark"
+        ? theme.palette.secondary.dark
+        : theme.palette.secondary.light
   }
 });
 
 function TroopCharacteristics(props) {
-  const { classes } = props;
+  const { characs, classes } = props;
+
+  const characteristics =
+    characs !== undefined ? createData(characs) : "undefined";
 
   return (
     <Paper className={classes.root}>
-      <Table className={classes.table}>
+      <Table>
         <TableHead>
-          <TableRow>
+          <TableRow className={classes.head}>
             <CustomTableCell>Move</CustomTableCell>
             <CustomTableCell>F/S+</CustomTableCell>
             <CustomTableCell>S</CustomTableCell>
@@ -76,14 +70,14 @@ function TroopCharacteristics(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow className={classes.row} key={characteristics.id}>
+          <TableRow>
             <CustomTableCell component="th" scope="row">
               {characteristics.move}
             </CustomTableCell>
             <CustomTableCell>{characteristics.fight}</CustomTableCell>
             <CustomTableCell>{characteristics.strength}</CustomTableCell>
             <CustomTableCell>{characteristics.defense}</CustomTableCell>
-            <CustomTableCell>{characteristics.attack}</CustomTableCell>
+            <CustomTableCell>{characteristics.attacks}</CustomTableCell>
             <CustomTableCell>{characteristics.wounds}</CustomTableCell>
             <CustomTableCell>{characteristics.courage}</CustomTableCell>
             <CustomTableCell>{characteristics.mightWillFaith}</CustomTableCell>
@@ -95,7 +89,8 @@ function TroopCharacteristics(props) {
 }
 
 TroopCharacteristics.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  characs: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default withStyles(styles)(TroopCharacteristics);

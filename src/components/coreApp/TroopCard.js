@@ -9,68 +9,81 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Hidden from "@material-ui/core/Hidden";
 
 import TroopCharacteristics from "./TroopCharacteristics";
 
-import { CARD_MAX_WIDTH } from "./../../utils/Constants";
+import { CARD_WIDTH } from "./../../utils/Constants";
 import { CARD_IMAGE_HEIGHT } from "./../../utils/Constants";
 
-const styles = {
+import Star from "@material-ui/icons/Star";
+
+const styles = theme => ({
   card: {
-    maxWidth: CARD_MAX_WIDTH
+    width: CARD_WIDTH,
+    marginBottom: theme.spacing.unit * 2
   },
   media: {
     height: CARD_IMAGE_HEIGHT
   }
-};
+});
 
-var makeRequest = function() {
-  fetch("http://localhost:5000/getJson").then(response => {
-    var temp = response.json();
-    console.log(temp);
-  });
-};
+function createData(troopData) {
+  return {
+    name: troopData["name"],
+    description: troopData["description"],
+    characteristics: troopData["characteristics"],
+    image_path: require("./../../images/" + troopData["image_path"])
+  };
+}
 
 function TroopCard(props) {
-  const { cardImagePath, classes } = props;
+  const { troopData, classes } = props;
+
+  const troop = troopData !== undefined ? createData(troopData) : "undefined";
 
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={cardImagePath}
-          title="Contemplative Reptile"
+          image={
+            troop.image_path !== undefined
+              ? troop.image_path
+              : require("../../images/tempCardBackground3.jpg")
+          }
+          title={troop.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Hunting Dog
+            <Star color="secondary" />
+            {troop.name}
           </Typography>
-          <TroopCharacteristics />
+          <Hidden smDown={true}>
+            <TroopCharacteristics characs={troop.characteristics} />
+          </Hidden>
           <Typography component="p">
-            Many Heroes have trained companion animals that accompany them on
+            {troop.description}
+            {/* Many Heroes have trained companion animals that accompany them on
             their campaigns. A hunting dog is considered part of the Hero’s
             wargear, does not count against the Battle Company’s roster limit,
             and cannot gain experience or be promoted. However, it must roll on
             the Warrior Injury Table as normal. Heroes may only have one Hunting
-            Dog.
+            Dog. */}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" onClick={makeRequest}>
-          GET JSON
-        </Button>
-        <Button size="small" color="primary">
-          Nothing
-        </Button>
+        <Button size="small">Promote</Button>
+        <Button size="small">Nothing</Button>
       </CardActions>
     </Card>
   );
 }
 
 TroopCard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  troopData: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
-export default withStyles(styles)(TroopCard);
+export default withStyles(styles, { withTheme: true })(TroopCard);

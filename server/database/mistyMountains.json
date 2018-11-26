@@ -1,0 +1,44 @@
+{
+  "troops": [
+    {
+      "name": "Goblin Warrior",
+      "characteristics": {
+        "move": "5",
+        "fight": "2",
+        "shoot": "5",
+        "strength": "3",
+        "defense": "5",
+        "attacks": "1",
+        "wounds": "1",
+        "courage": "2",
+        "might": "-",
+        "will": "-",
+        "faith": "-"
+      },
+      "description": "An epic gobelin description",
+      "base_equipment": ["sword", "shield", "armor"],
+      "optional_equipment": ["spear", "shield", "bow"],
+      "image_path": "tempCardBackground1.jpg"
+    },
+    {
+      "name": "Warg",
+      "characteristics": {
+        "move": "10",
+        "fight": "3",
+        "shoot": "-",
+        "strength": "4",
+        "defense": "4",
+        "attacks": "1",
+        "wounds": "1",
+        "courage": "3",
+        "might": "-",
+        "will": "-",
+        "faith": "-"
+      },
+      "description": "An epic warg description",
+      "base_equipment": ["teeth"],
+      "optional_equipment": [],
+      "image_path": "tempCardBackground3.jpg"
+    }
+  ]
+}

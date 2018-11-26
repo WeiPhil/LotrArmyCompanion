@@ -4,6 +4,19 @@ from flask import jsonify
 
 app = Flask(__name__)
 
+PATH = './database/mistyMountains.json'
+
+
+def importDatabase(path):
+    with open(path, 'r') as jsonFile:
+        jsonObject = []
+        for l in jsonFile.readlines():
+            jsonObject.append(l)
+
+        jsonObject = "".join(jsonObject)
+        return jsonify(jsonObject)
+
+
 simpleJson = {
     "device": "TemperatureSensor",
     "value": "20",
@@ -13,7 +26,9 @@ simpleJson = {
 
 @app.route("/")
 def home():
-    return "Hello, World!"
+    test = importDatabase(PATH)
+    print(test)
+    return test  # "Hello, World!"
 
 
 @app.route('/postJson', methods=['POST'])
@@ -26,8 +41,7 @@ def postJsonHandler():
 
 @app.route('/getJson', methods=['GET'])
 def getJsonHandler():
-    print("Got: " + str(simpleJson))
-    response = jsonify(simpleJson)
+    response = importDatabase(PATH)  # jsonify(simpleJson)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

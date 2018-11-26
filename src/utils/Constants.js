@@ -1,6 +1,9 @@
 // List of constants used throughout the app
 export const MENU_WIDTH = 240;
 
-// Constant for core app
-export const CARD_MAX_WIDTH = 340;
+// Constants for core app style
+export const CARD_WIDTH = 341;
 export const CARD_IMAGE_HEIGHT = 100;
+
+// Constants for core app programm
+export const EMPTYJSON = JSON.parse("{}");
