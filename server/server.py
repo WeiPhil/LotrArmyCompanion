@@ -4,7 +4,7 @@ from flask import jsonify
 
 app = Flask(__name__)
 
-PATH = './database/mistyMountains.json'
+PATH = './database/usersCompanies/philippe.json'
 
 
 def importDatabase(path):
@@ -15,13 +15,6 @@ def importDatabase(path):
 
         jsonObject = "".join(jsonObject)
         return jsonify(jsonObject)
-
-
-simpleJson = {
-    "device": "TemperatureSensor",
-    "value": "20",
-    "timestamp": "25/01/2017 10:10:05"
-}
 
 
 @app.route("/")

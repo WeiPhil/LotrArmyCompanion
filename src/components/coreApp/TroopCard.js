@@ -22,7 +22,6 @@ const styles = theme => ({
   card: {
     width: CARD_WIDTH,
     margin: theme.spacing.unit * 2
-    // marginRight
   },
   media: {
     height: CARD_IMAGE_HEIGHT
@@ -34,13 +33,13 @@ function createCardData(troopData) {
     name: troopData["display_name"],
     unit_type: troopData["unit_type"],
     troop_type: troopData["troop_type"],
-    base_wargear: troopData["base_wargear"],
+    // base_wargear: troopData["base_wargear"],
     optional_wargear: troopData["optional_wargear"],
     special_rules: troopData["special_rules"],
     heroic_actions: troopData["heroic_actions"],
     magical_powers: troopData["magical_powers"],
-    description: troopData["description"],
-    characteristics: troopData["characteristics"],
+    // description: troopData["description"],
+    characteristics: troopData["improvements"],
     image_path: require("./../../assets/images/" + troopData["image_path"])
   };
 }
@@ -48,29 +47,27 @@ function createCardData(troopData) {
 function TroopCard(props) {
   const { troopData, classes } = props;
 
-  const troop =
-    troopData !== undefined ? createCardData(troopData) : "undefined";
+  console.log(troopData);
+
+  const troop = troopData !== undefined ? createCardData(troopData) : "undefined";
 
   return (
     <Card className={classes.card}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={
-            troop.image_path !== undefined
-              ? troop.image_path
-              : require("../../assets/images/tempCardBackground3.jpg")
-          }
+          image={troop.image_path !== undefined ? troop.image_path : require("../../assets/images/tempCardBackground3.jpg")}
           title={troop.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            <Icon>star</Icon>
+            {(troop.troop_type === "lieutnant" || troop.troop_type === "sergeant") && <Icon>star</Icon>}
             {troop.name}
           </Typography>
           <Hidden xsDown={true}>
             <TroopCharacteristics characs={troop.characteristics} />
           </Hidden>
+
           <Typography component="p">
             {troop.description}
             {/* Many Heroes have trained companion animals that accompany them on

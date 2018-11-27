@@ -23,21 +23,21 @@
               "shoot": "0",
               "strength": "0",
               "defense": "0",
-              "attacks": "1",
+              "attacks": "0",
               "wounds": "0",
               "courage": "0",
               "might": "1",
               "will": "1",
               "faith": "1"
-            }
-          },
-          "injuries": ["old_battle_wound"],
-          "wargear": ["armour", "sword", "shield", "throwing_weapon"],
-          "special_rules": [],
-          "heroic_actions": [],
-          "magical_powers": [],
-          "notes": "Personal notes",
-          "image_path": "tempCardBackground3.jpg"
+            },
+            "injuries": ["old_battle_wound"],
+            "wargear": ["armour", "sword", "shield", "throwing_weapon"],
+            "special_rules": [],
+            "heroic_actions": [],
+            "magical_powers": [],
+            "notes": "Personal notes",
+            "image_path": "tempCardBackground1.jpg"
+          }
         },
         {
           "mulmuc": {

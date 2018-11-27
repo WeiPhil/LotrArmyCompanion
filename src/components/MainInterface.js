@@ -1,26 +1,22 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
-import IconButton from "@material-ui/core/IconButton";
-import Hidden from "@material-ui/core/Hidden";
 import Divider from "@material-ui/core/Divider";
-import MenuIcon from "@material-ui/icons/Menu";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import { withStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { MENU_WIDTH } from "./../utils/Constants";
+import MenuIcon from "@material-ui/icons/Menu";
+import PropTypes from "prop-types";
+import React from "react";
+import classnames from "classnames";
 
-import {
-  TwoCoins,
-  Scroll,
-  SwordShield,
-  RallyTheTroops
-} from "./coreApp/CustomIcons";
+import { MENU_WIDTH, ARMY_OVERVIEW } from "./../utils/Constants";
+import { RallyTheTroops, Scroll, SwordShield, TwoCoins } from "./coreApp/CustomIcons";
 
 const styles = theme => ({
   root: {
@@ -47,45 +43,51 @@ const styles = theme => ({
   drawerPaper: {
     width: MENU_WIDTH
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  menuItemeSelected: {
+    background: theme.palette.type === "dark" ? theme.palette.background.default : "#ebebeb"
+  }
 });
 
 class ResponsiveDrawer extends React.Component {
   state = {
-    mobileOpen: false
+    mobileOpen: false,
+    menuState: ARMY_OVERVIEW
   };
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  handleMenuItemClick(index) {
+    this.setState(state => ({ menuState: index }));
+  }
+
   render() {
     const { classes, theme } = this.props;
-    const mainContent = this.props.children;
 
-    const iconColor =
-      theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
-    // theme.palette.primary.light
+    const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
+
+    const menuItems = [
+      ["Company Information", <SwordShield fontSize="large" nativeColor={iconColor} />],
+      ["Army Overview", <RallyTheTroops fontSize="large" nativeColor={iconColor} />],
+      ["Buy troops", <TwoCoins fontSize="large" nativeColor={iconColor} />]
+    ];
+
     const drawer = (
       <div>
         <div style={{ marginTop: theme.spacing.unit * 4 }} />
-        {/* <Divider /> */}
+
         <List>
-          {[
-            [
-              "Company Information",
-              <SwordShield fontSize="large" nativeColor={iconColor} />
-            ],
-            [
-              "Army Overview",
-              <RallyTheTroops fontSize="large" nativeColor={iconColor} />
-            ],
-            [
-              "Buy new troops",
-              <TwoCoins fontSize="large" nativeColor={iconColor} />
-            ]
-          ].map((pair, index) => (
-            <ListItem button key={pair[0]}>
+          {menuItems.slice(0, 3).map((pair, index) => (
+            <ListItem
+              className={classnames({
+                [classes.menuItemeSelected]: this.state.menuState === index
+              })}
+              onClick={() => this.handleMenuItemClick(index)}
+              button
+              key={index}
+            >
               <ListItemIcon>{pair[1]}</ListItemIcon>
               <ListItemText primary={pair[0]} />
             </ListItem>
@@ -93,14 +95,19 @@ class ResponsiveDrawer extends React.Component {
         </List>
         <Divider />
         <List>
-          {[["Wiki", <Scroll fontSize="large" nativeColor={iconColor} />]].map(
-            (pair, index) => (
-              <ListItem button key={pair[0]}>
-                <ListItemIcon>{pair[1]}</ListItemIcon>
-                <ListItemText primary={pair[0]} />
-              </ListItem>
-            )
-          )}
+          {[["Wiki", <Scroll fontSize="large" nativeColor={iconColor} />]].map(pair => (
+            <ListItem
+              className={classnames({
+                [classes.menuItemeSelected]: this.state.menuState === 3
+              })}
+              onClick={() => this.handleMenuItemClick(3)}
+              button
+              key={3}
+            >
+              <ListItemIcon>{pair[1]}</ListItemIcon>
+              <ListItemText primary={pair[0]} />
+            </ListItem>
+          ))}
         </List>
       </div>
     );
@@ -109,12 +116,7 @@ class ResponsiveDrawer extends React.Component {
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerToggle}
-              className={classes.menuButton}
-            >
+            <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle} className={classes.menuButton}>
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
@@ -154,7 +156,7 @@ class ResponsiveDrawer extends React.Component {
           </Hidden>
         </nav>
         <div className={classes.toolbar} />
-        {mainContent}
+        {React.cloneElement(this.props.children, { menuState: this.state.menuState })}
       </div>
     );
   }

@@ -11,11 +11,13 @@ const styles = theme => ({
 
 export class MainContentHolder extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes, menuState } = this.props;
+
     return (
       <div className={classes.contentHolder}>
         <div className={classes.toolbarSpace} />
-        {this.props.children}
+        {console.log(menuState)}
+        {React.cloneElement(this.props.children, { menuState: menuState })}
       </div>
     );
   }

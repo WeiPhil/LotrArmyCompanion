@@ -10,7 +10,9 @@ import Paper from "@material-ui/core/Paper";
 
 const CustomTableCell = withStyles(theme => ({
   root: {
-    padding: theme.spacing.unit * 1.2
+    paddingLeft: theme.spacing.unit * 1.4,
+    paddingRight: 0,
+    fontSize: 14
   }
 }))(TableCell);
 
@@ -23,12 +25,7 @@ function createData(characteristics) {
     attacks: characteristics["attacks"],
     wounds: characteristics["wounds"],
     courage: characteristics["courage"],
-    mightWillFaith:
-      characteristics["might"] +
-      "/" +
-      characteristics["will"] +
-      "/" +
-      characteristics["faith"]
+    mightWillFaith: characteristics["might"] + "/" + characteristics["will"] + "/" + characteristics["faith"]
   };
 }
 
@@ -41,18 +38,14 @@ const styles = theme => ({
   },
   head: {
     color: "white",
-    backgroundColor:
-      theme.palette.type === "dark"
-        ? theme.palette.secondary.dark
-        : theme.palette.secondary.light
+    backgroundColor: theme.palette.type === "dark" ? theme.palette.secondary.dark : theme.palette.secondary.light
   }
 });
 
 function TroopCharacteristics(props) {
   const { characs, classes } = props;
 
-  const characteristics =
-    characs !== undefined ? createData(characs) : "undefined";
+  const characteristics = characs !== undefined ? createData(characs) : "undefined";
 
   return (
     <Paper className={classes.root}>
