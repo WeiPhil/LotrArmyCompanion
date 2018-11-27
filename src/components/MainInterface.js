@@ -13,9 +13,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
-import InboxIcon from "@material-ui/icons/Inbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { MENU_WIDTH } from "./../utils/Constants";
+
+import {
+  TwoCoins,
+  Scroll,
+  SwordShield,
+  RallyTheTroops
+} from "./coreApp/CustomIcons";
 
 const styles = theme => ({
   root: {
@@ -58,19 +63,41 @@ class ResponsiveDrawer extends React.Component {
     const { classes, theme } = this.props;
     const mainContent = this.props.children;
 
+    const iconColor =
+      theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
+    // theme.palette.primary.light
     const drawer = (
       <div>
-        <div className={classes.toolbar} />
-
+        <div style={{ marginTop: theme.spacing.unit * 4 }} />
+        {/* <Divider /> */}
+        <List>
+          {[
+            [
+              "Company Information",
+              <SwordShield fontSize="large" nativeColor={iconColor} />
+            ],
+            [
+              "Army Overview",
+              <RallyTheTroops fontSize="large" nativeColor={iconColor} />
+            ],
+            [
+              "Buy new troops",
+              <TwoCoins fontSize="large" nativeColor={iconColor} />
+            ]
+          ].map((pair, index) => (
+            <ListItem button key={pair[0]}>
+              <ListItemIcon>{pair[1]}</ListItemIcon>
+              <ListItemText primary={pair[0]} />
+            </ListItem>
+          ))}
+        </List>
         <Divider />
         <List>
-          {["My Company", "Buy new troops", "Throwing Tables"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+          {[["Wiki", <Scroll fontSize="large" nativeColor={iconColor} />]].map(
+            (pair, index) => (
+              <ListItem button key={pair[0]}>
+                <ListItemIcon>{pair[1]}</ListItemIcon>
+                <ListItemText primary={pair[0]} />
               </ListItem>
             )
           )}

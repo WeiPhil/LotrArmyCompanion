@@ -16,31 +16,40 @@ import TroopCharacteristics from "./TroopCharacteristics";
 import { CARD_WIDTH } from "./../../utils/Constants";
 import { CARD_IMAGE_HEIGHT } from "./../../utils/Constants";
 
-import Star from "@material-ui/icons/Star";
+import Icon from "@material-ui/core/Icon";
 
 const styles = theme => ({
   card: {
     width: CARD_WIDTH,
-    marginBottom: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2
+    // marginRight
   },
   media: {
     height: CARD_IMAGE_HEIGHT
   }
 });
 
-function createData(troopData) {
+function createCardData(troopData) {
   return {
-    name: troopData["name"],
+    name: troopData["display_name"],
+    unit_type: troopData["unit_type"],
+    troop_type: troopData["troop_type"],
+    base_wargear: troopData["base_wargear"],
+    optional_wargear: troopData["optional_wargear"],
+    special_rules: troopData["special_rules"],
+    heroic_actions: troopData["heroic_actions"],
+    magical_powers: troopData["magical_powers"],
     description: troopData["description"],
     characteristics: troopData["characteristics"],
-    image_path: require("./../../images/" + troopData["image_path"])
+    image_path: require("./../../assets/images/" + troopData["image_path"])
   };
 }
 
 function TroopCard(props) {
   const { troopData, classes } = props;
 
-  const troop = troopData !== undefined ? createData(troopData) : "undefined";
+  const troop =
+    troopData !== undefined ? createCardData(troopData) : "undefined";
 
   return (
     <Card className={classes.card}>
@@ -50,16 +59,16 @@ function TroopCard(props) {
           image={
             troop.image_path !== undefined
               ? troop.image_path
-              : require("../../images/tempCardBackground3.jpg")
+              : require("../../assets/images/tempCardBackground3.jpg")
           }
           title={troop.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            <Star color="secondary" />
+            <Icon>star</Icon>
             {troop.name}
           </Typography>
-          <Hidden smDown={true}>
+          <Hidden xsDown={true}>
             <TroopCharacteristics characs={troop.characteristics} />
           </Hidden>
           <Typography component="p">
@@ -74,8 +83,12 @@ function TroopCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small">Promote</Button>
-        <Button size="small">Nothing</Button>
+        <Button variant="contained" size="small">
+          Promote
+        </Button>
+        <Button variant="contained" size="small">
+          Nothing
+        </Button>
       </CardActions>
     </Card>
   );

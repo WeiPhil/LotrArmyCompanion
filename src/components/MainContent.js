@@ -11,32 +11,41 @@ class MainContent extends Component {
     super(props);
 
     this.state = {
+      dataFetched: false,
       troops: EMPTYJSON
     };
   }
 
   handleFetchedData(data) {
-    let moria = JSON.parse(data);
-    let troops = moria.troops;
+    let troops = JSON.parse(data).troops;
     this.setState({ troops });
+    this.setState({ dataFetched: true });
   }
 
   componentDidMount() {
-    fetch("http://localhost:5000/getJson")
+    // CHANGE TO CORRECT IP EACH TIME
+    fetch("http://192.168.1.4:5000/getJson")
       .then(response => response.json())
       .then(data => this.handleFetchedData(data));
+  }
+
+  renderCard(troop, index) {
+    const troopName = Object.keys(troop)[0];
+    return <TroopCard key={index} troopData={troop[troopName]} />;
   }
 
   render() {
     return (
       <main>
         <Grid container justify="space-evenly">
-          <TroopCard troopData={this.state.troops[0]} />
-          <TroopCard troopData={this.state.troops[1]} />
-          <TroopCard troopData={this.state.troops[0]} />
-          <TroopCard troopData={this.state.troops[0]} />
-          <TroopCard troopData={this.state.troops[1]} />
-          <TroopCard troopData={this.state.troops[1]} />
+          {this.state.dataFetched &&
+            this.state.troops.map((troop, index) =>
+              this.renderCard(troop, index)
+            )}
+          {this.state.dataFetched &&
+            this.state.troops.map((troop, index) =>
+              this.renderCard(troop, index)
+            )}
         </Grid>
 
         <Typography paragraph>
