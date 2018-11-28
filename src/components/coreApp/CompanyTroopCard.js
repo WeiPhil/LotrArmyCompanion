@@ -13,14 +13,17 @@ import Hidden from "@material-ui/core/Hidden";
 
 import UnitCharacteristics from "./UnitCharacteristics";
 
-import { CARD_WIDTH } from "../../utils/Constants";
+import { CARD_MAX_WIDTH } from "../../utils/Constants";
 import { CARD_IMAGE_HEIGHT } from "../../utils/Constants";
 
 import Icon from "@material-ui/core/Icon";
 
 const styles = theme => ({
   card: {
-    width: CARD_WIDTH,
+    width: "100%",
+    [theme.breakpoints.up("xs")]: {
+      maxWidth: CARD_MAX_WIDTH
+    },
     margin: theme.spacing.unit * 2
   },
   media: {

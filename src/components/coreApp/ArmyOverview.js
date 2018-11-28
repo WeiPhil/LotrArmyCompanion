@@ -1,26 +1,41 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import CompanyTroopCard from "./CompanyTroopCard";
-import Grid from "@material-ui/core/Grid";
+import { Grid, CircularProgress } from "@material-ui/core/";
+
+import { fetchUserCompanies } from "./../../redux/actions/index";
 
 function renderCard(troop, index) {
   return <CompanyTroopCard key={index} troopData={troop} />;
 }
 
-const mapStateToProps = state => {
-  return { troops: state.userCompanies.companies[0].troops };
-};
+const mapStateToProps = ({ companyData = {}, isLoadingData = true }) => ({ companies: companyData.companies, isLoadingData });
 
-function ArmyOverview(props) {
-  const { troops } = props;
+class ArmyOverview extends Component {
+  componentDidMount() {
+    console.log("Army Overview loading");
+    this.props.fetchUserCompanies();
+  }
 
-  return (
-    <Grid container justify="space-evenly">
-      {troops.map((troop, index) => renderCard(troop, index))}
-      {troops.map((troop, index) => renderCard(troop, index))}
-    </Grid>
-  );
+  render() {
+    // const { troops } = this.props;
+
+    return (
+      <Grid container justify="space-evenly">
+        {this.props.isLoadingData ? (
+          <Grid container justify="center">
+            <CircularProgress color="secondary" />
+          </Grid>
+        ) : (
+          this.props.companies.map((company, idx) => company.troops.map((troop, index) => renderCard(troop, index)))
+        )}
+      </Grid>
+    );
+  }
 }
 
-export default connect(mapStateToProps)(ArmyOverview);
+export default connect(
+  mapStateToProps,
+  { fetchUserCompanies }
+)(ArmyOverview);

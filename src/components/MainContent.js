@@ -1,45 +1,23 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import Typography from "@material-ui/core/Typography";
 import CompanyInformation from "./coreApp/CompanyInformation";
 import ArmyOverview from "./coreApp/ArmyOverview";
 import Wiki from "./coreApp/Wiki";
 
-import { EMPTYJSON } from "./../utils/Constants";
-
 import { COMPANY_INFORMATION, ARMY_OVERVIEW, BUY_TROOPS, WIKI } from "./../utils/Constants";
 
+const mapStateToProps = ({ menuState }) => ({ menuState });
+
 class MainContent extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      dataFetched: false,
-      troops: EMPTYJSON
-    };
-  }
-
-  handleFetchedData(data) {
-    let troops = JSON.parse(data).companies[0].troops;
-    // console.log(troops);
-    this.setState({ troops });
-    this.setState({ dataFetched: true });
-  }
-
-  componentDidMount() {
-    // CHANGE TO CORRECT IP EACH TIME
-    fetch("http://192.168.1.4:5000/getJson")
-      .then(response => response.json())
-      .then(data => this.handleFetchedData(data));
-  }
-
   renderContent(menuState) {
     switch (menuState) {
       case COMPANY_INFORMATION:
-        return <CompanyInformation troops={this.state.troops} />;
+        return <CompanyInformation />;
 
       case ARMY_OVERVIEW:
-        return <ArmyOverview troops={this.state.troops} />;
+        return <ArmyOverview />;
       case BUY_TROOPS:
         return (
           <Typography paragraph>
@@ -77,4 +55,4 @@ class MainContent extends Component {
   }
 }
 
-export default MainContent;
+export default connect(mapStateToProps)(MainContent);

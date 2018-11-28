@@ -14,8 +14,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import PropTypes from "prop-types";
 import React from "react";
 import classnames from "classnames";
+import { connect } from "react-redux";
 
-import { MENU_WIDTH, ARMY_OVERVIEW } from "./../utils/Constants";
+import { setMenuState } from "./../redux/actions";
+
+import { WIKI, MENU_WIDTH } from "./../utils/Constants";
 import { RallyTheTroops, Scroll, SwordShield, TwoCoins } from "./coreApp/CustomIcons";
 
 const styles = theme => ({
@@ -49,22 +52,25 @@ const styles = theme => ({
   }
 });
 
+const mapStateToProps = ({ menuState }) => ({ menuState });
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setMenuState: index => dispatch(setMenuState(index))
+//   };
+// };
+
 class ResponsiveDrawer extends React.Component {
   state = {
-    mobileOpen: false,
-    menuState: ARMY_OVERVIEW
+    mobileOpen: false
   };
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  handleMenuItemClick(index) {
-    this.setState(state => ({ menuState: index }));
-  }
-
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, menuState } = this.props;
 
     const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
 
@@ -82,9 +88,9 @@ class ResponsiveDrawer extends React.Component {
           {menuItems.slice(0, 3).map((pair, index) => (
             <ListItem
               className={classnames({
-                [classes.menuItemeSelected]: this.state.menuState === index
+                [classes.menuItemeSelected]: menuState === index
               })}
-              onClick={() => this.handleMenuItemClick(index)}
+              onClick={() => this.props.setMenuState(index)}
               button
               key={index}
             >
@@ -98,11 +104,11 @@ class ResponsiveDrawer extends React.Component {
           {[["Wiki", <Scroll fontSize="large" nativeColor={iconColor} />]].map(pair => (
             <ListItem
               className={classnames({
-                [classes.menuItemeSelected]: this.state.menuState === 3
+                [classes.menuItemeSelected]: menuState === WIKI
               })}
-              onClick={() => this.handleMenuItemClick(3)}
+              onClick={() => this.props.setMenuState(WIKI)}
               button
-              key={3}
+              key={WIKI}
             >
               <ListItemIcon>{pair[1]}</ListItemIcon>
               <ListItemText primary={pair[0]} />
@@ -156,7 +162,7 @@ class ResponsiveDrawer extends React.Component {
           </Hidden>
         </nav>
         <div className={classes.toolbar} />
-        {React.cloneElement(this.props.children, { menuState: this.state.menuState })}
+        {this.props.children}
       </div>
     );
   }
@@ -170,4 +176,7 @@ ResponsiveDrawer.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
+export default connect(
+  mapStateToProps,
+  { setMenuState }
+)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));

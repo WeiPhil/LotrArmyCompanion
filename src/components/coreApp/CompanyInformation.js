@@ -1,20 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Typography } from "@material-ui/core";
+import { Typography, CircularProgress, Grid } from "@material-ui/core";
 
-const mapStateToProps = state => {
-  return { company: state.userCompanies.companies[0] };
-};
+import { fetchUserCompanies } from "../../redux/actions";
+const mapStateToProps = ({ companyData = {}, isLoadingData = true }) => ({ companies: companyData.companies, isLoadingData });
 
-function CompanyInformation(props) {
-  const { company } = props;
+class CompanyInformation extends Component {
+  componentDidMount() {
+    console.log("Company Information loading");
+    this.props.fetchUserCompanies();
+  }
 
-  return (
-    <div>
-      <Typography variant="h6">Faction : {company.faction}</Typography>
-      <Typography variant="h6">Victories : {company.victories}</Typography>
-    </div>
-  );
+  render() {
+    const { isLoadingData, companies } = this.props;
+
+    return (
+      <div>
+        {isLoadingData ? (
+          <Grid container justify="center">
+            <CircularProgress color="secondary" />
+          </Grid>
+        ) : (
+          companies.map((company, index) => (
+            <Typography variant="h6" key={index}>
+              {company.faction} has {company.victories} victories!
+            </Typography>
+          ))
+        )}
+      </div>
+    );
+  }
 }
 
-export default connect(mapStateToProps)(CompanyInformation);
+export default connect(
+  mapStateToProps,
+  { fetchUserCompanies }
+)(CompanyInformation);

@@ -1,18 +1,8 @@
 import React from "react";
-import List from "./../Lists";
-import Form from "./../Form";
+import { Typography } from "@material-ui/core";
 
-const Wiki = () => (
-  <div className="row mt-5">
-    <div className="col-md-4 offset-md-1">
-      <h2>Articles</h2>
-      <List />
-    </div>
-    <div className="col-md-4 offset-md-1">
-      <h2>Add a new article</h2>
-      <Form />
-    </div>
-  </div>
-);
+const Wiki = props => {
+  return <Typography variant="h6">Work in progress</Typography>;
+};
 
 export default Wiki;

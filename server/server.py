@@ -2,24 +2,22 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 
+import json
+
 app = Flask(__name__)
 
 PATH = './database/usersCompanies/philippe.json'
 
 
-def importDatabase(path):
-    with open(path, 'r') as jsonFile:
-        jsonObject = []
-        for l in jsonFile.readlines():
-            jsonObject.append(l)
-
-        jsonObject = "".join(jsonObject)
-        return jsonify(jsonObject)
+def loadJson(path):
+    with open(path) as f:
+        data = json.load(f)
+    return data
 
 
 @app.route("/")
 def home():
-    test = importDatabase(PATH)
+    test = loadJson(PATH)
     print(test)
     return test  # "Hello, World!"
 
@@ -32,9 +30,9 @@ def postJsonHandler():
     return 'JSON posted'
 
 
-@app.route('/getJson', methods=['GET'])
+@app.route('/getCompany', methods=['GET'])
 def getJsonHandler():
-    response = importDatabase(PATH)  # jsonify(simpleJson)
+    response = jsonify(loadJson(PATH))
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
