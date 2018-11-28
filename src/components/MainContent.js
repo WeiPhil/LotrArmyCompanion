@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 
 import Typography from "@material-ui/core/Typography";
-import CompanyOverview from "./coreApp/CompanyOverview";
+import CompanyInformation from "./coreApp/CompanyInformation";
+import ArmyOverview from "./coreApp/ArmyOverview";
+import Wiki from "./coreApp/Wiki";
 
 import { EMPTYJSON } from "./../utils/Constants";
 
@@ -34,19 +36,10 @@ class MainContent extends Component {
   renderContent(menuState) {
     switch (menuState) {
       case COMPANY_INFORMATION:
-        return (
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-            tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-            Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-            nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-            posuere sollicitudin aliquam ultrices sagittis orci a.
-          </Typography>
-        );
+        return <CompanyInformation troops={this.state.troops} />;
+
       case ARMY_OVERVIEW:
-        return <CompanyOverview dataFetched={this.state.dataFetched} troops={this.state.troops} />;
+        return <ArmyOverview troops={this.state.troops} />;
       case BUY_TROOPS:
         return (
           <Typography paragraph>
@@ -60,17 +53,7 @@ class MainContent extends Component {
           </Typography>
         );
       case WIKI:
-        return (
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-            tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-            Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-            nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-            posuere sollicitudin aliquam ultrices sagittis orci a.
-          </Typography>
-        );
+        return <Wiki />;
 
       default:
         return (

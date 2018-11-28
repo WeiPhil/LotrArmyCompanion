@@ -11,10 +11,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Hidden from "@material-ui/core/Hidden";
 
-import TroopCharacteristics from "./TroopCharacteristics";
+import UnitCharacteristics from "./UnitCharacteristics";
 
-import { CARD_WIDTH } from "./../../utils/Constants";
-import { CARD_IMAGE_HEIGHT } from "./../../utils/Constants";
+import { CARD_WIDTH } from "../../utils/Constants";
+import { CARD_IMAGE_HEIGHT } from "../../utils/Constants";
 
 import Icon from "@material-ui/core/Icon";
 
@@ -34,7 +34,7 @@ function createCardData(troopData) {
     unit_type: troopData["unit_type"],
     troop_type: troopData["troop_type"],
     // base_wargear: troopData["base_wargear"],
-    optional_wargear: troopData["optional_wargear"],
+    // optional_wargear: troopData["optional_wargear"],
     special_rules: troopData["special_rules"],
     heroic_actions: troopData["heroic_actions"],
     magical_powers: troopData["magical_powers"],
@@ -44,28 +44,22 @@ function createCardData(troopData) {
   };
 }
 
-function TroopCard(props) {
+function CompanyTroopCard(props) {
   const { troopData, classes } = props;
 
-  console.log(troopData);
-
-  const troop = troopData !== undefined ? createCardData(troopData) : "undefined";
+  const troop = createCardData(troopData);
 
   return (
     <Card className={classes.card}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={troop.image_path !== undefined ? troop.image_path : require("../../assets/images/tempCardBackground3.jpg")}
-          title={troop.name}
-        />
+        <CardMedia className={classes.media} image={troop.image_path} title={troop.name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {(troop.troop_type === "lieutnant" || troop.troop_type === "sergeant") && <Icon>star</Icon>}
             {troop.name}
           </Typography>
           <Hidden xsDown={true}>
-            <TroopCharacteristics characs={troop.characteristics} />
+            <UnitCharacteristics characs={troop.characteristics} />
           </Hidden>
 
           <Typography component="p">
@@ -91,9 +85,9 @@ function TroopCard(props) {
   );
 }
 
-TroopCard.propTypes = {
+CompanyTroopCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  troopData: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+  troopData: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(TroopCard);
+export default withStyles(styles, { withTheme: true })(CompanyTroopCard);

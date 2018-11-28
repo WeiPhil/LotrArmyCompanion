@@ -42,7 +42,7 @@ const styles = theme => ({
   }
 });
 
-function TroopCharacteristics(props) {
+function UnitCharacteristics(props) {
   const { characs, classes } = props;
 
   const characteristics = characs !== undefined ? createData(characs) : "undefined";
@@ -81,9 +81,9 @@ function TroopCharacteristics(props) {
   );
 }
 
-TroopCharacteristics.propTypes = {
+UnitCharacteristics.propTypes = {
   classes: PropTypes.object.isRequired,
   characs: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
-export default withStyles(styles)(TroopCharacteristics);
+export default withStyles(styles)(UnitCharacteristics);

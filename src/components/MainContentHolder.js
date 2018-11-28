@@ -16,7 +16,6 @@ export class MainContentHolder extends Component {
     return (
       <div className={classes.contentHolder}>
         <div className={classes.toolbarSpace} />
-        {console.log(menuState)}
         {React.cloneElement(this.props.children, { menuState: menuState })}
       </div>
     );

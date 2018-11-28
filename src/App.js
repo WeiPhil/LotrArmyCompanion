@@ -12,7 +12,7 @@ import MainContentHolder from "./components/MainContentHolder";
 
 const theme = createMuiTheme({
   palette: {
-    type: "light",
+    type: "dark",
     primary: {
       light: "#428e92",
       main: "#006064",
