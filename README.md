@@ -1,21 +1,9 @@
-## Available Scripts
+# Lord of the Ring: A companion App for your army
 
-In the project directory, you can run:
+![alt text](https://raw.githubusercontent.com/WeiPhil/LotrArmyCompanion/master/src/assets/images/tempCardBackground1.jpg)
 
-### `npm start`
+## THIS PROJECT IS A WORK IN PROGRESS
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+In a console in the project directory run 
+`npm install` : to install all necesary libraries  
+`npm start` : to run the app on localhost
