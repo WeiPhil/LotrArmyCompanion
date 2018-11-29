@@ -1,5 +1,6 @@
 // List of constants used throughout the app
 export const MENU_WIDTH = 240;
+export const REACTION_TIMEOUT = 250;
 
 // Constants for core app style
 export const CARD_MAX_WIDTH = 330;

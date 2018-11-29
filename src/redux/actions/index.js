@@ -1,4 +1,4 @@
-import { SET_USER_COMPANIES, FETCH_USER_COMPANIES, API } from "./types";
+import { SET_USER_COMPANIES, FETCH_USER_COMPANIES, ON_FETCH_ERROR, API } from "./types";
 
 import { SET_MENU_STATE, ADD_ATTACK_TO } from "./types";
 
@@ -16,9 +16,7 @@ export function fetchUserCompanies(/*user*/) {
   return apiAction({
     url: "http://192.168.1.4:5000/getCompany", //+"/"+user LATER
     onSuccess: setUserCompanies,
-    onFailure: () => {
-      console.log("Error occured fetching");
-    },
+    onFailure: error => ({ type: ON_FETCH_ERROR, payload: error }),
     label: FETCH_USER_COMPANIES
   });
 }

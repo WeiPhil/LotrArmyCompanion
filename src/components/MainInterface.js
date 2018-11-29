@@ -54,12 +54,6 @@ const styles = theme => ({
 
 const mapStateToProps = ({ menuState }) => ({ menuState });
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     setMenuState: index => dispatch(setMenuState(index))
-//   };
-// };
-
 class ResponsiveDrawer extends React.Component {
   state = {
     mobileOpen: false
@@ -69,9 +63,15 @@ class ResponsiveDrawer extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  handleMenuClick = index => {
+    this.props.setMenuState(index);
+
+    if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), 300);
+  };
+
   render() {
     const { classes, theme, menuState } = this.props;
-
+    console.log(menuState);
     const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
 
     const menuItems = [
@@ -90,7 +90,7 @@ class ResponsiveDrawer extends React.Component {
               className={classnames({
                 [classes.menuItemeSelected]: menuState === index
               })}
-              onClick={() => this.props.setMenuState(index)}
+              onClick={() => this.handleMenuClick(index)}
               button
               key={index}
             >
@@ -106,7 +106,7 @@ class ResponsiveDrawer extends React.Component {
               className={classnames({
                 [classes.menuItemeSelected]: menuState === WIKI
               })}
-              onClick={() => this.props.setMenuState(WIKI)}
+              onClick={() => this.handleMenuClick(WIKI)}
               button
               key={WIKI}
             >

@@ -1,8 +1,18 @@
-import { ADD_ATTACK_TO, SET_USER_COMPANIES, FETCH_USER_COMPANIES, API_START, API_END, SET_MENU_STATE } from "../actions/types";
+import {
+  ADD_ATTACK_TO,
+  SET_USER_COMPANIES,
+  FETCH_USER_COMPANIES,
+  API_START,
+  API_END,
+  SET_MENU_STATE,
+  ON_FETCH_ERROR
+} from "../actions/types";
 import { ARMY_OVERVIEW } from "../../utils/Constants";
 
 const initialState = {
-  menuState: ARMY_OVERVIEW
+  menuState: ARMY_OVERVIEW,
+  isLoadingData: true,
+  fetchError: false
 };
 
 /** Mini check-list for adding function:
@@ -34,6 +44,10 @@ export default function(state = initialState, action) {
         return { ...state, isLoadingData: true };
       }
       break;
+
+    case ON_FETCH_ERROR:
+      return { ...state, fetchError: true };
+
     case API_END:
       if (action.payload === FETCH_USER_COMPANIES) {
         return { ...state, isLoadingData: false };

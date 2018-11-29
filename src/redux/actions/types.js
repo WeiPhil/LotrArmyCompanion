@@ -5,6 +5,7 @@ export const SET_MENU_STATE = "SET_MENU_STATE";
 // Database get and posts
 export const FETCH_USER_COMPANIES = "FETCH_USER_COMPANIES";
 export const SET_USER_COMPANIES = "SET_USER_COMPANIES";
+export const ON_FETCH_ERROR = "ON_FETCH_ERROR";
 
 // Middleware API actions
 export const API = "API";

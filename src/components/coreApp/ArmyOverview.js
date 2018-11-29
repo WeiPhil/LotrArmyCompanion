@@ -10,7 +10,11 @@ function renderCard(troop, index) {
   return <CompanyTroopCard key={index} troopData={troop} />;
 }
 
-const mapStateToProps = ({ companyData = {}, isLoadingData = true }) => ({ companies: companyData.companies, isLoadingData });
+const mapStateToProps = ({ companyData = {}, fetchError, isLoadingData }) => ({
+  companies: companyData.companies,
+  isLoadingData,
+  fetchError
+});
 
 class ArmyOverview extends Component {
   componentDidMount() {
@@ -19,11 +23,11 @@ class ArmyOverview extends Component {
   }
 
   render() {
-    // const { troops } = this.props;
+    const { isLoadingData, fetchError } = this.props;
 
     return (
       <Grid container justify="space-evenly">
-        {this.props.isLoadingData ? (
+        {isLoadingData || fetchError ? (
           <Grid container justify="center">
             <CircularProgress color="secondary" />
           </Grid>
