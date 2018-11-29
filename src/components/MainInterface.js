@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 
 import { setMenuState } from "./../redux/actions";
 
-import { WIKI, MENU_WIDTH } from "./../utils/Constants";
+import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
 import { RallyTheTroops, Scroll, SwordShield, TwoCoins } from "./coreApp/CustomIcons";
 
 const styles = theme => ({
@@ -66,7 +66,7 @@ class ResponsiveDrawer extends React.Component {
   handleMenuClick = index => {
     this.props.setMenuState(index);
 
-    if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), 300);
+    if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), REACTION_TIMEOUT);
   };
 
   render() {
