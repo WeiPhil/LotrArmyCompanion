@@ -2,6 +2,8 @@ import {
   ADD_ATTACK_TO,
   SET_USER_COMPANIES,
   FETCH_USER_COMPANIES,
+  SET_ARMIES,
+  FETCH_ARMIES,
   API_START,
   API_END,
   SET_MENU_STATE,
@@ -11,7 +13,10 @@ import { ARMY_OVERVIEW } from "../../utils/Constants";
 
 const initialState = {
   menuState: ARMY_OVERVIEW,
-  isLoadingData: true,
+  isLoadingCompanies: true,
+  isLoadingArmies: true,
+  armiesNeedRefetch: true,
+  companiesNeedRefetch: true,
   fetchError: false
 };
 
@@ -33,7 +38,10 @@ export default function(state = initialState, action) {
     //       return { ...state, userCompanies: newCompanies };
     //     }
     case SET_USER_COMPANIES:
-      return { ...state, companyData: action.payload };
+      return { ...state, companiesData: action.payload };
+
+    case SET_ARMIES:
+      return { ...state, armiesData: action.payload };
 
     case SET_MENU_STATE:
       return { ...state, menuState: action.payload };
@@ -42,6 +50,8 @@ export default function(state = initialState, action) {
     case API_START:
       if (action.payload === FETCH_USER_COMPANIES) {
         return { ...state, isLoadingData: true };
+      } else if (action.payload === FETCH_ARMIES) {
+        return { ...state, isLoadingArmies: true };
       }
       break;
 
@@ -50,7 +60,9 @@ export default function(state = initialState, action) {
 
     case API_END:
       if (action.payload === FETCH_USER_COMPANIES) {
-        return { ...state, isLoadingData: false };
+        return { ...state, isLoadingCompanies: false, companiesNeedRefetch: false };
+      } else if (action.payload === FETCH_ARMIES) {
+        return { ...state, isLoadingArmies: false, armiesNeedRefetch: false };
       }
       break;
     default:

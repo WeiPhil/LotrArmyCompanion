@@ -3,23 +3,24 @@ import { connect } from "react-redux";
 import { Typography, CircularProgress, Grid } from "@material-ui/core";
 
 import { fetchUserCompanies } from "../../redux/actions";
-const mapStateToProps = ({ companyData = {}, isLoadingData, fetchError }) => ({
-  companies: companyData.companies,
+const mapStateToProps = ({ companiesData = {}, isLoadingCompanies, companiesNeedRefetch, fetchError }) => ({
+  companies: companiesData.companies,
   fetchError,
-  isLoadingData
+  companiesNeedRefetch,
+  isLoadingCompanies
 });
 
 class CompanyInformation extends Component {
   componentDidMount() {
     console.log("Company Information loading");
-    this.props.fetchUserCompanies();
+    if (this.props.companiesNeedRefetch) this.props.fetchUserCompanies();
   }
 
   render() {
-    const { isLoadingData, fetchError, companies } = this.props;
+    const { isLoadingCompanies, fetchError, companies } = this.props;
     return (
-      <div>
-        {isLoadingData || fetchError ? (
+      <>
+        {isLoadingCompanies || fetchError ? (
           <Grid container justify="center">
             <CircularProgress color="secondary" />
           </Grid>
@@ -30,7 +31,7 @@ class CompanyInformation extends Component {
             </Typography>
           ))
         )}
-      </div>
+      </>
     );
   }
 }

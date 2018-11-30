@@ -13,84 +13,157 @@ import Hidden from "@material-ui/core/Hidden";
 
 import UnitCharacteristics from "./UnitCharacteristics";
 
-import { CARD_MAX_WIDTH } from "../../utils/Constants";
-import { CARD_IMAGE_HEIGHT } from "../../utils/Constants";
+import { CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH, LIEUTNANT, SERGEANT } from "../../utils/Constants";
 
-import Icon from "@material-ui/core/Icon";
+import { LieutnantIcon, SergeantIcon, WargearIcon } from "./../icons/CardIcons";
+import { Grid, Grow, Avatar, IconButton, Tooltip, Chip } from "@material-ui/core";
+
+import { calculatePoints } from "./../../utils/ArmyCalculations.js";
 
 const styles = theme => ({
   card: {
     width: "100%",
-    [theme.breakpoints.up("xs")]: {
+    [theme.breakpoints.up("sm")]: {
       maxWidth: CARD_MAX_WIDTH
-    },
-    margin: theme.spacing.unit * 2
+    }
   },
   media: {
     height: CARD_IMAGE_HEIGHT
+  },
+  icons: {
+    padding: theme.spacing.unit * 0.8,
+    marginRight: theme.spacing.unit,
+    cursor: "initial",
+    defaultColor: "black"
+  },
+  statusAvatar: {
+    marginTop: theme.spacing.unit,
+    fontSize: 16,
+    color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.background.paper,
+    backgroundColor: theme.palette.type === "dark" ? theme.palette.background.default : theme.palette.primary.light
+  },
+  chipRoot: {
+    marginTop: theme.spacing.unit * 0.5,
+    marginBottom: theme.spacing.unit,
+    display: "flex"
+    // flexWrap: "no-wrap"
+  },
+  chip: {
+    textTransform: "capitalize",
+    margin: theme.spacing.unit * 0.5,
+    fontSize: 10
   }
 });
 
-function createCardData(troopData) {
-  return {
-    name: troopData["display_name"],
-    unit_type: troopData["unit_type"],
-    troop_type: troopData["troop_type"],
-    // base_wargear: troopData["base_wargear"],
-    // optional_wargear: troopData["optional_wargear"],
-    special_rules: troopData["special_rules"],
-    heroic_actions: troopData["heroic_actions"],
-    magical_powers: troopData["magical_powers"],
-    // description: troopData["description"],
-    characteristics: troopData["improvements"],
-    image_path: require("./../../assets/images/" + troopData["image_path"])
-  };
-}
-
 function CompanyTroopCard(props) {
-  const { troopData, classes } = props;
-
-  const troop = createCardData(troopData);
+  const { baseTroop, userTroop, classes, theme } = props;
 
   return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia className={classes.media} image={troop.image_path} title={troop.name} />
+    <Grow in={true}>
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia className={classes.media} image={userTroop.image_path} title={userTroop.name} />
+        </CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {(troop.troop_type === "lieutnant" || troop.troop_type === "sergeant") && <Icon>star</Icon>}
-            {troop.name}
+          <Typography variant="h5" gutterBottom>
+            {userTroop.troop_type === LIEUTNANT && (
+              <Tooltip placement="top" title="Lieutnant">
+                <IconButton className={classes.icons}>
+                  <LieutnantIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {userTroop.troop_type === SERGEANT && (
+              <Tooltip placement="top" title="Sergeant">
+                <IconButton className={classes.icons}>
+                  <SergeantIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {userTroop.troop_type !== LIEUTNANT && userTroop.troop_type !== SERGEANT && (
+              <Tooltip placement="top" title="Warrior">
+                <IconButton className={classes.icons}>
+                  <WargearIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {userTroop.display_name}
           </Typography>
+
+          <Grid container justify="space-evenly">
+            <Grid item>
+              <Grid container direction="column" alignItems="center">
+                <Grid item>
+                  <Typography color="textSecondary" variant="button">
+                    Points
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle2">
+                    <Avatar className={classes.statusAvatar}>{calculatePoints(baseTroop, userTroop)}</Avatar>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item>
+              <Grid container direction="column" alignItems="center">
+                <Grid item>
+                  <Typography color="textSecondary" variant="button">
+                    Experience
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography variant="subtitle2">
+                    <Avatar className={classes.statusAvatar}>{userTroop.experience}</Avatar>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
           <Hidden xsDown={true}>
-            <UnitCharacteristics characs={troop.characteristics} />
+            <UnitCharacteristics improvs={userTroop.improvements} characs={baseTroop.characteristics} />
           </Hidden>
 
-          <Typography component="p">
-            {troop.description}
-            {/* Many Heroes have trained companion animals that accompany them on
-            their campaigns. A hunting dog is considered part of the Hero’s
-            wargear, does not count against the Battle Company’s roster limit,
-            and cannot gain experience or be promoted. However, it must roll on
-            the Warrior Injury Table as normal. Heroes may only have one Hunting
-            Dog. */}
+          <Typography color="textPrimary" variant="button">
+            Wargear
+          </Typography>
+          <div className={classes.chipRoot}>
+            {userTroop.wargear
+              .filter(weapon => baseTroop.base_wargear.indexOf(weapon) !== -1)
+              .map((weapon, index) => (
+                <Chip key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+              ))}
+            {userTroop.wargear
+              .filter(weapon => !(baseTroop.base_wargear.indexOf(weapon) !== -1))
+              .map((weapon, index) => (
+                <Chip key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+              ))}
+          </div>
+
+          <Typography color="textPrimary" variant="button">
+            Description
+          </Typography>
+          <Typography color="textSecondary" variant="body2">
+            {baseTroop.description}
           </Typography>
         </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button variant="contained" size="small">
-          Promote
-        </Button>
-        <Button variant="contained" size="small">
-          Nothing
-        </Button>
-      </CardActions>
-    </Card>
+
+        <CardActions>
+          <Button variant="outlined" size="small">
+            Promote
+          </Button>
+        </CardActions>
+      </Card>
+    </Grow>
   );
 }
 
 CompanyTroopCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  troopData: PropTypes.object.isRequired
+  userTroop: PropTypes.object.isRequired,
+  baseTroop: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(CompanyTroopCard);

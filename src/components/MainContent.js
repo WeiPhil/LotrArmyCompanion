@@ -50,8 +50,7 @@ class MainContent extends Component {
 
   render() {
     const { menuState } = this.props;
-
-    return <main>{this.renderContent(menuState)}</main>;
+    return this.renderContent(menuState);
   }
 }
 

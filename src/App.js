@@ -8,8 +8,6 @@ import MainInterface from "./components/MainInterface";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import MainContent from "./components/MainContent";
 
-import MainContentHolder from "./components/MainContentHolder";
-
 const theme = createMuiTheme({
   palette: {
     type: "light",
@@ -37,9 +35,7 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <MainInterface>
-          <MainContentHolder>
-            <MainContent />
-          </MainContentHolder>
+          <MainContent />
         </MainInterface>
       </MuiThemeProvider>
     );

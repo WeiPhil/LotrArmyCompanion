@@ -1,4 +1,4 @@
-import { SET_USER_COMPANIES, FETCH_USER_COMPANIES, ON_FETCH_ERROR, API } from "./types";
+import { SET_ARMIES, FETCH_ARMIES, SET_USER_COMPANIES, FETCH_USER_COMPANIES, ON_FETCH_ERROR, API } from "./types";
 
 import { SET_MENU_STATE, ADD_ATTACK_TO } from "./types";
 
@@ -23,6 +23,19 @@ export function fetchUserCompanies(/*user*/) {
 
 function setUserCompanies(data) {
   return { type: SET_USER_COMPANIES, payload: data };
+}
+
+export function fetchArmies() {
+  return apiAction({
+    url: "http://192.168.1.4:5000/getArmies",
+    onSuccess: setArmies,
+    onFailure: error => ({ type: ON_FETCH_ERROR, payload: error }),
+    label: FETCH_ARMIES
+  });
+}
+
+function setArmies(data) {
+  return { type: SET_ARMIES, payload: data };
 }
 
 /** API base action DO NOT TOUCH */

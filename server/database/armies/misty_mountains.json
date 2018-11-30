@@ -1,7 +1,7 @@
 {
-  "access_map": { "gobelin_warrior": 0, "warg": 1 },
-  "troops": [
-    {
+  "misty_mountains": {
+    "gobelin_warrior": {
+      "points": 4,
       "display_name": "Goblin Warrior",
       "unit_name": "gobelin_warrior",
       "unit_type": "infantry",
@@ -11,7 +11,7 @@
         "fight": 2,
         "shoot": 5,
         "strength": 3,
-        "defense": 5,
+        "defense": 4,
         "attacks": 1,
         "wounds": 1,
         "courage": 2,
@@ -27,7 +27,8 @@
       "description": "An epic gobelin description",
       "image_path": "tempCardBackground1.jpg"
     },
-    {
+    "warg": {
+      "points": 7,
       "display_name": "Warg",
       "unit_name": "warg",
       "unit_type": "cavalry",
@@ -35,17 +36,17 @@
       "characteristics": {
         "move": 10,
         "fight": 3,
-        "shoot": 0,
+        "shoot": 5,
         "strength": 4,
         "defense": 4,
         "attacks": 1,
         "wounds": 1,
-        "courage": 3,
+        "courage": 2,
         "might": 0,
         "will": 0,
         "faith": 0
       },
-      "base_wargear": ["teeth"],
+      "base_wargear": ["claws", "teeth"],
       "optional_wargear": [],
       "special_rules": [],
       "heroic_actions": [],
@@ -53,5 +54,5 @@
       "description": "An epic warg description",
       "image_path": "tempCardBackground3.jpg"
     }
-  ]
+  }
 }

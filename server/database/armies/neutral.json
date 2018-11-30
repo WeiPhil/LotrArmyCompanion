@@ -1,0 +1,30 @@
+{
+  "neutral": {
+    "mercenary": {
+      "display_name": "Mercenary",
+      "unit_name": "mercenary",
+      "unit_type": "infantry",
+      "troop_type": "warrior",
+      "characteristics": {
+        "move": 6,
+        "fight": 2,
+        "shoot": 4,
+        "strength": 3,
+        "defense": 4,
+        "attacks": 1,
+        "wounds": 1,
+        "courage": 3,
+        "might": 0,
+        "will": 0,
+        "faith": 0
+      },
+      "base_wargear": ["armour", "sword"],
+      "optional_wargear": ["orc_bow", "shield", "spear"],
+      "special_rules": ["hired_blade"],
+      "heroic_actions": [],
+      "magical_powers": [],
+      "description": "An epic gobelin description",
+      "image_path": "tempCardBackground1.jpg"
+    }
+  }
+}

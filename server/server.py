@@ -3,6 +3,7 @@ from flask import request
 from flask import jsonify
 
 import json
+import os
 
 app = Flask(__name__)
 
@@ -31,8 +32,23 @@ def postJsonHandler():
 
 
 @app.route('/getCompany', methods=['GET'])
-def getJsonHandler():
+def getCompany():
     response = jsonify(loadJson(PATH))
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@app.route('/getArmies', methods=['GET'])
+def getArmies():
+    armies = os.listdir("./database/armies")
+    print(armies)
+    armiesJson = [loadJson("./database/armies/"+army) for army in armies]
+    formattedJson = [armiesJson[0]]
+    for i, army in enumerate(armiesJson):
+        if i != 0:
+            formattedJson[0][armies[i][:-4]] = army
+
+    response = jsonify(formattedJson[0])
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

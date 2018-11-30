@@ -19,7 +19,9 @@ import { connect } from "react-redux";
 import { setMenuState } from "./../redux/actions";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
-import { RallyTheTroops, Scroll, SwordShield, TwoCoins } from "./coreApp/CustomIcons";
+import { RallyTheTroopsIcon, ScrollIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
+
+import MainContent from "./MainContent";
 
 const styles = theme => ({
   root: {
@@ -45,6 +47,15 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: MENU_WIDTH
+  },
+  content: {
+    flexGrow: 1,
+    [theme.breakpoints.up("sm")]: {
+      padding: theme.spacing.unit * 3
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing.unit
+    }
   },
   toolbar: theme.mixins.toolbar,
   menuItemeSelected: {
@@ -75,9 +86,9 @@ class ResponsiveDrawer extends React.Component {
     const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
 
     const menuItems = [
-      ["Company Information", <SwordShield fontSize="large" nativeColor={iconColor} />],
-      ["Army Overview", <RallyTheTroops fontSize="large" nativeColor={iconColor} />],
-      ["Buy troops", <TwoCoins fontSize="large" nativeColor={iconColor} />]
+      ["Company Information", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />],
+      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />],
+      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />]
     ];
 
     const drawer = (
@@ -101,7 +112,7 @@ class ResponsiveDrawer extends React.Component {
         </List>
         <Divider />
         <List>
-          {[["Wiki", <Scroll fontSize="large" nativeColor={iconColor} />]].map(pair => (
+          {[["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />]].map(pair => (
             <ListItem
               className={classnames({
                 [classes.menuItemeSelected]: menuState === WIKI
@@ -161,8 +172,10 @@ class ResponsiveDrawer extends React.Component {
             </Drawer>
           </Hidden>
         </nav>
-        <div className={classes.toolbar} />
-        {this.props.children}
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <MainContent />
+        </main>
       </div>
     );
   }
@@ -170,8 +183,6 @@ class ResponsiveDrawer extends React.Component {
 
 ResponsiveDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
-  // Injected by the documentation to work in an iframe.
-  // You won't need it on your project.
   container: PropTypes.object,
   theme: PropTypes.object.isRequired
 };
