@@ -22,8 +22,7 @@ import { calculatePoints } from "./../../utils/ArmyCalculations.js";
 
 const styles = theme => ({
   card: {
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("md")]: {
       maxWidth: CARD_MAX_WIDTH
     }
   },
@@ -45,8 +44,8 @@ const styles = theme => ({
   chipRoot: {
     marginTop: theme.spacing.unit * 0.5,
     marginBottom: theme.spacing.unit,
-    display: "flex"
-    // flexWrap: "no-wrap"
+    display: "flex",
+    flexWrap: "wrap"
   },
   chip: {
     textTransform: "capitalize",
@@ -56,7 +55,7 @@ const styles = theme => ({
 });
 
 function CompanyTroopCard(props) {
-  const { baseTroop, userTroop, classes, theme } = props;
+  const { baseTroop, userTroop, classes } = props;
 
   return (
     <Grow in={true}>
@@ -130,15 +129,17 @@ function CompanyTroopCard(props) {
             Wargear
           </Typography>
           <div className={classes.chipRoot}>
+            {/* Basic wargear */}
             {userTroop.wargear
               .filter(weapon => baseTroop.base_wargear.indexOf(weapon) !== -1)
               .map((weapon, index) => (
-                <Chip key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+                <Chip variant="outlined" key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
               ))}
+            {/* Optional wargear */}
             {userTroop.wargear
               .filter(weapon => !(baseTroop.base_wargear.indexOf(weapon) !== -1))
               .map((weapon, index) => (
-                <Chip key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+                <Chip clickable key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
               ))}
           </div>
 

@@ -3,7 +3,7 @@ export const MENU_WIDTH = 240;
 export const REACTION_TIMEOUT = 250;
 
 // Constants for core app style
-export const CARD_MAX_WIDTH = 340;
+export const CARD_MAX_WIDTH = 350;
 
 export const CARD_IMAGE_HEIGHT = 100;
 

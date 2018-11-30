@@ -6,6 +6,8 @@ import { Grid, CircularProgress } from "@material-ui/core/";
 
 import { fetchUserCompanies, fetchArmies } from "./../../redux/actions/index";
 
+import MediaQuery from "react-responsive";
+
 const mapStateToProps = ({
   companiesData = {},
   armiesData = {},
@@ -94,9 +96,18 @@ class ArmyOverview extends Component {
             <CircularProgress color="secondary" />
           </Grid>
         ) : (
-          <Grid container alignItems="center" spacing={24} justify="space-between">
-            {companies.map((company, idx) => company.troops.map((troop, index) => this.renderCard(troop, index, idx)))}
-          </Grid>
+          <>
+            <MediaQuery query="(max-width: 960px)">
+              <Grid container direction="column" spacing={16} alignItems="stretch" justify="center">
+                {companies.map((company, idx) => company.troops.map((troop, index) => this.renderCard(troop, index, idx)))}
+              </Grid>
+            </MediaQuery>
+            <MediaQuery query="(min-width: 960px)">
+              <Grid container direction="row" alignItems="stretch" justify="space-between" spacing={16}>
+                {companies.map((company, idx) => company.troops.map((troop, index) => this.renderCard(troop, index, idx)))}
+              </Grid>
+            </MediaQuery>
+          </>
         )}
       </>
     );

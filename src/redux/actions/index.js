@@ -11,6 +11,7 @@ export function setMenuState(newState) {
   return { type: SET_MENU_STATE, payload: newState };
 }
 
+//192.168.1.4
 /** API based actions */
 export function fetchUserCompanies(/*user*/) {
   return apiAction({
