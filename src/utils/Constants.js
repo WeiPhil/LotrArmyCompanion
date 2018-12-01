@@ -10,7 +10,7 @@ export const CARD_IMAGE_HEIGHT = 100;
 // Constants for core app programm
 
 //Menu constants
-export const COMPANY_INFORMATION = 0;
+export const MY_COMPANIES = 0;
 export const ARMY_OVERVIEW = 1;
 export const BUY_TROOPS = 2;
 export const WIKI = 3;

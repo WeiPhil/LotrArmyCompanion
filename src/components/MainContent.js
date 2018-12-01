@@ -2,19 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import Typography from "@material-ui/core/Typography";
-import CompanyInformation from "./coreApp/CompanyInformation";
+import MyCompanies from "./coreApp/MyCompanies";
 import ArmyOverview from "./coreApp/ArmyOverview";
 import Wiki from "./coreApp/Wiki";
 
-import { COMPANY_INFORMATION, ARMY_OVERVIEW, BUY_TROOPS, WIKI } from "./../utils/Constants";
+import { MY_COMPANIES, ARMY_OVERVIEW, BUY_TROOPS, WIKI } from "./../utils/Constants";
 
 const mapStateToProps = ({ menuState }) => ({ menuState });
 
 class MainContent extends Component {
   renderContent(menuState) {
     switch (menuState) {
-      case COMPANY_INFORMATION:
-        return <CompanyInformation />;
+      case MY_COMPANIES:
+        return <MyCompanies />;
 
       case ARMY_OVERVIEW:
         return <ArmyOverview />;

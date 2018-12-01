@@ -7,17 +7,19 @@ import {
   API_START,
   API_END,
   SET_MENU_STATE,
-  ON_FETCH_ERROR
+  ON_FETCH_ERROR,
+  SET_THEME
 } from "../actions/types";
-import { ARMY_OVERVIEW } from "../../utils/Constants";
+import { MY_COMPANIES } from "../../utils/Constants";
 
 const initialState = {
-  menuState: ARMY_OVERVIEW,
+  menuState: MY_COMPANIES,
   isLoadingCompanies: true,
   isLoadingArmies: true,
   armiesNeedRefetch: true,
   companiesNeedRefetch: true,
-  fetchError: false
+  fetchError: false,
+  themeType: "light"
 };
 
 /** Mini check-list for adding function:
@@ -45,6 +47,9 @@ export default function(state = initialState, action) {
 
     case SET_MENU_STATE:
       return { ...state, menuState: action.payload };
+
+    case SET_THEME:
+      return { ...state, themeType: action.payload };
 
     // API Cases
     case API_START:

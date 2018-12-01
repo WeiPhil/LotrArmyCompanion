@@ -9,7 +9,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import Hidden from "@material-ui/core/Hidden";
 
 import UnitCharacteristics from "./UnitCharacteristics";
 
@@ -55,35 +54,51 @@ const styles = theme => ({
 });
 
 function CompanyTroopCard(props) {
-  const { baseTroop, userTroop, classes } = props;
+  const { baseTroop, userTroop, classes, injured } = props;
+  const isDead = injured.indexOf(userTroop.access_name) !== -1;
+
+  const onMouseOver = () => {
+    if (isDead) console.log("TEST");
+  };
 
   return (
     <Grow in={true}>
-      <Card className={classes.card}>
+      <Card
+        onMouseOver={onMouseOver}
+        style={isDead && { opacity: 0.3, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
+        className={classes.card}
+      >
         <CardActionArea>
           <CardMedia className={classes.media} image={userTroop.image_path} title={userTroop.name} />
         </CardActionArea>
+
         <CardContent>
           <Typography variant="h5" gutterBottom>
             {userTroop.troop_type === LIEUTNANT && (
               <Tooltip placement="top" title="Lieutnant">
-                <IconButton className={classes.icons}>
-                  <LieutnantIcon />
-                </IconButton>
+                <div>
+                  <IconButton disabled={isDead} className={classes.icons}>
+                    <LieutnantIcon />
+                  </IconButton>
+                </div>
               </Tooltip>
             )}
             {userTroop.troop_type === SERGEANT && (
               <Tooltip placement="top" title="Sergeant">
-                <IconButton className={classes.icons}>
-                  <SergeantIcon />
-                </IconButton>
+                <div>
+                  <IconButton disabled={isDead} className={classes.icons}>
+                    <SergeantIcon />
+                  </IconButton>
+                </div>
               </Tooltip>
             )}
             {userTroop.troop_type !== LIEUTNANT && userTroop.troop_type !== SERGEANT && (
               <Tooltip placement="top" title="Warrior">
-                <IconButton className={classes.icons}>
-                  <WargearIcon />
-                </IconButton>
+                <div>
+                  <IconButton disabled={isDead} className={classes.icons}>
+                    <WargearIcon />
+                  </IconButton>
+                </div>
               </Tooltip>
             )}
             {userTroop.display_name}
@@ -121,9 +136,9 @@ function CompanyTroopCard(props) {
             </Grid>
           </Grid>
 
-          <Hidden xsDown={true}>
-            <UnitCharacteristics improvs={userTroop.improvements} characs={baseTroop.characteristics} />
-          </Hidden>
+          {/* <Hidden xsDown={true}> */}
+          <UnitCharacteristics improvs={userTroop.improvements} characs={baseTroop.characteristics} />
+          {/* </Hidden> */}
 
           <Typography color="textPrimary" variant="button">
             Wargear
@@ -139,7 +154,13 @@ function CompanyTroopCard(props) {
             {userTroop.wargear
               .filter(weapon => !(baseTroop.base_wargear.indexOf(weapon) !== -1))
               .map((weapon, index) => (
-                <Chip clickable key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+                <Chip
+                  variant={isDead ? "outlined" : "default"}
+                  clickable={!isDead}
+                  key={index}
+                  label={weapon.replace(/_/g, " ")}
+                  className={classes.chip}
+                />
               ))}
           </div>
 
@@ -152,7 +173,7 @@ function CompanyTroopCard(props) {
         </CardContent>
 
         <CardActions>
-          <Button variant="outlined" size="small">
+          <Button color="primary" variant="contained" disabled size="small">
             Promote
           </Button>
         </CardActions>

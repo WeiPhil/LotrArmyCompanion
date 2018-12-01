@@ -9,8 +9,8 @@
       "victories": 3,
       "draws": 0,
       "losses": 2,
-      "company_rating": 108,
-      "effective_rating": 120,
+      "company_rating": 120,
+      "effective_rating": 108,
       "access_map": { "warg_fort": 0, "gormungur": 1, "mulmuc": 2, "warg_faiblure": 3 },
       "troops": [
         {
@@ -21,6 +21,7 @@
           "troop_type": "sergeant",
           "points": 32,
           "experience": 10,
+          "canPromote": false,
           "improvements": {
             "move": 0,
             "fight": 1,
@@ -50,6 +51,7 @@
           "troop_type": "lieutnant",
           "points": 31,
           "experience": 5,
+          "canPromote": false,
           "improvements": {
             "move": 0,
             "fight": 0,
@@ -79,6 +81,7 @@
           "troop_type": "warrior",
           "points": 31,
           "experience": 3,
+          "canPromote": false,
           "improvements": {
             "move": 0,
             "fight": 0,
@@ -108,6 +111,7 @@
           "troop_type": "sergeant",
           "points": 12,
           "experience": 5,
+          "canPromote": false,
           "improvements": {
             "move": 0,
             "fight": 0,
@@ -130,8 +134,9 @@
           "image_path": "warg_rider.jpg"
         }
       ],
-      "injured": [],
-      "notes": "Personal Note on the company"
+      "injured": ["mulmuc"],
+      "notes": "Personal Note on the company",
+      "image_path": "misty_mountains.jpg"
     }
   ]
 }
