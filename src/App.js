@@ -64,10 +64,6 @@ class App extends Component {
         <CssBaseline />
         <Router>
           <MainInterface />
-          {/*           
-            <MainContent />
-          
-        </MainInterface> */}
         </Router>
       </MuiThemeProvider>
     );

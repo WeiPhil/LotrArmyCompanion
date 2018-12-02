@@ -46,7 +46,7 @@
         {
           "display_name": "Gormungur",
           "access_name": "gormungur",
-          "unit_name": "gobelin_warrior",
+          "unit_name": "moria_gobelin_warrior",
           "unit_type": "infantry",
           "troop_type": "lieutnant",
           "points": 31,
@@ -76,7 +76,7 @@
         {
           "display_name": "Mulmuc",
           "access_name": "mulmuc",
-          "unit_name": "gobelin_warrior",
+          "unit_name": "moria_gobelin_warrior",
           "unit_type": "infantry",
           "troop_type": "warrior",
           "points": 31,
@@ -137,6 +137,54 @@
       "injured": ["mulmuc"],
       "notes": "Personal Note on the company",
       "image_path": "misty_mountains.jpg"
+    },
+    {
+      "faction": "Lothlorien",
+      "faction_access_name": "lothlorien",
+      "company_name": "Les forestiers de Roahruim",
+      "company_access_name": "les_forestiers_de_roahruim",
+      "gold": 12,
+      "victories": 1,
+      "draws": 0,
+      "losses": 1,
+      "company_rating": 111,
+      "effective_rating": 111,
+      "access_map": { "warg_fort": 0, "gormungur": 1, "mulmuc": 2, "warg_faiblure": 3 },
+      "troops": [
+        {
+          "display_name": "Roah",
+          "access_name": "roah",
+          "unit_name": "wood_elf_warrior",
+          "unit_type": "infantry",
+          "troop_type": "lieutnant",
+          "points": 31,
+          "experience": 4,
+          "canPromote": false,
+          "improvements": {
+            "move": 0,
+            "fight": 1,
+            "shoot": 0,
+            "strength": 0,
+            "defense": 3,
+            "attacks": 0,
+            "wounds": 0,
+            "courage": 0,
+            "might": 1,
+            "will": 1,
+            "faith": 2
+          },
+          "injuries": ["old_battle_wound"],
+          "wargear": ["heavy_armor", "shield", "elven_sword", "elven_cloak"],
+          "special_rules": ["wood_elf_spear", "woodland_creature"],
+          "heroic_actions": [],
+          "magical_powers": [],
+          "notes": "",
+          "image_path": "warg_rohan.jpg"
+        }
+      ],
+      "injured": [],
+      "notes": "Personal Note on the company",
+      "image_path": "elfic_background.jpg"
     }
   ]
 }

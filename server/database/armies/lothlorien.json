@@ -1,0 +1,31 @@
+{
+  "lothlorien": {
+    "wood_elf_warrior": {
+      "points": 8,
+      "display_name": "Wood Elf Warrior",
+      "unit_name": "wood_elf_warrior",
+      "unit_type": "infantry",
+      "troop_type": "warrior",
+      "characteristics": {
+        "move": 6,
+        "fight": 5,
+        "shoot": 3,
+        "strength": 3,
+        "defense": 3,
+        "attacks": 1,
+        "wounds": 1,
+        "courage": 5,
+        "might": 0,
+        "will": 0,
+        "faith": 0
+      },
+      "base_wargear": ["elven_sword", "elven_cloak"],
+      "optional_wargear": ["banner", "elf_bow", "throwing_daggers", "wood_elf_spear"],
+      "special_rules": ["wood_elf_spear", "woodland_creature"],
+      "heroic_actions": [],
+      "magical_powers": [],
+      "description": "An epic wood elf description",
+      "image_path": "tempCardBackground1.jpg"
+    }
+  }
+}

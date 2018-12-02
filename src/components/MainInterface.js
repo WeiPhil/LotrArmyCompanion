@@ -6,14 +6,29 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 
-import { setTheme } from "./../redux/actions";
+import { setTheme, fetchUserCompanies } from "./../redux/actions";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
-import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
+import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
 
 import { withRouter } from "react-router";
 
-import { MenuList, MenuItem, AppBar, Divider, Drawer, Hidden, IconButton, List, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  Collapse,
+  MenuList,
+  MenuItem,
+  AppBar,
+  Divider,
+  Drawer,
+  Hidden,
+  IconButton,
+  List,
+  ListItemIcon,
+  ListItemText
+} from "@material-ui/core";
+
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import ArmyOverview from "./coreApp/ArmyOverview";
 import MyCompanies from "./coreApp/MyCompanies";
@@ -68,59 +83,122 @@ const styles = theme => ({
     "&:focus": {
       backgroundColor: theme.palette.type === "dark" ? theme.palette.background.default : "#ebebeb"
     }
+  },
+  submenuItem: {
+    "&:focus": {
+      backgroundColor: theme.palette.type === "dark" ? theme.palette.background.default : "#ebebeb"
+    },
+    paddingLeft: theme.spacing.unit * 3
+  },
+  submenuText: {
+    paddingLeft: 0
   }
 });
 
-const mapStateToProps = ({ themeType }) => ({ themeType });
+const mapStateToProps = ({ themeType, companiesData = {}, isLoadingCompanies, companiesNeedRefetch }) => ({
+  themeType,
+  companies: companiesData.companies,
+  companiesNeedRefetch,
+  isLoadingCompanies
+});
 
 class ResponsiveDrawer extends React.Component {
   state = {
-    mobileOpen: false
+    mobileOpen: false,
+    isOpen: [false, false, false, false],
+    selectedCompanyIndex: 0
   };
+
+  componentDidMount() {
+    console.log("Company Information loading");
+    if (this.props.companiesNeedRefetch) this.props.fetchUserCompanies();
+  }
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  handleMenuClick = () => {
-    if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), REACTION_TIMEOUT);
+  handleMenuClick = (index, hasSubmenu) => {
+    const openList = this.state.isOpen;
+    openList[index] = !this.state.isOpen[index];
+    this.setState({ isOpen: openList });
+    if (this.state.mobileOpen && !hasSubmenu) setTimeout(() => this.handleDrawerToggle(), REACTION_TIMEOUT);
+  };
+
+  handleSubmenuClick = index => {
+    this.setState({ selectedCompanyIndex: index });
+  };
+
+  createMenuItems = () => {
+    const iconColor = this.props.theme.palette.type === "dark" ? "#ccccc" : this.props.theme.palette.secondary.main;
+
+    const companyNames = this.props.isLoadingCompanies
+      ? []
+      : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + idx]);
+
+    const menuItems = [
+      ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
+      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview/0", companyNames],
+      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
+      ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki", []]
+    ];
+    return menuItems;
   };
 
   render() {
-    const { classes, theme, setTheme, themeType } = this.props;
-    const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
+    const { classes, theme, setTheme, themeType, companies, isLoadingCompanies } = this.props;
 
-    const menuItems = [
-      ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies"],
-      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview"],
-      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies"]
-    ];
+    const menuItems = this.createMenuItems();
+    const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 1);
+    const NAME_IDX = 0;
+    const ICON_IDX = 1;
+    const LINK_IDX = 2;
+    const SUBMENUS_IDX = 3;
 
     const drawer = (
       <div>
         <div style={{ marginTop: theme.spacing.unit * 4 }} />
 
         <MenuList>
-          {menuItems.slice(0, 3).map((menuItem, index) => (
-            <Link to={menuItem[2]} style={{ textDecoration: "none" }} key={index}>
-              <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index)} button>
-                <ListItemIcon>{menuItem[1]}</ListItemIcon>
-                <ListItemText primary={menuItem[0]} />
-              </MenuItem>
-            </Link>
+          {menuItems.map((menuItem, index) => (
+            <span key={index}>
+              {hasSubmenus[index] ? (
+                <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index, true)} button>
+                  <ListItemIcon>{menuItem[ICON_IDX]}</ListItemIcon>
+                  <ListItemText primary={menuItem[NAME_IDX]} />
+                  {this.state.isOpen[index] ? <ExpandLess /> : <ExpandMore />}
+                </MenuItem>
+              ) : (
+                <Link to={menuItem[LINK_IDX]} style={{ textDecoration: "none" }}>
+                  <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index, false)} button>
+                    <ListItemIcon>{menuItem[ICON_IDX]}</ListItemIcon>
+                    <ListItemText primary={menuItem[NAME_IDX]} />
+                  </MenuItem>
+                </Link>
+              )}
+              {menuItem[SUBMENUS_IDX].map((submenu, idx) => (
+                <Collapse key={idx} in={this.state.isOpen[index]} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <Link to={submenu[1]} style={{ textDecoration: "none" }}>
+                      <MenuItem button className={classes.submenuItem} onClick={() => this.handleSubmenuClick(idx)}>
+                        <ListItemIcon>
+                          <SpearsIcon
+                            nativeColor={this.props.theme.palette.type === "dark" ? "#ccccc" : this.props.theme.palette.secondary.main}
+                          />
+                        </ListItemIcon>
+                        <ListItemText className={classes.submenuText}>
+                          <Typography noWrap>{submenu[0]}</Typography>
+                        </ListItemText>
+                      </MenuItem>
+                    </Link>
+                  </List>
+                </Collapse>
+              ))}
+
+              {index === WIKI - 1 && <Divider />}
+            </span>
           ))}
         </MenuList>
-        <Divider />
-        <List>
-          {[["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki"]].map(menuItem => (
-            <Link to={menuItem[2]} style={{ textDecoration: "none" }} key={WIKI}>
-              <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(WIKI)} button>
-                <ListItemIcon>{menuItem[1]}</ListItemIcon>
-                <ListItemText primary={menuItem[0]} />
-              </MenuItem>
-            </Link>
-          ))}
-        </List>
       </div>
     );
 
@@ -187,9 +265,15 @@ class ResponsiveDrawer extends React.Component {
 
           <Route exact path="/" component={MyCompanies} />
           <Route path="/myCompanies" component={MyCompanies} />
-          <Route path="/armyOverview" component={ArmyOverview} />
+          {!isLoadingCompanies ? (
+            companies.map((company, idx) => (
+              <Route key={idx} path={"/armyOverview/" + idx} render={() => <ArmyOverview companyIndex={idx} />} />
+            ))
+          ) : (
+            <Route path="/armyOverview/0" render={() => <ArmyOverview companyIndex={0} />} />
+          )}
+
           <Route path="/wiki" component={Wiki} />
-          {/* <MainContent /> */}
         </main>
       </div>
     );
@@ -205,6 +289,6 @@ ResponsiveDrawer.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme }
+    { setTheme, fetchUserCompanies }
   )(withStyles(styles, { withTheme: true })(ResponsiveDrawer))
 );

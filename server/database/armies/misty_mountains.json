@@ -1,9 +1,9 @@
 {
   "misty_mountains": {
-    "gobelin_warrior": {
+    "moria_gobelin_warrior": {
       "points": 4,
       "display_name": "Goblin Warrior",
-      "unit_name": "gobelin_warrior",
+      "unit_name": "moria_gobelin_warrior",
       "unit_type": "infantry",
       "troop_type": "warrior",
       "characteristics": {

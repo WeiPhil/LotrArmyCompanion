@@ -7,6 +7,9 @@ export const CARD_MAX_WIDTH = 350;
 
 export const CARD_IMAGE_HEIGHT = 100;
 
+// Madia query constants
+export const MIN_HEIGHT_600 = "(min-height: 600px)";
+
 // Constants for core app programm
 
 //Menu constants

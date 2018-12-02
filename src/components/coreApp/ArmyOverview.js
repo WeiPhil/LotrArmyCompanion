@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import CompanyTroopCard from "./CompanyTroopCard";
-import { Grid, CircularProgress } from "@material-ui/core/";
+import { Grid, CircularProgress, withStyles, Fab } from "@material-ui/core/";
+
+import AddIcon from "@material-ui/icons/Add";
 
 import { fetchUserCompanies, fetchArmies } from "./../../redux/actions/index";
 
@@ -28,6 +30,12 @@ const mapStateToProps = ({
   fetchError
 });
 
+const styles = theme => ({
+  addTroop: {
+    margin: theme.spacing.unit
+  }
+});
+
 class ArmyOverview extends Component {
   componentDidMount() {
     console.log("Army Overview loading");
@@ -46,8 +54,8 @@ class ArmyOverview extends Component {
   }
 
   render() {
-    const { isLoadingArmies, isLoadingCompanies, fetchError, companies } = this.props;
-
+    const { isLoadingArmies, isLoadingCompanies, fetchError, companies, classes, theme, companyIndex } = this.props;
+    // const companyIndex = this.props.route.companyIndex;
     return (
       <>
         {isLoadingArmies || isLoadingCompanies || fetchError ? (
@@ -57,13 +65,23 @@ class ArmyOverview extends Component {
         ) : (
           <>
             <MediaQuery query="(max-width: 960px)">
-              <Grid container direction="column" spacing={16} alignItems="stretch" justify="center">
-                {companies.map((company, idx) => company.troops.map((troop, index) => this.renderCard(troop, index, idx)))}
+              <Grid style={{ height: "100%" }} container direction="column" spacing={16} alignItems="stretch" justify="center">
+                <Grid item>
+                  <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
+                    <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
+                  </Fab>
+                </Grid>
+                {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex))}
               </Grid>
             </MediaQuery>
             <MediaQuery query="(min-width: 960px)">
-              <Grid container direction="row" alignItems="stretch" justify="center" spacing={16}>
-                {companies.map((company, idx) => company.troops.map((troop, index) => this.renderCard(troop, index, idx)))}
+              <Grid container direction="row" alignItems="center" justify="center" spacing={16}>
+                {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex))}
+                <Grid item>
+                  <Fab className={classes.addTroop} variant="extended" color="primary" aria-label="Add">
+                    <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Buy a new Unit
+                  </Fab>
+                </Grid>
               </Grid>
             </MediaQuery>
           </>
@@ -73,7 +91,9 @@ class ArmyOverview extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchUserCompanies, fetchArmies }
-)(ArmyOverview);
+export default withStyles(styles, { withTheme: true })(
+  connect(
+    mapStateToProps,
+    { fetchUserCompanies, fetchArmies }
+  )(ArmyOverview)
+);

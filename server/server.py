@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 
-PATH = './database/usersCompanies/philippe.json'
+PATH = './database/usersCompanies/admin.json'
 
 
 def loadJson(path):
@@ -43,10 +43,11 @@ def getArmies():
     armies = os.listdir("./database/armies")
     print(armies)
     armiesJson = [loadJson("./database/armies/"+army) for army in armies]
+    print(armiesJson)
     formattedJson = [armiesJson[0]]
     for i, army in enumerate(armiesJson):
         if i != 0:
-            formattedJson[0][armies[i][:-4]] = army
+            formattedJson[0][armies[i][:-5]] = army[armies[i][:-5]]
 
     response = jsonify(formattedJson[0])
     response.headers.add('Access-Control-Allow-Origin', '*')
