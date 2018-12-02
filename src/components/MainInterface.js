@@ -6,26 +6,20 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 
-import { setMenuState, setTheme } from "./../redux/actions";
+import { setTheme } from "./../redux/actions";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
 import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
 
-import {
-  MenuList,
-  MenuItem,
-  AppBar,
-  Divider,
-  Drawer,
-  Hidden,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText
-} from "@material-ui/core";
+import { withRouter } from "react-router";
 
-import MainContent from "./MainContent";
+import { MenuList, MenuItem, AppBar, Divider, Drawer, Hidden, IconButton, List, ListItemIcon, ListItemText } from "@material-ui/core";
+
+import ArmyOverview from "./coreApp/ArmyOverview";
+import MyCompanies from "./coreApp/MyCompanies";
+import Wiki from "./coreApp/Wiki";
+
+import { Route, Link } from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -45,6 +39,7 @@ const styles = theme => ({
     }
   },
   menuButton: {
+    flexGrow: 1,
     marginRight: 20,
     [theme.breakpoints.up("sm")]: {
       display: "none"
@@ -87,8 +82,7 @@ class ResponsiveDrawer extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-  handleMenuClick = index => {
-    this.props.setMenuState(index);
+  handleMenuClick = () => {
     if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), REACTION_TIMEOUT);
   };
 
@@ -97,9 +91,9 @@ class ResponsiveDrawer extends React.Component {
     const iconColor = theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main;
 
     const menuItems = [
-      ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />],
-      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />],
-      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />]
+      ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies"],
+      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview"],
+      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies"]
     ];
 
     const drawer = (
@@ -108,19 +102,23 @@ class ResponsiveDrawer extends React.Component {
 
         <MenuList>
           {menuItems.slice(0, 3).map((menuItem, index) => (
-            <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index)} button key={index}>
-              <ListItemIcon>{menuItem[1]}</ListItemIcon>
-              <ListItemText primary={menuItem[0]} />
-            </MenuItem>
+            <Link to={menuItem[2]} style={{ textDecoration: "none" }} key={index}>
+              <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index)} button>
+                <ListItemIcon>{menuItem[1]}</ListItemIcon>
+                <ListItemText primary={menuItem[0]} />
+              </MenuItem>
+            </Link>
           ))}
         </MenuList>
         <Divider />
         <List>
-          {[["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />]].map(menuItem => (
-            <ListItem className={classes.menuItem} onClick={() => this.handleMenuClick(WIKI)} button key={WIKI}>
-              <ListItemIcon>{menuItem[1]}</ListItemIcon>
-              <ListItemText primary={menuItem[0]} />
-            </ListItem>
+          {[["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki"]].map(menuItem => (
+            <Link to={menuItem[2]} style={{ textDecoration: "none" }} key={WIKI}>
+              <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(WIKI)} button>
+                <ListItemIcon>{menuItem[1]}</ListItemIcon>
+                <ListItemText primary={menuItem[0]} />
+              </MenuItem>
+            </Link>
           ))}
         </List>
       </div>
@@ -130,12 +128,16 @@ class ResponsiveDrawer extends React.Component {
       <div className={classes.root}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
-            <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle} className={classes.menuButton}>
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap className={classes.menuTitle}>
-              Lotr Company Creator
-            </Typography>
+            <span className={classes.menuButton}>
+              <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle}>
+                <MenuIcon />
+              </IconButton>
+            </span>
+            <Hidden xsDown>
+              <Typography variant="h6" color="inherit" noWrap className={classes.menuTitle}>
+                Lotr Company Creator
+              </Typography>
+            </Hidden>
             {themeType === "dark" ? (
               <IconButton color="inherit" onClick={() => setTheme("light")}>
                 <LightIcon />
@@ -182,7 +184,12 @@ class ResponsiveDrawer extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <MainContent />
+
+          <Route exact path="/" component={MyCompanies} />
+          <Route path="/myCompanies" component={MyCompanies} />
+          <Route path="/armyOverview" component={ArmyOverview} />
+          <Route path="/wiki" component={Wiki} />
+          {/* <MainContent /> */}
         </main>
       </div>
     );
@@ -195,7 +202,9 @@ ResponsiveDrawer.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default connect(
-  mapStateToProps,
-  { setMenuState, setTheme }
-)(withStyles(styles, { withTheme: true })(ResponsiveDrawer));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { setTheme }
+  )(withStyles(styles, { withTheme: true })(ResponsiveDrawer))
+);

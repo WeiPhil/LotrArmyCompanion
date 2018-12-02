@@ -6,14 +6,11 @@ import {
   FETCH_ARMIES,
   API_START,
   API_END,
-  SET_MENU_STATE,
   ON_FETCH_ERROR,
   SET_THEME
 } from "../actions/types";
-import { MY_COMPANIES } from "../../utils/Constants";
 
 const initialState = {
-  menuState: MY_COMPANIES,
   isLoadingCompanies: true,
   isLoadingArmies: true,
   armiesNeedRefetch: true,
@@ -44,9 +41,6 @@ export default function(state = initialState, action) {
 
     case SET_ARMIES:
       return { ...state, armiesData: action.payload };
-
-    case SET_MENU_STATE:
-      return { ...state, menuState: action.payload };
 
     case SET_THEME:
       return { ...state, themeType: action.payload };

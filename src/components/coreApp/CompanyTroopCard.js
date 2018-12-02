@@ -54,20 +54,12 @@ const styles = theme => ({
 });
 
 function CompanyTroopCard(props) {
-  const { baseTroop, userTroop, classes, injured } = props;
-  const isDead = injured.indexOf(userTroop.access_name) !== -1;
-
-  const onMouseOver = () => {
-    if (isDead) console.log("TEST");
-  };
+  const { baseTroop, userTroop, classes, injured, forPreview = false } = props;
+  const isDead = injured.indexOf(userTroop.access_name) !== -1 && !forPreview;
 
   return (
     <Grow in={true}>
-      <Card
-        onMouseOver={onMouseOver}
-        style={isDead && { opacity: 0.3, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
-        className={classes.card}
-      >
+      <Card style={isDead && { opacity: 0.3, backgroundColor: "rgba(255, 255, 255, 0.2)" }} className={classes.card}>
         <CardActionArea>
           <CardMedia className={classes.media} image={userTroop.image_path} title={userTroop.name} />
         </CardActionArea>
@@ -76,29 +68,29 @@ function CompanyTroopCard(props) {
           <Typography variant="h5" gutterBottom>
             {userTroop.troop_type === LIEUTNANT && (
               <Tooltip placement="top" title="Lieutnant">
-                <div>
+                <span>
                   <IconButton disabled={isDead} className={classes.icons}>
                     <LieutnantIcon />
                   </IconButton>
-                </div>
+                </span>
               </Tooltip>
             )}
             {userTroop.troop_type === SERGEANT && (
               <Tooltip placement="top" title="Sergeant">
-                <div>
+                <span>
                   <IconButton disabled={isDead} className={classes.icons}>
                     <SergeantIcon />
                   </IconButton>
-                </div>
+                </span>
               </Tooltip>
             )}
             {userTroop.troop_type !== LIEUTNANT && userTroop.troop_type !== SERGEANT && (
               <Tooltip placement="top" title="Warrior">
-                <div>
+                <span>
                   <IconButton disabled={isDead} className={classes.icons}>
                     <WargearIcon />
                   </IconButton>
-                </div>
+                </span>
               </Tooltip>
             )}
             {userTroop.display_name}
@@ -182,10 +174,16 @@ function CompanyTroopCard(props) {
   );
 }
 
+CompanyTroopCard.defaultProps = {
+  forPreview: false
+};
+
 CompanyTroopCard.propTypes = {
   classes: PropTypes.object.isRequired,
   userTroop: PropTypes.object.isRequired,
-  baseTroop: PropTypes.object.isRequired
+  baseTroop: PropTypes.object.isRequired,
+  injured: PropTypes.array.isRequired,
+  forPreview: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(CompanyTroopCard);

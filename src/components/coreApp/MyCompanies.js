@@ -125,7 +125,7 @@ class MyCompanies extends Component {
       this.props.armies
     );
 
-    return <CompanyTroopCard userTroop={userTroop} baseTroop={baseTroop} />;
+    return <CompanyTroopCard forPreview injured={this.props.companies[0].injured} userTroop={userTroop} baseTroop={baseTroop} />;
   }
 
   render() {

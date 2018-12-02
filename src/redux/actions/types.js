@@ -1,6 +1,5 @@
 // Local modification to database
 export const ADD_ATTACK_TO = "ADD_ATTACK_TO";
-export const SET_MENU_STATE = "SET_MENU_STATE";
 export const SET_THEME = "SET_THEME";
 
 // Database get and posts

@@ -1,14 +1,10 @@
 import { SET_ARMIES, FETCH_ARMIES, SET_USER_COMPANIES, FETCH_USER_COMPANIES, ON_FETCH_ERROR, API } from "./types";
 
-import { SET_THEME, SET_MENU_STATE, ADD_ATTACK_TO } from "./types";
+import { SET_THEME, ADD_ATTACK_TO } from "./types";
 
 /** Local Based actions */
 export function addAttackTo(who) {
   return { type: ADD_ATTACK_TO, payload: who };
-}
-
-export function setMenuState(newState) {
-  return { type: SET_MENU_STATE, payload: newState };
 }
 
 export function setTheme(type) {

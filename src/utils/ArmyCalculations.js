@@ -42,9 +42,5 @@ export function calculatePoints(baseTroop, userTroop) {
     }
   }
 
-  console.log(userTroop.display_name);
-  console.log(costWargear);
-  console.log(totalAttackWounds);
-
   return baseTroop.points + costImprovements + costWargear;
 }
