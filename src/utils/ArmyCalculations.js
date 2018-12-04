@@ -42,5 +42,5 @@ export function calculatePoints(baseTroop, userTroop) {
     }
   }
 
-  return baseTroop.points + costImprovements + costWargear;
+  return baseTroop.points + costImprovements + costWargear + userTroop.special_rules.length * 5;
 }

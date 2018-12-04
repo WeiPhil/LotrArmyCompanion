@@ -79,7 +79,7 @@ class ArmyOverview extends Component {
                 {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex))}
                 <Grid item>
                   <Fab className={classes.addTroop} variant="extended" color="primary" aria-label="Add">
-                    <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Buy a new Unit
+                    <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Buy new Troop
                   </Fab>
                 </Grid>
               </Grid>

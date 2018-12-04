@@ -29,10 +29,13 @@ export const DAGGER = "dagger";
 
 export const SWORD = "sword";
 export const SPEAR = "spear";
+export const WOOD_ELF_SPEAR = "wood_elf_spear";
+
 export const PIKE = "pike";
 export const SHIELD = "shield";
 
 export const THROWING_WEAPON = "throwing_weapon";
+export const THROWING_DAGGERS = "throwing_daggers";
 export const TWO_HANDED_WEAPON = "two_handed_weapon";
 export const LANCE = "lance";
 export const ELVEN_BLADE = "elven_blade";
@@ -44,6 +47,18 @@ export const HEAVY_ARMOR = "heavy_armor";
 export const WARG = "warg";
 export const HORSE = "horse";
 export const ARMOURED_HORSE = "horse";
+
+export const WEAPON_BONUSES = {
+  shield: {
+    defense: 1
+  },
+  armour: {
+    defense: 1
+  },
+  heavy_armor: {
+    defense: 2
+  }
+};
 
 export const WEAPON_COSTS = {
   claws: {
@@ -57,6 +72,10 @@ export const WEAPON_COSTS = {
   sword: {
     low: 0,
     high: 0
+  },
+  wood_elf_spear: {
+    low: 1,
+    high: 5
   },
   spear: {
     low: 1,
@@ -76,6 +95,10 @@ export const WEAPON_COSTS = {
   },
   armour: {
     low: 1,
+    high: 5
+  },
+  throwing_daggers: {
+    low: 2,
     high: 5
   },
   throwing_weapon: {

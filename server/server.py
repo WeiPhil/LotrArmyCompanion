@@ -11,7 +11,7 @@ PATH = './database/usersCompanies/admin.json'
 
 
 def loadJson(path):
-    with open(path) as f:
+    with open(path, encoding='utf-8') as f:
         data = json.load(f)
     return data
 
@@ -41,9 +41,7 @@ def getCompany():
 @app.route('/getArmies', methods=['GET'])
 def getArmies():
     armies = os.listdir("./database/armies")
-    print(armies)
     armiesJson = [loadJson("./database/armies/"+army) for army in armies]
-    print(armiesJson)
     formattedJson = [armiesJson[0]]
     for i, army in enumerate(armiesJson):
         if i != 0:

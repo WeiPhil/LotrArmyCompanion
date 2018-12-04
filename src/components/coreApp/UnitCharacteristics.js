@@ -9,6 +9,8 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Typography } from "@material-ui/core";
 
+import { WEAPON_BONUSES } from "./../../utils/Constants";
+
 const CustomTableHeader = withStyles(theme => ({
   root: {
     paddingLeft: theme.spacing.unit * 1.4,
@@ -37,19 +39,33 @@ function getCharacteristicFor(charac, improv, add = "") {
   );
 }
 
-function createData(improvs, characs) {
+function createData(improvs, characs, wargear, baseWargear) {
+  var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defense: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
+
+  wargear
+    .filter(weapon => baseWargear.indexOf(weapon) === -1 && weapon in WEAPON_BONUSES)
+    .map(weapon => {
+      const ameliorations = WEAPON_BONUSES[weapon];
+      for (var key in ameliorations) {
+        if (ameliorations.hasOwnProperty(key)) {
+          bonus[key] += ameliorations[key];
+        }
+      }
+      return null; //does not return anything
+    });
+
   return {
-    move: getCharacteristicFor(characs.move, improvs.move, '"'),
-    fight: getCharacteristicFor(characs.fight, improvs.fight),
-    shoot: getCharacteristicFor(characs.shoot, improvs.shoot, "+"),
-    strength: getCharacteristicFor(characs.strength, improvs.strength),
-    defense: getCharacteristicFor(characs.defense, improvs.defense),
-    attacks: getCharacteristicFor(characs.attacks, improvs.attacks),
-    wounds: getCharacteristicFor(characs.wounds, improvs.wounds),
-    courage: getCharacteristicFor(characs.courage, improvs.courage),
-    might: getCharacteristicFor(characs.might, improvs.might),
-    will: getCharacteristicFor(characs.will, improvs.will),
-    faith: getCharacteristicFor(characs.faith, improvs.faith)
+    move: getCharacteristicFor(characs.move, improvs.move + bonus.move, '"'),
+    fight: getCharacteristicFor(characs.fight, improvs.fight + bonus.fight),
+    shoot: getCharacteristicFor(characs.shoot, improvs.shoot + bonus.shoot, "+"),
+    strength: getCharacteristicFor(characs.strength, improvs.strength + bonus.strength),
+    defense: getCharacteristicFor(characs.defense, improvs.defense + bonus.defense),
+    attacks: getCharacteristicFor(characs.attacks, improvs.attacks + bonus.attacks),
+    wounds: getCharacteristicFor(characs.wounds, improvs.wounds + bonus.wounds),
+    courage: getCharacteristicFor(characs.courage, improvs.courage + bonus.courage),
+    might: getCharacteristicFor(characs.might, improvs.might + bonus.might),
+    will: getCharacteristicFor(characs.will, improvs.will + bonus.will),
+    faith: getCharacteristicFor(characs.faith, improvs.faith + bonus.faith)
   };
 }
 
@@ -66,9 +82,9 @@ const styles = theme => ({
 });
 
 function UnitCharacteristics(props) {
-  const { improvs, characs, classes } = props;
+  const { improvs, characs, classes, wargear, baseWargear } = props;
 
-  const characteristics = createData(improvs, characs);
+  const characteristics = createData(improvs, characs, wargear, baseWargear);
 
   return (
     <Paper className={classes.root}>

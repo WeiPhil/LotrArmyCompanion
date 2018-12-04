@@ -129,7 +129,12 @@ function CompanyTroopCard(props) {
           </Grid>
 
           {/* <Hidden xsDown={true}> */}
-          <UnitCharacteristics improvs={userTroop.improvements} characs={baseTroop.characteristics} />
+          <UnitCharacteristics
+            wargear={userTroop.wargear}
+            baseWargear={baseTroop.base_wargear}
+            improvs={userTroop.improvements}
+            characs={baseTroop.characteristics}
+          />
           {/* </Hidden> */}
 
           <Typography color="textPrimary" variant="button">

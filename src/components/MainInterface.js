@@ -134,7 +134,7 @@ class ResponsiveDrawer extends React.Component {
 
     const companyNames = this.props.isLoadingCompanies
       ? []
-      : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + idx]);
+      : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + company.company_access_name]);
 
     const menuItems = [
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
@@ -267,10 +267,10 @@ class ResponsiveDrawer extends React.Component {
           <Route path="/myCompanies" component={MyCompanies} />
           {!isLoadingCompanies ? (
             companies.map((company, idx) => (
-              <Route key={idx} path={"/armyOverview/" + idx} render={() => <ArmyOverview companyIndex={idx} />} />
+              <Route key={idx} path={"/armyOverview/" + company.company_access_name} render={() => <ArmyOverview companyIndex={idx} />} />
             ))
           ) : (
-            <Route path="/armyOverview/0" render={() => <ArmyOverview companyIndex={0} />} />
+            <Route path="/armyOverview" render={() => <ArmyOverview companyIndex={0} />} />
           )}
 
           <Route path="/wiki" component={Wiki} />
