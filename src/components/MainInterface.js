@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 
-import { setTheme, fetchUserCompanies } from "./../redux/actions";
+import { getUserCompanies, getArmies } from "./../redux/actions/serverAccess";
+import { setTheme } from "./../redux/actions/ui";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
 import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
@@ -14,6 +15,7 @@ import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon,
 import { withRouter } from "react-router";
 
 import {
+  Button,
   Collapse,
   MenuList,
   MenuItem,
@@ -95,11 +97,11 @@ const styles = theme => ({
   }
 });
 
-const mapStateToProps = ({ themeType, companiesData = {}, isLoadingCompanies, companiesNeedRefetch }) => ({
-  themeType,
-  companies: companiesData.companies,
-  companiesNeedRefetch,
-  isLoadingCompanies
+const mapStateToProps = ({ ui, data, serverAccess }) => ({
+  themeType: ui.themeType,
+  companies: data.companies.companies,
+  companiesNeedRefetch: serverAccess.companiesNeedRefetch,
+  isLoadingCompanies: serverAccess.isLoadingCompanies
 });
 
 class ResponsiveDrawer extends React.Component {
@@ -110,8 +112,8 @@ class ResponsiveDrawer extends React.Component {
   };
 
   componentDidMount() {
-    console.log("Company Information loading");
-    if (this.props.companiesNeedRefetch) this.props.fetchUserCompanies();
+    console.log("Main Interface loading");
+    if (this.props.companiesNeedRefetch) this.props.getUserCompanies();
   }
 
   handleDrawerToggle = () => {
@@ -132,9 +134,10 @@ class ResponsiveDrawer extends React.Component {
   createMenuItems = () => {
     const iconColor = this.props.theme.palette.type === "dark" ? "#ccccc" : this.props.theme.palette.secondary.main;
 
-    const companyNames = this.props.isLoadingCompanies
-      ? []
-      : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + company.company_access_name]);
+    const companyNames =
+      this.props.isLoadingCompanies || this.props.companiesNeedRefetch
+        ? []
+        : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + company.company_access_name]);
 
     const menuItems = [
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
@@ -146,7 +149,17 @@ class ResponsiveDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme, setTheme, themeType, companies, isLoadingCompanies } = this.props;
+    const {
+      classes,
+      theme,
+      setTheme,
+      themeType,
+      companies,
+      isLoadingCompanies,
+      companiesNeedRefetch,
+      getArmies,
+      getUserCompanies
+    } = this.props;
 
     const menuItems = this.createMenuItems();
     const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 1);
@@ -182,9 +195,7 @@ class ResponsiveDrawer extends React.Component {
                     <Link to={submenu[1]} style={{ textDecoration: "none" }}>
                       <MenuItem button className={classes.submenuItem} onClick={() => this.handleSubmenuClick(idx)}>
                         <ListItemIcon>
-                          <SpearsIcon
-                            nativeColor={this.props.theme.palette.type === "dark" ? "#ccccc" : this.props.theme.palette.secondary.main}
-                          />
+                          <SpearsIcon nativeColor={theme.palette.type === "dark" ? "#ccccc" : theme.palette.secondary.main} />
                         </ListItemIcon>
                         <ListItemText className={classes.submenuText}>
                           <Typography noWrap>{submenu[0]}</Typography>
@@ -225,15 +236,23 @@ class ResponsiveDrawer extends React.Component {
                 <LightIcon />
               </IconButton>
             )}
-
-            {/* <Button color="inherit">Login</Button> */}
+            {/* MAIN FETCH HERE */}
+            <Button
+              onClick={() => {
+                getUserCompanies();
+                getArmies();
+              }}
+              color="inherit"
+            >
+              Login
+            </Button>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
           {/* The implementation can be swap with js to avoid SEO duplication of links. */}
           <Hidden smUp implementation="css">
             <Drawer
-              container={this.props.container}
+              // container={this.props.container}
               variant="temporary"
               anchor={theme.direction === "rtl" ? "right" : "left"}
               open={this.state.mobileOpen}
@@ -265,7 +284,7 @@ class ResponsiveDrawer extends React.Component {
 
           <Route exact path="/" component={MyCompanies} />
           <Route path="/myCompanies" component={MyCompanies} />
-          {!isLoadingCompanies ? (
+          {!isLoadingCompanies && !companiesNeedRefetch ? (
             companies.map((company, idx) => (
               <Route key={idx} path={"/armyOverview/" + company.company_access_name} render={() => <ArmyOverview companyIndex={idx} />} />
             ))
@@ -289,6 +308,6 @@ ResponsiveDrawer.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, fetchUserCompanies }
+    { setTheme, getUserCompanies, getArmies }
   )(withStyles(styles, { withTheme: true })(ResponsiveDrawer))
 );

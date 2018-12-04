@@ -53,8 +53,8 @@ const themes = {
   })
 };
 
-const mapStateToProps = ({ themeType }) => ({
-  themeType: themeType
+const mapStateToProps = ({ ui }) => ({
+  themeType: ui.themeType
 });
 
 class App extends Component {

@@ -3,27 +3,18 @@ import { connect } from "react-redux";
 
 import { CircularProgress, Grid, withStyles, Fab } from "@material-ui/core";
 
-import { fetchUserCompanies, fetchArmies } from "../../redux/actions";
+import { getUserCompanies, getArmies } from "../../redux/actions/serverAccess";
 
 import CompanyCard from "./CompanyCard";
 import AddIcon from "@material-ui/icons/Add";
 
-const mapStateToProps = ({
-  companiesData = {},
-  armiesData = {},
-  fetchError,
-  isLoadingArmies,
-  isLoadingCompanies,
-  armiesNeedRefetch,
-  companiesNeedRefetch
-}) => ({
-  companies: companiesData.companies,
-  armies: armiesData,
-  isLoadingCompanies,
-  isLoadingArmies,
-  armiesNeedRefetch,
-  companiesNeedRefetch,
-  fetchError
+const mapStateToProps = ({ data, serverAccess }) => ({
+  companies: data.companies.companies,
+  armies: data.armies,
+  isLoadingCompanies: serverAccess.isLoadingCompanies,
+  isLoadingArmies: serverAccess.isLoadingArmies,
+  companiesNeedRefetch: serverAccess.companiesNeedRefetch,
+  armiesNeedRefetch: serverAccess.armiesNeedRefetch
 });
 
 const styles = theme => ({
@@ -35,16 +26,16 @@ const styles = theme => ({
 class MyCompanies extends Component {
   componentDidMount() {
     console.log("Company Information loading");
-    if (this.props.companiesNeedRefetch) this.props.fetchUserCompanies();
-    if (this.props.armiesNeedRefetch) this.props.fetchArmies();
+    if (this.props.companiesNeedRefetch) this.props.getUserCompanies();
+    if (this.props.armiesNeedRefetch) this.props.getArmies();
   }
 
   render() {
-    const { isLoadingArmies, isLoadingCompanies, fetchError, companies, armies, classes, theme } = this.props;
+    const { isLoadingArmies, isLoadingCompanies, companiesNeedRefetch, armiesNeedRefetch, companies, armies, classes, theme } = this.props;
 
     return (
       <>
-        {isLoadingArmies || isLoadingCompanies || fetchError ? (
+        {isLoadingArmies || isLoadingCompanies || companiesNeedRefetch || armiesNeedRefetch ? (
           <Grid container justify="center">
             <CircularProgress color="secondary" />
           </Grid>
@@ -72,6 +63,6 @@ class MyCompanies extends Component {
 export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
-    { fetchUserCompanies, fetchArmies }
+    { getUserCompanies, getArmies }
   )(MyCompanies)
 );

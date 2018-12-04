@@ -6,28 +6,19 @@ import { Grid, CircularProgress, withStyles, Fab } from "@material-ui/core/";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import { fetchUserCompanies, fetchArmies } from "./../../redux/actions/index";
+import { getUserCompanies, getArmies } from "./../../redux/actions/serverAccess";
 
 import { createCardData } from "./../DataCreation";
 
 import MediaQuery from "react-responsive";
 
-const mapStateToProps = ({
-  companiesData = {},
-  armiesData = {},
-  fetchError,
-  isLoadingArmies,
-  isLoadingCompanies,
-  armiesNeedRefetch,
-  companiesNeedRefetch
-}) => ({
-  companies: companiesData.companies,
-  armies: armiesData,
-  isLoadingCompanies,
-  isLoadingArmies,
-  armiesNeedRefetch,
-  companiesNeedRefetch,
-  fetchError
+const mapStateToProps = ({ data, serverAccess }) => ({
+  companies: data.companies.companies,
+  armies: data.armies,
+  isLoadingCompanies: serverAccess.isLoadingCompanies,
+  isLoadingArmies: serverAccess.isLoadingArmies,
+  companiesNeedRefetch: serverAccess.companiesNeedRefetch,
+  armiesNeedRefetch: serverAccess.armiesNeedRefetch
 });
 
 const styles = theme => ({
@@ -39,8 +30,8 @@ const styles = theme => ({
 class ArmyOverview extends Component {
   componentDidMount() {
     console.log("Army Overview loading");
-    if (this.props.companiesNeedRefetch) this.props.fetchUserCompanies();
-    if (this.props.armiesNeedRefetch) this.props.fetchArmies();
+    if (this.props.companiesNeedRefetch) this.props.getUserCompanies();
+    if (this.props.armiesNeedRefetch) this.props.getArmies();
   }
 
   renderCard(troop, index, companyIdx) {
@@ -54,11 +45,20 @@ class ArmyOverview extends Component {
   }
 
   render() {
-    const { isLoadingArmies, isLoadingCompanies, fetchError, companies, classes, theme, companyIndex } = this.props;
+    const {
+      isLoadingArmies,
+      isLoadingCompanies,
+      companies,
+      classes,
+      theme,
+      companyIndex,
+      companiesNeedRefetch,
+      armiesNeedRefetch
+    } = this.props;
     // const companyIndex = this.props.route.companyIndex;
     return (
       <>
-        {isLoadingArmies || isLoadingCompanies || fetchError ? (
+        {isLoadingArmies || isLoadingCompanies || companiesNeedRefetch || armiesNeedRefetch ? (
           <Grid container justify="center">
             <CircularProgress color="secondary" />
           </Grid>
@@ -94,6 +94,6 @@ class ArmyOverview extends Component {
 export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
-    { fetchUserCompanies, fetchArmies }
+    { getArmies, getUserCompanies }
   )(ArmyOverview)
 );
