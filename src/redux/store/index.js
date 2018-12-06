@@ -11,7 +11,7 @@ const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
-  whitelist: ["ui"]
+  whitelist: ["ui", "data"]
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);

@@ -97,12 +97,8 @@ def postArmy(user_id):
 def getArmies():
     armies = os.listdir(USER_ARMIES_PATH)
 
-    armies_json = []
-    for a in armies:
-        # remove trailing ".json" to get user id
-        if a.endswith(".json"):
-            a = a[:-5]
-        armies_json.append(json.loads(getArmy(a).data))
+    armies_json = [json.loads(getArmy(a[:-5]).data)
+                   for a in armies if a.endswith(".json")]
 
     formattedJson = [armies_json[0]]
     for i, army in enumerate(armies_json):
