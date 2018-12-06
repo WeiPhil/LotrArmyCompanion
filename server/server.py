@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask import request
 from flask import jsonify
 
@@ -8,6 +8,8 @@ import os
 app = Flask(__name__)
 
 PATH = './database/usersCompanies/admin.json'
+
+DATABASE_PORT = 5000
 
 
 def loadJson(path):
@@ -53,5 +55,4 @@ def getArmies():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-    # app.run(debug=True)
+    app.run(debug=True, use_reloader=True, port=DATABASE_PORT)

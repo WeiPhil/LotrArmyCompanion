@@ -141,7 +141,7 @@ class ResponsiveDrawer extends React.Component {
 
     const menuItems = [
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
-      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview/0", companyNames],
+      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview", companyNames],
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki", []]
     ];
@@ -281,7 +281,6 @@ class ResponsiveDrawer extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-
           <Route exact path="/" component={MyCompanies} />
           <Route path="/myCompanies" component={MyCompanies} />
           {!isLoadingCompanies && !companiesNeedRefetch ? (
@@ -291,7 +290,6 @@ class ResponsiveDrawer extends React.Component {
           ) : (
             <Route path="/armyOverview" render={() => <ArmyOverview companyIndex={0} />} />
           )}
-
           <Route path="/wiki" component={Wiki} />
         </main>
       </div>
