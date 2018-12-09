@@ -44,3 +44,13 @@ export function calculatePoints(baseTroop, userTroop) {
 
   return baseTroop.points + costImprovements + costWargear + userTroop.special_rules.length * 5;
 }
+
+export function calculateRating(company) {
+  var rating = 0;
+  company.troops.map(troop => (rating += troop.points));
+
+  var effective_rating = rating;
+  company.injured.map(troop => (effective_rating -= company.troops[company.access_map[troop]].points));
+
+  return { rating: rating, effective_rating: effective_rating };
+}

@@ -18,3 +18,4 @@ In a console in the project directory run
 - `[ ]` Add a menu item to go in a fight!
 - `[ ]` Add a simple way to buy new troops if gold allows it in Buy Troops menu
 - `[ ]` a way to add personal notes (+ post to database) and calculate total and effective cost automatically
+- `[ ]` add a register form and unsecure user account system (just for testing)

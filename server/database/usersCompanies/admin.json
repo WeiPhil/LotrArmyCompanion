@@ -79,7 +79,7 @@
           "unit_name": "moria_gobelin_warrior",
           "unit_type": "infantry",
           "troop_type": "warrior",
-          "points": 31,
+          "points": 5,
           "experience": 3,
           "canPromote": false,
           "improvements": {
@@ -149,7 +149,7 @@
       "losses": 1,
       "company_rating": 111,
       "effective_rating": 111,
-      "access_map": { "warg_fort": 0, "gormungur": 1, "mulmuc": 2, "warg_faiblure": 3 },
+      "access_map": { "roah": 0, "uron": 1, "uran": 2, "lothir": 3, "arban": 4, "toril": 5 },
       "troops": [
         {
           "display_name": "Roah",
@@ -332,7 +332,7 @@
           "image_path": "warg_rohan.jpg"
         }
       ],
-      "injured": [],
+      "injured": ["lothir"],
       "notes": "Personal Note on the company",
       "image_path": "elfic_background.jpg"
     }

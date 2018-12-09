@@ -24,6 +24,8 @@ import { createCardData } from "../DataCreation";
 
 import CompanyTroopCard from "./CompanyTroopCard";
 
+import { calculateRating } from "../../utils/ArmyCalculations";
+
 const styles = theme => ({
   card: {
     maxWidth: CARD_MAX_WIDTH * 1.5
@@ -101,6 +103,8 @@ class CompanyCard extends Component {
   render() {
     const { company, classes } = this.props;
 
+    const { rating, effective_rating } = calculateRating(company);
+
     return (
       <Card className={classes.card}>
         <CardActionArea>
@@ -128,7 +132,7 @@ class CompanyCard extends Component {
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle2">
-                        <Avatar className={classes.statusAvatar}>{company.company_rating}</Avatar>
+                        <Avatar className={classes.statusAvatar}>{rating}</Avatar>
                       </Typography>
                     </Grid>
                   </Grid>
@@ -142,7 +146,7 @@ class CompanyCard extends Component {
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle2">
-                        <Avatar className={classes.statusAvatar}>{company.effective_rating}</Avatar>
+                        <Avatar className={classes.statusAvatar}>{effective_rating}</Avatar>
                       </Typography>
                     </Grid>
                   </Grid>
@@ -214,14 +218,17 @@ class CompanyCard extends Component {
                       className={classes.chip}
                     />
                   ))}
-                  {window.matchMedia(MIN_HEIGHT_600).matches && (
-                    <Dialog open={this.state.injuredOpen} keepMounted onClose={this.handleInjuredClose}>
-                      <DialogContent style={{ padding: 0, margin: "0 auto" }}>
-                        {this.state.injured !== undefined && this.renderInjuredCard(company)}
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                  {/* <MediaQuery query="(min-height: 600px)" /> */}
+                  <Dialog
+                    style={{ margin: "0 auto", maxWidth: CARD_MAX_WIDTH }}
+                    scroll={"body"}
+                    open={this.state.injuredOpen}
+                    keepMounted
+                    onClose={this.handleInjuredClose}
+                  >
+                    <DialogContent style={{ padding: 0 }}>
+                      {this.state.injured !== undefined && this.renderInjuredCard(company)}
+                    </DialogContent>
+                  </Dialog>
                 </Grid>
               </Grid>
             </Grid>

@@ -8,7 +8,7 @@ import { setUserCompanies, setArmies } from "./data";
 /** API based actions */
 export function getUserCompanies(/*user*/) {
   return apiAction({
-    url: "http://localhost:5000/getCompany/admin", //+"/"+user LATER
+    url: "http://192.168.1.4:5000/getCompany/admin", //+"/"+user LATER
     onSuccess: setUserCompanies,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_USER_COMPANIES
@@ -17,7 +17,7 @@ export function getUserCompanies(/*user*/) {
 
 export function getArmies() {
   return apiAction({
-    url: "http://localhost:5000/getArmies",
+    url: "http://192.168.1.4:5000/getArmies",
     onSuccess: setArmies,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_ARMIES

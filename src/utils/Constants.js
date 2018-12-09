@@ -1,5 +1,5 @@
 // List of constants used throughout the app
-export const MENU_WIDTH = 240;
+export const MENU_WIDTH = 280;
 export const REACTION_TIMEOUT = 250;
 
 // Constants for core app style

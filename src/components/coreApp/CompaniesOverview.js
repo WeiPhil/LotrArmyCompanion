@@ -6,9 +6,9 @@ import { Grid, CircularProgress, withStyles, Fab } from "@material-ui/core/";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import { getUserCompanies, getArmies } from "./../../redux/actions/serverAccess";
+import { getUserCompanies, getArmies } from "../../redux/actions/serverAccess";
 
-import { createCardData } from "./../DataCreation";
+import { createCardData } from "../DataCreation";
 
 import MediaQuery from "react-responsive";
 
@@ -27,7 +27,7 @@ const styles = theme => ({
   }
 });
 
-class ArmyOverview extends Component {
+class CompaniesOverview extends Component {
   componentDidMount() {
     console.log("Army Overview loading");
     if (this.props.companiesNeedRefetch) this.props.getUserCompanies();
@@ -95,5 +95,5 @@ export default withStyles(styles, { withTheme: true })(
   connect(
     mapStateToProps,
     { getArmies, getUserCompanies }
-  )(ArmyOverview)
+  )(CompaniesOverview)
 );

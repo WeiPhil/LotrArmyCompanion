@@ -32,11 +32,12 @@ import {
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
-import ArmyOverview from "./coreApp/ArmyOverview";
+import CompaniesOverview from "./coreApp/CompaniesOverview";
 import MyCompanies from "./coreApp/MyCompanies";
 import Wiki from "./coreApp/Wiki";
 
 import { Route, Link } from "react-router-dom";
+import LoginPanel from "./coreApp/LoginPanel";
 
 const styles = theme => ({
   root: {
@@ -108,7 +109,8 @@ class ResponsiveDrawer extends React.Component {
   state = {
     mobileOpen: false,
     isOpen: [false, false, false, false],
-    selectedCompanyIndex: 0
+    selectedCompanyIndex: 0,
+    loginOpen: false
   };
 
   componentDidMount() {
@@ -137,29 +139,23 @@ class ResponsiveDrawer extends React.Component {
     const companyNames =
       this.props.isLoadingCompanies || this.props.companiesNeedRefetch
         ? []
-        : this.props.companies.map((company, idx) => [company.company_name, "/armyOverview/" + company.company_access_name]);
+        : this.props.companies.map((company, idx) => [company.company_name, "/companiesOverview/" + company.company_access_name]);
 
     const menuItems = [
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
-      ["Army Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/armyOverview", companyNames],
+      ["Companies Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/companiesOverview", companyNames],
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki", []]
     ];
     return menuItems;
   };
 
+  handleLoginClose = () => {
+    this.setState(state => ({ loginOpen: !state.loginOpen }));
+  };
+
   render() {
-    const {
-      classes,
-      theme,
-      setTheme,
-      themeType,
-      companies,
-      isLoadingCompanies,
-      companiesNeedRefetch,
-      getArmies,
-      getUserCompanies
-    } = this.props;
+    const { classes, theme, setTheme, themeType, companies, isLoadingCompanies, companiesNeedRefetch } = this.props;
 
     const menuItems = this.createMenuItems();
     const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 1);
@@ -236,16 +232,11 @@ class ResponsiveDrawer extends React.Component {
                 <LightIcon />
               </IconButton>
             )}
-            {/* MAIN FETCH HERE */}
-            <Button
-              onClick={() => {
-                getUserCompanies();
-                getArmies();
-              }}
-              color="inherit"
-            >
+            {/* Login panel */}
+            <Button onClick={() => this.setState(state => ({ loginOpen: !state.loginOpen }))} color="inherit">
               Login
             </Button>
+            <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
@@ -285,10 +276,14 @@ class ResponsiveDrawer extends React.Component {
           <Route path="/myCompanies" component={MyCompanies} />
           {!isLoadingCompanies && !companiesNeedRefetch ? (
             companies.map((company, idx) => (
-              <Route key={idx} path={"/armyOverview/" + company.company_access_name} render={() => <ArmyOverview companyIndex={idx} />} />
+              <Route
+                key={idx}
+                path={"/companiesOverview/" + company.company_access_name}
+                render={() => <CompaniesOverview companyIndex={idx} />}
+              />
             ))
           ) : (
-            <Route path="/armyOverview" render={() => <ArmyOverview companyIndex={0} />} />
+            <Route path="/companiesOverview" render={() => <CompaniesOverview companyIndex={0} />} />
           )}
           <Route path="/wiki" component={Wiki} />
         </main>

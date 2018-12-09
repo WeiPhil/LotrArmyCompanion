@@ -128,14 +128,14 @@ function CompanyTroopCard(props) {
             </Grid>
           </Grid>
 
-          {/* <Hidden xsDown={true}> */}
-          <UnitCharacteristics
-            wargear={userTroop.wargear}
-            baseWargear={baseTroop.base_wargear}
-            improvs={userTroop.improvements}
-            characs={baseTroop.characteristics}
-          />
-          {/* </Hidden> */}
+          {!forPreview && (
+            <UnitCharacteristics
+              wargear={userTroop.wargear}
+              baseWargear={baseTroop.base_wargear}
+              improvs={userTroop.improvements}
+              characs={baseTroop.characteristics}
+            />
+          )}
 
           <Typography color="textPrimary" variant="button">
             Wargear
