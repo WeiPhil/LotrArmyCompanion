@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__, static_folder='./../build')
 
-WEBSERVER_PORT = 3000
+WEBSERVER_PORT = os.getenv('DATABASE_PORT', 3000)
 
 
 @app.route('/', defaults={'path': ''})

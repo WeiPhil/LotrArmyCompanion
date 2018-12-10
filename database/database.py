@@ -8,10 +8,10 @@ import os
 
 app = Flask(__name__)
 
-USER_COMPANIES_PATH = os.path.join("database", "usersCompanies")
-USER_ARMIES_PATH = os.path.join("database", "armies")
+USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
+USER_ARMIES_PATH = os.path.join("data", "armies")
 
-DATABASE_PORT = 5000
+DATABASE_PORT = os.getenv('DATABASE_PORT', 6000)
 
 
 def loadJson(path):
@@ -112,4 +112,5 @@ def getArmies():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, use_reloader=True, port=DATABASE_PORT)
+    app.run(host='0.0.0.0', debug=True,
+            use_reloader=True, port=DATABASE_PORT)
