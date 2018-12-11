@@ -272,7 +272,7 @@ class Register extends Component {
             </Grid>
           </Grid>
         </Grid>
-        <Dialog onClose={this.props.closeRegisterSuccessDialog} open={true}>
+        <Dialog onClose={this.props.closeRegisterSuccessDialog} open={this.props.registerSuccess}>
           <DialogTitle align="center">{"Register Complete"}</DialogTitle>
           <DialogContent>
             <DialogContentText>{this.props.registerInfoMessage}</DialogContentText>
