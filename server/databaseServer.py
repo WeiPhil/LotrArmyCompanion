@@ -2,14 +2,32 @@ from flask import Flask, send_from_directory
 from flask import request
 from flask import jsonify
 from flask import abort
+from flask_cors import CORS, cross_origin
+
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 import json
 import os
+import time
+
+from passlib.hash import pbkdf2_sha256
 
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+cors = CORS(app, resources={r"/register": {"origins": "*"}})
+
+# Setup the Flask-JWT-Extended extension
+app.config['JWT_SECRET_KEY'] = 'bad-secret'  # Change this!
+jwt = JWTManager(app)
 
 USER_COMPANIES_PATH = os.path.join("database", "usersCompanies")
 USER_ARMIES_PATH = os.path.join("database", "armies")
+
+USERS_AUTH_PATH = os.path.join("database", "users")
 
 DATABASE_PORT = 5000
 
@@ -29,6 +47,82 @@ def writeJson(content, path):
 def home():
     # for now return the admin's company
     return getCompany("admin")
+
+# /!\ Temporary authentication (not worst ever but database should be linked and better security
+
+# Provide a method to create access tokens. The create_access_token()
+# function is used to actually generate the token, and we can return
+# it to the caller however we choose.
+
+
+# @app.route('/login', methods=['POST'])
+# def login():
+#     if not request.is_json:
+#         return jsonify({"msg": "Missing JSON in request"}), 400
+
+#     username = request.json.get('username', None)
+#     password = request.json.get('password', None)
+#     if not username:
+#         return jsonify({"msg": "Missing username parameter"}), 400
+#     if not password:
+#         return jsonify({"msg": "Missing password parameter"}), 400
+
+#     if username != 'test' or password != 'test':
+#         return jsonify({"msg": "Bad username or password"}), 401
+
+#     # Identity can be any data that is json serializable
+#     access_token = create_access_token(identity=username)
+#     return jsonify(access_token=access_token), 200
+
+# # Protect a view with jwt_required, which requires a valid access token
+# # in the request to access.
+
+
+# @app.route('/protected', methods=['GET'])
+# @jwt_required
+# def protected():
+#     # Access the identity of the current user with get_jwt_identity
+#     current_user = get_jwt_identity()
+#     return jsonify(logged_in_as=current_user), 200
+
+
+@app.route('/register', methods=['POST'])
+@cross_origin(origin='*', headers=['Content- Type', 'Authorization'])
+def register():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+
+    # open list of users
+    usersJson = loadJson(USERS_AUTH_PATH+"/users.json")
+
+    # error 409 -> Conflict
+    # check if some user with that username or email already exists in db
+    # TODO check in db keys that are unique
+    for user in usersJson:
+        if(user["username"] == data["username"]):
+            response = jsonify({'internalErrorCode': 101})
+            response.status_code = 409
+            return response
+        if(user["email"] == data["email"]):
+            response = jsonify({'internalErrorCode': 102})
+            response.status_code = 409
+            return response
+
+    # Make the user believe we do huge calculations on the server for his safety
+    time.sleep(1)
+
+    # nice library that automatically stores the salt inside the hash
+    hashedPassword = pbkdf2_sha256.hash(data["password"])
+
+    data["password"] = hashedPassword
+
+    usersJson.append(data)
+
+    writeJson(usersJson, USERS_AUTH_PATH+"/users.json")
+    return "You have successfully been registered!", 200
 
 
 @app.route('/postJson', methods=['POST'])

@@ -6,19 +6,19 @@ import { Grid, CircularProgress, withStyles, Fab } from "@material-ui/core/";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import { getUserCompanies, getArmies } from "../../redux/actions/serverAccess";
+import { getUserCompanies, getArmies } from "../../redux/actions/databaseAccess";
 
 import { createCardData } from "../DataCreation";
 
 import MediaQuery from "react-responsive";
 
-const mapStateToProps = ({ data, serverAccess }) => ({
+const mapStateToProps = ({ data, databaseAccess }) => ({
   companies: data.companies.companies,
   armies: data.armies,
-  isLoadingCompanies: serverAccess.isLoadingCompanies,
-  isLoadingArmies: serverAccess.isLoadingArmies,
-  companiesNeedRefetch: serverAccess.companiesNeedRefetch,
-  armiesNeedRefetch: serverAccess.armiesNeedRefetch
+  isLoadingCompanies: databaseAccess.isLoadingCompanies,
+  isLoadingArmies: databaseAccess.isLoadingArmies,
+  companiesNeedRefetch: databaseAccess.companiesNeedRefetch,
+  armiesNeedRefetch: databaseAccess.armiesNeedRefetch
 });
 
 const styles = theme => ({
