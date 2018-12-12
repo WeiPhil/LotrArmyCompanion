@@ -1,4 +1,4 @@
-import { API, API_START, API_END, ACCESS_DENIED, API_ERROR } from "../actions/types";
+import { API, API_START, API_END, ACCESS_DENIED, API_ERROR, CONFLICT } from "../actions/types";
 
 export const apiStart = label => ({
   type: API_START,
@@ -15,6 +15,11 @@ export const accessDenied = url => ({
   payload: {
     url
   }
+});
+
+export const conflict = response => ({
+  type: CONFLICT,
+  payload: response
 });
 
 export const apiError = error => ({

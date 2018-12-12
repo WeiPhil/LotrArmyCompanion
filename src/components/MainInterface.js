@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 
-import { getUserCompanies, getArmies } from "./../redux/actions/serverAccess";
+import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
@@ -35,6 +35,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import CompaniesOverview from "./coreApp/CompaniesOverview";
 import MyCompanies from "./coreApp/MyCompanies";
 import Wiki from "./coreApp/Wiki";
+import Register from "./coreApp/Register";
 
 import { Route, Link } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
@@ -98,11 +99,11 @@ const styles = theme => ({
   }
 });
 
-const mapStateToProps = ({ ui, data, serverAccess }) => ({
+const mapStateToProps = ({ ui, data, databaseAccess }) => ({
   themeType: ui.themeType,
   companies: data.companies.companies,
-  companiesNeedRefetch: serverAccess.companiesNeedRefetch,
-  isLoadingCompanies: serverAccess.isLoadingCompanies
+  companiesNeedRefetch: databaseAccess.companiesNeedRefetch,
+  isLoadingCompanies: databaseAccess.isLoadingCompanies
 });
 
 class ResponsiveDrawer extends React.Component {
@@ -131,6 +132,7 @@ class ResponsiveDrawer extends React.Component {
 
   handleSubmenuClick = index => {
     this.setState({ selectedCompanyIndex: index });
+    if (this.state.mobileOpen) setTimeout(() => this.handleDrawerToggle(), REACTION_TIMEOUT);
   };
 
   createMenuItems = () => {
@@ -286,6 +288,8 @@ class ResponsiveDrawer extends React.Component {
             <Route path="/companiesOverview" render={() => <CompaniesOverview companyIndex={0} />} />
           )}
           <Route path="/wiki" component={Wiki} />
+
+          <Route path="/register" component={Register} />
         </main>
       </div>
     );

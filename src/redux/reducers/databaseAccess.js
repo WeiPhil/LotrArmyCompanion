@@ -9,7 +9,7 @@ const serverAccessInitialState = {
   apiError: false
 };
 
-export default function serverAccessReducer(state = serverAccessInitialState, action) {
+export default function databaseAccessReducer(state = serverAccessInitialState, action) {
   //   console.log("ServerAccess action type => ", action.type);
   switch (action.type) {
     // API Cases
@@ -21,8 +21,9 @@ export default function serverAccessReducer(state = serverAccessInitialState, ac
         return { ...state, isLoadingCompanies: true };
       } else if (action.payload === GET_ARMIES) {
         return { ...state, isLoadingArmies: true };
+      } else {
+        return state;
       }
-      break;
 
     case ON_GET_ERROR:
       return { ...state, getError: true, companiesNeedRefetch: true, armiesNeedRefetch: true };
@@ -32,8 +33,9 @@ export default function serverAccessReducer(state = serverAccessInitialState, ac
         return { ...state, isLoadingCompanies: false, companiesNeedRefetch: state.getError };
       } else if (action.payload === GET_ARMIES) {
         return { ...state, isLoadingArmies: false, armiesNeedRefetch: state.getError };
+      } else {
+        return state;
       }
-      break;
 
     default:
       return state;

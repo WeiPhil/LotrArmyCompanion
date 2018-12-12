@@ -1,3 +1,48 @@
-export function success_login(username) {
-  return { type: SUCCESS_LOGIN, username: username };
+import {
+  INTERNAL_ERROR_HANDLED,
+  CLOSE_REGISTER_SUCCESS_DIALOG,
+  REGISTER_USER,
+  LOGIN_USER,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE
+} from "../actions/types";
+
+import { apiAction } from "./api";
+
+/**
+ * user : { username : string, password : string }
+ *
+ * **/
+
+export function register(userData) {
+  return apiAction({
+    url: "http://192.168.1.4:5000/register",
+    method: "POST",
+    data: userData,
+    onSuccess: data => ({ type: REGISTER_SUCCESS, payload: data }),
+    onFailure: error => ({ type: REGISTER_FAILURE, payload: error }),
+    label: REGISTER_USER
+  });
+}
+
+export function closeRegisterSuccessDialog() {
+  return { type: CLOSE_REGISTER_SUCCESS_DIALOG };
+}
+
+export function internalErrorHandled() {
+  return { type: INTERNAL_ERROR_HANDLED };
+}
+
+export function login(userData, accessToken) {
+  return apiAction({
+    url: "http://192.168.1.4:5000/login",
+    method: "POST",
+    data: userData,
+    accessToken: accessToken,
+    onSuccess: data => ({ type: LOGIN_SUCCESS, payload: data }),
+    onFailure: error => ({ type: LOGIN_FAILURE, payload: error }),
+    label: LOGIN_USER
+  });
 }
