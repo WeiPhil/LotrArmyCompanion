@@ -1,18 +1,12 @@
-from flask import Flask, send_from_directory
-from flask import request
-from flask import jsonify
-from flask import abort
-from flask_cors import CORS, cross_origin
-
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
-)
-
 import json
 import os
 import time
 
+from flask import Flask, abort, jsonify, request, send_from_directory
+
+from flask_cors import CORS, cross_origin
+from flask_jwt_extended import (JWTManager, create_access_token,
+                                get_jwt_identity, jwt_required)
 from passlib.hash import pbkdf2_sha256
 
 app = Flask(__name__)
@@ -24,12 +18,11 @@ cors = CORS(app, resources={r"/register": {"origins": "*"}})
 app.config['JWT_SECRET_KEY'] = 'bad-secret'  # Change this!
 jwt = JWTManager(app)
 
-USER_COMPANIES_PATH = os.path.join("database", "usersCompanies")
-USER_ARMIES_PATH = os.path.join("database", "armies")
-
+USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
+USER_ARMIES_PATH = os.path.join("data", "armies")
 USERS_AUTH_PATH = os.path.join("database", "users")
 
-DATABASE_PORT = 5000
+DATABASE_PORT = os.getenv('DATABASE_PORT', 6000)
 
 
 def loadJson(path):
@@ -206,4 +199,5 @@ def getArmies():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True, use_reloader=True, port=DATABASE_PORT)
+    app.run(host='0.0.0.0', debug=True,
+            use_reloader=True, port=DATABASE_PORT)
