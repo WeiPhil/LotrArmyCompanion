@@ -6,9 +6,9 @@ import { setUserCompanies, setArmies } from "./data";
 //192.168.1.4
 // use public ip to access from same network
 /** API based actions */
-export function getUserCompanies(/*user*/) {
+export function getUserCompanies(user) {
   return apiAction({
-    url: "http://127.0.0.1:5000/getCompany/admin", //+"/"+user LATER
+    url: "http://localhost:5000/getCompany/" + user,
     onSuccess: setUserCompanies,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_USER_COMPANIES
@@ -17,7 +17,7 @@ export function getUserCompanies(/*user*/) {
 
 export function getArmies() {
   return apiAction({
-    url: "http://127.0.0.1:5000/getArmies",
+    url: "http://localhost:5000/getArmies",
     onSuccess: setArmies,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_ARMIES

@@ -20,9 +20,9 @@ jwt = JWTManager(app)
 
 USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
 USER_ARMIES_PATH = os.path.join("data", "armies")
-USERS_AUTH_PATH = os.path.join("database", "users")
+USERS_AUTH_PATH = os.path.join("data", "users")
 
-DATABASE_PORT = os.getenv('DATABASE_PORT', 6000)
+DATABASE_PORT = os.getenv('DATABASE_PORT', 5000)
 
 
 def loadJson(path):

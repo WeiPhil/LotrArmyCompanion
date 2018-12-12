@@ -15,6 +15,8 @@ import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon,
 import { withRouter } from "react-router";
 
 import {
+  Grid,
+  CircularProgress,
   Button,
   Collapse,
   MenuList,
@@ -99,14 +101,18 @@ const styles = theme => ({
   }
 });
 
-const mapStateToProps = ({ ui, data, databaseAccess }) => ({
+const mapStateToProps = ({ ui, data, databaseAccess, auth }) => ({
   themeType: ui.themeType,
-  companies: data.companies.companies,
+  companies: data.companies,
+  armies: data.armies,
   companiesNeedRefetch: databaseAccess.companiesNeedRefetch,
-  isLoadingCompanies: databaseAccess.isLoadingCompanies
+  isLoadingCompanies: databaseAccess.isLoadingCompanies,
+  armiesNeedRefetch: databaseAccess.armiesNeedRefetch,
+  isLoadingArmies: databaseAccess.isLoadingArmies,
+  username: auth.username
 });
 
-class ResponsiveDrawer extends React.Component {
+class MainInterface extends React.Component {
   state = {
     mobileOpen: false,
     isOpen: [false, false, false, false],
@@ -116,7 +122,8 @@ class ResponsiveDrawer extends React.Component {
 
   componentDidMount() {
     console.log("Main Interface loading");
-    if (this.props.companiesNeedRefetch) this.props.getUserCompanies();
+    if (this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username);
+    if (this.props.armiesNeedRefetch) this.props.getArmies();
   }
 
   handleDrawerToggle = () => {
@@ -157,7 +164,18 @@ class ResponsiveDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme, setTheme, themeType, companies, isLoadingCompanies, companiesNeedRefetch } = this.props;
+    const {
+      classes,
+      theme,
+      setTheme,
+      themeType,
+      armies,
+      companies,
+      isLoadingCompanies,
+      companiesNeedRefetch,
+      isLoadingArmies,
+      armiesNeedRefetch
+    } = this.props;
 
     const menuItems = this.createMenuItems();
     const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 1);
@@ -274,21 +292,25 @@ class ResponsiveDrawer extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Route exact path="/" component={MyCompanies} />
-          <Route path="/myCompanies" component={MyCompanies} />
-          {!isLoadingCompanies && !companiesNeedRefetch ? (
-            companies.map((company, idx) => (
-              <Route
-                key={idx}
-                path={"/companiesOverview/" + company.company_access_name}
-                render={() => <CompaniesOverview companyIndex={idx} />}
-              />
-            ))
+          <Route exact path="/" component={Wiki} />
+          {!isLoadingArmies && !armiesNeedRefetch && !isLoadingCompanies && !companiesNeedRefetch ? (
+            [
+              companies.map((company, idx) => (
+                <Route
+                  key={idx}
+                  path={"/companiesOverview/" + company.company_access_name}
+                  render={() => <CompaniesOverview armies={armies} companies={companies} companyIndex={idx} />}
+                />
+              )),
+              <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies armies={armies} companies={companies} />} />
+            ]
           ) : (
-            <Route path="/companiesOverview" render={() => <CompaniesOverview companyIndex={0} />} />
+            <Grid container justify="center">
+              <CircularProgress color="secondary" />
+            </Grid>
           )}
-          <Route path="/wiki" component={Wiki} />
 
+          <Route path="/wiki" component={Wiki} />
           <Route path="/register" component={Register} />
         </main>
       </div>
@@ -296,7 +318,7 @@ class ResponsiveDrawer extends React.Component {
   }
 }
 
-ResponsiveDrawer.propTypes = {
+MainInterface.propTypes = {
   classes: PropTypes.object.isRequired,
   container: PropTypes.object,
   theme: PropTypes.object.isRequired
@@ -306,5 +328,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     { setTheme, getUserCompanies, getArmies }
-  )(withStyles(styles, { withTheme: true })(ResponsiveDrawer))
+  )(withStyles(styles, { withTheme: true })(MainInterface))
 );

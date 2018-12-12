@@ -18,7 +18,7 @@ import { apiAction } from "./api";
 
 export function register(userData) {
   return apiAction({
-    url: "http://192.168.1.4:5000/register",
+    url: "http://localhost:5000/register",
     method: "POST",
     data: userData,
     onSuccess: data => ({ type: REGISTER_SUCCESS, payload: data }),
@@ -37,7 +37,7 @@ export function internalErrorHandled() {
 
 export function login(userData, accessToken) {
   return apiAction({
-    url: "http://192.168.1.4:5000/login",
+    url: "http://localhost:5000/login",
     method: "POST",
     data: userData,
     accessToken: accessToken,

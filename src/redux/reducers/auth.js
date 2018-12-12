@@ -14,7 +14,7 @@ import {
 
 const authInitialState = {
   loggedIn: false,
-  username: undefined,
+  username: "admin",
   registering: false,
   logging: false,
   registerInfoMessage: "",
