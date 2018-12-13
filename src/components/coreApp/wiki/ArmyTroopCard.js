@@ -62,7 +62,7 @@ function ArmyTroopCard(props) {
         </CardActionArea>
 
         <CardContent>
-          <Grid container alignItems="center" justify="space-evenly">
+          <Grid container alignItems="center" justify="space-evenly" spacing={16}>
             <Grid item>
               <Typography variant="h5">
                 {baseTroop.troop_type === HERO && (
