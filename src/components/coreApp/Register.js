@@ -47,7 +47,7 @@ const styles = theme => ({
 
 const mapStateToProps = ({ auth }) => ({
   registering: auth.registering,
-  registerInfoMessage: auth.registerInfoMessage,
+  authMessage: auth.authMessage,
   registerSuccess: auth.registerSuccess,
   internalErrorCode: auth.internalErrorCode
 });
@@ -186,7 +186,7 @@ class Register extends Component {
               fullWidth
             />
             {this.state.error["email"] && <FormHelperText error>Enter a valid email address </FormHelperText>}
-            {this.props.internalErrorCode === 102 && <FormHelperText error>{this.props.registerInfoMessage}</FormHelperText>}
+            {this.props.internalErrorCode === 102 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
           </Grid>
           <Grid item>
             <TextField
@@ -202,7 +202,7 @@ class Register extends Component {
               fullWidth
             />
             {this.state.error["username"] && <FormHelperText error>This is a requied field</FormHelperText>}
-            {this.props.internalErrorCode === 101 && <FormHelperText error>{this.props.registerInfoMessage}</FormHelperText>}
+            {this.props.internalErrorCode === 101 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
           </Grid>
 
           <Grid item>
@@ -257,25 +257,20 @@ class Register extends Component {
             />
           </Grid>
           <Grid item>
-            <Grid container className={classes.registerButton} spacing={16}>
-              <Grid item>
-                <Button
-                  disabled={!this.state.termsOfService || this.props.registering}
-                  variant="contained"
-                  color="secondary"
-                  onClick={this.handleSubmit}
-                >
-                  Register
-                </Button>
-              </Grid>
-              <Grid item>{this.props.registering && <CircularProgress />}</Grid>
-            </Grid>
+            <Button
+              disabled={!this.state.termsOfService || this.props.registering}
+              variant="contained"
+              color="secondary"
+              onClick={this.handleSubmit}
+            >
+              Register
+            </Button>
           </Grid>
         </Grid>
         <Dialog onClose={this.props.closeRegisterSuccessDialog} open={this.props.registerSuccess}>
           <DialogTitle align="center">{"Register Complete"}</DialogTitle>
           <DialogContent>
-            <DialogContentText>{this.props.registerInfoMessage}</DialogContentText>
+            <DialogContentText>{this.props.authMessage}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
@@ -288,6 +283,18 @@ class Register extends Component {
               Ok
             </Button>
           </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.props.registering}
+          PaperProps={{
+            style: {
+              backgroundColor: "transparent",
+              boxShadow: "none",
+              overflow: "hidden"
+            }
+          }}
+        >
+          <CircularProgress />
         </Dialog>
       </form>
     );

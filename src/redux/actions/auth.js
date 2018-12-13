@@ -35,12 +35,11 @@ export function internalErrorHandled() {
   return { type: INTERNAL_ERROR_HANDLED };
 }
 
-export function login(userData, accessToken) {
+export function login(userData) {
   return apiAction({
     url: "http://localhost:5000/login",
     method: "POST",
     data: userData,
-    accessToken: accessToken,
     onSuccess: data => ({ type: LOGIN_SUCCESS, payload: data }),
     onFailure: error => ({ type: LOGIN_FAILURE, payload: error }),
     label: LOGIN_USER

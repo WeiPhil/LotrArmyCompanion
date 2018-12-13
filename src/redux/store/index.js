@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "../reducers/index";
 import apiMiddleware from "../middleware/api";
 
@@ -14,7 +14,13 @@ const persistConfig = {
   whitelist: ["ui"]
 };
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
+//     applyMiddleware(...middleware)
+//   ));
+
 const pReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(pReducer, applyMiddleware(apiMiddleware));
+export const store = createStore(pReducer, composeEnhancers(applyMiddleware(apiMiddleware)));
+
 export const persistor = persistStore(store);

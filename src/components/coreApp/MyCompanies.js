@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
+
 import PropTypes from "prop-types";
 
 import { Grid, withStyles, Fab } from "@material-ui/core";
@@ -39,4 +39,4 @@ MyCompanies.propTypes = {
   armies: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(connect()(MyCompanies));
+export default withStyles(styles, { withTheme: true })(MyCompanies);

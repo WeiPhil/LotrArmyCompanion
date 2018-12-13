@@ -12,7 +12,7 @@ import { setTheme } from "./../redux/actions/ui";
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
 import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
 
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 
 import {
   Grid,
@@ -37,9 +37,10 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import CompaniesOverview from "./coreApp/CompaniesOverview";
 import MyCompanies from "./coreApp/MyCompanies";
 import Wiki from "./coreApp/Wiki";
+import Welcome from "./coreApp/Welcome";
 import Register from "./coreApp/Register";
 
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
 
 const styles = theme => ({
@@ -109,7 +110,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth }) => ({
   isLoadingCompanies: databaseAccess.isLoadingCompanies,
   armiesNeedRefetch: databaseAccess.armiesNeedRefetch,
   isLoadingArmies: databaseAccess.isLoadingArmies,
-  username: auth.username
+  username: auth.username,
+  loggedIn: auth.loggedIn
 });
 
 class MainInterface extends React.Component {
@@ -122,8 +124,21 @@ class MainInterface extends React.Component {
 
   componentDidMount() {
     console.log("Main Interface loading");
-    if (this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username);
+    if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
+    this.setState({ loginOpen: !this.props.loggedIn });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.loggedIn !== this.props.loggedIn) {
+      this.props.getUserCompanies(this.props.username);
+    }
+    if (prevProps.armiesNeedRefetch !== this.props.armiesNeedRefetch && this.props.armiesNeedRefetch === true) {
+      this.props.getArmies();
+    }
+    if (prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch && this.props.companiesNeedRefetch === true) {
+      this.props.getUserCompanies(this.props.username);
+    }
   }
 
   handleDrawerToggle = () => {
@@ -150,12 +165,18 @@ class MainInterface extends React.Component {
         ? []
         : this.props.companies.map((company, idx) => [company.company_name, "/companiesOverview/" + company.company_access_name]);
 
-    const menuItems = [
+    var menuItems = [
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Companies Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/companiesOverview", companyNames],
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki", []]
     ];
+
+    if (!this.props.loggedIn) {
+      delete menuItems[0];
+      delete menuItems[1];
+      delete menuItems[2];
+    }
     return menuItems;
   };
 
@@ -174,7 +195,8 @@ class MainInterface extends React.Component {
       isLoadingCompanies,
       companiesNeedRefetch,
       isLoadingArmies,
-      armiesNeedRefetch
+      armiesNeedRefetch,
+      loggedIn
     } = this.props;
 
     const menuItems = this.createMenuItems();
@@ -252,10 +274,14 @@ class MainInterface extends React.Component {
                 <LightIcon />
               </IconButton>
             )}
-            {/* Login panel */}
-            <Button onClick={() => this.setState(state => ({ loginOpen: !state.loginOpen }))} color="inherit">
-              Login
-            </Button>
+            {/* Login/Disconnect panel */}
+            {!loggedIn ? (
+              <Button onClick={() => this.setState(state => ({ loginOpen: !state.loginOpen }))} color="inherit">
+                Login
+              </Button>
+            ) : (
+              <Button color="inherit">Disconnect</Button>
+            )}
             <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
           </Toolbar>
         </AppBar>
@@ -292,26 +318,33 @@ class MainInterface extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Route exact path="/" component={Wiki} />
-          {!isLoadingArmies && !armiesNeedRefetch && !isLoadingCompanies && !companiesNeedRefetch ? (
-            [
-              companies.map((company, idx) => (
-                <Route
-                  key={idx}
-                  path={"/companiesOverview/" + company.company_access_name}
-                  render={() => <CompaniesOverview armies={armies} companies={companies} companyIndex={idx} />}
-                />
-              )),
-              <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies armies={armies} companies={companies} />} />
-            ]
-          ) : (
+
+          <Switch>
+            {loggedIn &&
+              !isLoadingArmies &&
+              !armiesNeedRefetch &&
+              !isLoadingCompanies &&
+              !companiesNeedRefetch && [
+                companies.map((company, idx) => (
+                  <Route
+                    key={idx}
+                    path={"/companiesOverview/" + company.company_access_name}
+                    render={() => <CompaniesOverview armies={armies} companies={companies} companyIndex={idx} />}
+                  />
+                )),
+                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies armies={armies} companies={companies} />} />
+              ]}
+            <Route exact path="/" component={Welcome} />
+            <Route path="/wiki" component={Wiki} />
+            <Route path="/register" component={Register} />
+            {/* From here if we are not logged in we get automatically rerouted */}
+            {!loggedIn && <Redirect to="/" />}
+          </Switch>
+          {loggedIn && (isLoadingArmies || armiesNeedRefetch || isLoadingCompanies || companiesNeedRefetch) && (
             <Grid container justify="center">
               <CircularProgress color="secondary" />
             </Grid>
           )}
-
-          <Route path="/wiki" component={Wiki} />
-          <Route path="/register" component={Register} />
         </main>
       </div>
     );

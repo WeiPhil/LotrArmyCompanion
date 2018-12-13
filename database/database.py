@@ -48,24 +48,44 @@ def home():
 # it to the caller however we choose.
 
 
-# @app.route('/login', methods=['POST'])
-# def login():
-#     if not request.is_json:
-#         return jsonify({"msg": "Missing JSON in request"}), 400
+@app.route('/login', methods=['POST'])
+@cross_origin(origin='*', headers=['Content- Type', 'Authorization'])
+def login():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
 
-#     username = request.json.get('username', None)
-#     password = request.json.get('password', None)
-#     if not username:
-#         return jsonify({"msg": "Missing username parameter"}), 400
-#     if not password:
-#         return jsonify({"msg": "Missing password parameter"}), 400
+    username = request.json.get('username', None)
+    password = request.json.get('password', None)
 
-#     if username != 'test' or password != 'test':
-#         return jsonify({"msg": "Bad username or password"}), 401
+    # Make the user believe we do huge calculations on the server for his safety
+    time.sleep(1)
 
-#     # Identity can be any data that is json serializable
-#     access_token = create_access_token(identity=username)
-#     return jsonify(access_token=access_token), 200
+    # open list of users
+    usersJson = loadJson(USERS_AUTH_PATH+"/users.json")
+
+    userIdx = -1
+    for i, userData in enumerate(usersJson):
+        if username == userData["username"]:
+            userIdx = i
+
+    if userIdx == -1:
+        print("Bad index")
+        response = jsonify({'internalErrorCode': 103})
+        response.status_code = 409
+        return response
+
+    correctPassword = pbkdf2_sha256.verify(
+        password, usersJson[userIdx]["password"])
+
+    if not correctPassword:
+        print("Bad password")
+        response = jsonify({'internalErrorCode': 104})
+        response.status_code = 409
+        return response
+
+    # Identity can be any data that is json serializable
+    access_token = create_access_token(identity=username)
+    return jsonify(username=username, access_token=access_token), 200
 
 # # Protect a view with jwt_required, which requires a valid access token
 # # in the request to access.

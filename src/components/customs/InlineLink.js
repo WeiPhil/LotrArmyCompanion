@@ -9,7 +9,7 @@ import { Link, withRouter } from "react-router-dom";
 
 const styles = theme => ({
   linkStyle: {
-    color: theme.palette.error.light,
+    color: theme.palette.primary.light,
     "&:hover": {
       textDecoration: "underline"
     },
@@ -20,10 +20,10 @@ const styles = theme => ({
 
 class InlineLink extends Component {
   render() {
-    const { onClick, style, classes, text = "This is a custom link", path = this.props.location.pathname } = this.props;
+    const { align, onClick, style, classes, text = "This is a custom link", path = this.props.location.pathname } = this.props;
 
     return (
-      <Typography style={style}>
+      <Typography align={align} style={style}>
         <Link onClick={onClick} className={classes.linkStyle} to={path}>
           {text}
         </Link>

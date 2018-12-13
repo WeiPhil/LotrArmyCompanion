@@ -14,12 +14,13 @@ import {
 
 const authInitialState = {
   loggedIn: false,
-  username: "admin",
+  username: "",
   registering: false,
   logging: false,
-  registerInfoMessage: "",
+  authMessage: "",
   registerSuccess: false,
-  internalErrorCode: 0
+  internalErrorCode: 0,
+  authToken: ""
 };
 
 export default function authReducer(state = authInitialState, action) {
@@ -46,28 +47,33 @@ export default function authReducer(state = authInitialState, action) {
     case CONFLICT:
       switch (action.payload.data.internalErrorCode) {
         case 101:
-          return { ...state, registerInfoMessage: "That username is already used", internalErrorCode: 101 };
+          return { ...state, authMessage: "That username is already used", internalErrorCode: 101 };
         case 102:
-          return { ...state, registerInfoMessage: "That email is already used", internalErrorCode: 102 };
+          return { ...state, authMessage: "That email is already used", internalErrorCode: 102 };
+        case 103:
+          return { ...state, authMessage: "That username doesn't exist", internalErrorCode: 103 };
+        case 104:
+          return { ...state, authMessage: "You entered an incorrect password", internalErrorCode: 104 };
         default:
           return state;
       }
 
     case INTERNAL_ERROR_HANDLED:
-      return { ...state, registerInfoMessage: "", internalErrorCode: 0 };
+      return { ...state, authMessage: "", internalErrorCode: 0 };
 
     case REGISTER_SUCCESS:
-      return { ...state, registerInfoMessage: action.payload, registerSuccess: true };
+      return { ...state, authMessage: action.payload, registerSuccess: true };
 
     case CLOSE_REGISTER_SUCCESS_DIALOG:
-      return { ...state, registerInfoMessage: "", registerSuccess: false };
+      return { ...state, authMessage: "", registerSuccess: false };
 
     case REGISTER_FAILURE:
-      return { ...state, registerInfoMessage: action.payload, registerSuccess: false };
+      return { ...state, registerSuccess: false };
 
-    case LOGIN_SUCCESS:
-      return { ...state, loggedIn: true, username: action.payload };
-
+    case LOGIN_SUCCESS: {
+      console.log(state);
+      return { ...state, loggedIn: true, username: action.payload.username, authToken: action.payload.authToken };
+    }
     case LOGIN_FAILURE:
       return { ...state, loggedIn: false, username: action.payload };
 

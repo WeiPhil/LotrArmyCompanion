@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import CompanyTroopCard from "./CompanyTroopCard";
@@ -63,4 +62,4 @@ CompaniesOverview.propTypes = {
   armies: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(connect()(CompaniesOverview));
+export default withStyles(styles, { withTheme: true })(CompaniesOverview);
