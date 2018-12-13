@@ -25,7 +25,7 @@ const CustomTableCell = withStyles(theme => ({
     paddingLeft: theme.spacing.unit * 1.4,
     paddingRight: 0,
     fontSize: 14,
-    color: theme.palette.type === "dark" ? theme.palette.button : theme.palette.secondary.main
+    color: theme.palette.type === "dark" ? theme.palette.button : "black"
   }
 }))(TableCell);
 
@@ -39,7 +39,7 @@ function getCharacteristicFor(charac, improv, add = "") {
   );
 }
 
-function createData(improvs, characs, wargear, baseWargear) {
+function createDataUser(improvs, characs, wargear, baseWargear) {
   var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defense: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
 
   wargear
@@ -69,6 +69,22 @@ function createData(improvs, characs, wargear, baseWargear) {
   };
 }
 
+function createDataBase(characs) {
+  return {
+    move: characs.move + '"',
+    fight: characs.fight,
+    shoot: characs.shoot + "+",
+    strength: characs.strength,
+    defense: characs.defense,
+    attacks: characs.attacks,
+    wounds: characs.wounds,
+    courage: characs.courage,
+    might: characs.might,
+    will: characs.will,
+    faith: characs.faith
+  };
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -84,7 +100,9 @@ const styles = theme => ({
 function UnitCharacteristics(props) {
   const { improvs, characs, classes, wargear, baseWargear } = props;
 
-  const characteristics = createData(improvs, characs, wargear, baseWargear);
+  const forBaseTroop = improvs === undefined;
+
+  const characteristics = forBaseTroop ? createDataBase(characs) : createDataUser(improvs, characs, wargear, baseWargear);
 
   return (
     <Paper className={classes.root}>
@@ -126,8 +144,7 @@ function UnitCharacteristics(props) {
 
 UnitCharacteristics.propTypes = {
   classes: PropTypes.object.isRequired,
-  characs: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  improvs: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+  characs: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default withStyles(styles)(UnitCharacteristics);

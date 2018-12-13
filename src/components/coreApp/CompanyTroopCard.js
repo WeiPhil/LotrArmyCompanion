@@ -54,12 +54,17 @@ const styles = theme => ({
 });
 
 function CompanyTroopCard(props) {
-  const { baseTroop, userTroop, classes, injured, forPreview = false } = props;
+  const { baseTroop, userTroop, classes, injured, forPreview = false, mobile } = props;
   const isDead = injured.indexOf(userTroop.access_name) !== -1 && !forPreview;
+
+  const height = mobile ? undefined : "100%";
 
   return (
     <Grow in={true}>
-      <Card style={isDead && { opacity: 0.3, backgroundColor: "rgba(255, 255, 255, 0.2)" }} className={classes.card}>
+      <Card
+        style={isDead ? { height: height, opacity: 0.3, backgroundColor: "rgba(255, 255, 255, 0.2)" } : { height: height }}
+        className={classes.card}
+      >
         <CardActionArea>
           <CardMedia className={classes.media} image={userTroop.image_path} title={userTroop.name} />
         </CardActionArea>
@@ -188,7 +193,8 @@ CompanyTroopCard.propTypes = {
   userTroop: PropTypes.object.isRequired,
   baseTroop: PropTypes.object.isRequired,
   injured: PropTypes.array.isRequired,
-  forPreview: PropTypes.bool.isRequired
+  forPreview: PropTypes.bool.isRequired,
+  mobile: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(CompanyTroopCard);

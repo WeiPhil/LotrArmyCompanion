@@ -15,6 +15,8 @@ CORS(app, expose_headers='Authorization')
 
 # Setup the Flask-JWT-Extended extension
 app.config['JWT_SECRET_KEY'] = 'badSecret'  # Change this!
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False  # No tokenn expiration (easier)
+
 jwt = JWTManager(app)
 
 USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
@@ -84,17 +86,6 @@ def login():
     # Identity can be any data that is json serializable
     accessToken = create_access_token(identity=username)
     return jsonify(username=username, accessToken=accessToken), 200
-
-# # Protect a view with jwt_required, which requires a valid access token
-# # in the request to access.
-
-
-# @app.route('/protected', methods=['GET'])
-# @jwt_required
-# def protected():
-#     # Access the identity of the current user with get_jwt_identity
-#     current_user = get_jwt_identity()
-#     return jsonify(logged_in_as=current_user), 200
 
 
 @app.route('/register', methods=['POST'])
@@ -181,26 +172,15 @@ def getArmy(army_name):
     # check if army of given user exists
     company_path = os.path.join(USER_ARMIES_PATH, army_name + ".json")
     if os.path.exists(company_path):
+
+        json = {army_name: loadJson(os.path.join(
+            USER_ARMIES_PATH, army_name + ".json"))}
         # respond with data
-        response = jsonify(loadJson(os.path.join(
-            USER_ARMIES_PATH, army_name + ".json")))
+        response = jsonify(json)
         return response
 
     # company not found
     abort(404)
-
-
-# This should not be possible
-# @app.route('/postArmy/<user_id>', methods=['POST'])
-# def postArmy(user_id):
-#     if request.data:
-#         army_path = os.path.join(USER_ARMIES_PATH, user_id + ".json")
-#         # TODO: check if army exist, authentication, validation...
-#         # for now override data
-#         writeJson(request.get_json(), army_path)
-
-#         return "JSON written"
-#     return "JSON invalid"
 
 
 @app.route('/getArmies', methods=['GET'])
@@ -221,5 +201,5 @@ def getArmies():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True,
+    app.run(host='0.0.0.0', debug=False,
             use_reloader=True, port=DATABASE_PORT)

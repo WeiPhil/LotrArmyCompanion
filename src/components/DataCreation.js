@@ -1,4 +1,23 @@
 export function createCardData(troopData, isCompanyCard, companyFaction, armies) {
+  if (!isCompanyCard) {
+    return {
+      baseTroop: {
+        points: troopData["points"],
+        name: troopData["display_name"],
+        unit_type: troopData["unit_type"],
+        troop_type: troopData["troop_type"],
+        base_wargear: troopData["base_wargear"],
+        optional_wargear: troopData["optional_wargear"],
+        special_rules: troopData["special_rules"],
+        heroic_actions: troopData["heroic_actions"],
+        magical_powers: troopData["magical_powers"],
+        description: troopData["description"],
+        characteristics: troopData["characteristics"],
+        image_path: require("./../assets/images/" + troopData["image_path"])
+      }
+    };
+  }
+
   const userTroop = {
     access_name: troopData["access_name"],
     display_name: troopData["display_name"],

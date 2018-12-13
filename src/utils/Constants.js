@@ -22,6 +22,7 @@ export const BUY_TROOPS = 2;
 export const WIKI = 3;
 
 //Database constants
+export const HERO = "hero";
 export const WARRIOR = "warrior";
 export const LIEUTNANT = "lieutnant";
 export const SERGEANT = "sergeant";

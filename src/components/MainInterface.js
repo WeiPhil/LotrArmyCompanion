@@ -37,7 +37,9 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 
 import CompaniesOverview from "./coreApp/CompaniesOverview";
 import MyCompanies from "./coreApp/MyCompanies";
-import Wiki from "./coreApp/Wiki";
+import Wiki from "./coreApp/wiki/Wiki";
+import ArmyOverview from "./coreApp/wiki/ArmyOverview";
+import WikiArmies from "./coreApp/wiki/WikiArmies";
 import Welcome from "./coreApp/Welcome";
 import Register from "./coreApp/Register";
 
@@ -173,7 +175,7 @@ class MainInterface extends React.Component {
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Companies Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/companiesOverview", companyNames],
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
-      ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "wiki", []]
+      ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "/wiki", []]
     ];
 
     if (!this.props.loggedIn) {
@@ -341,7 +343,15 @@ class MainInterface extends React.Component {
                 <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies armies={armies} companies={companies} />} />
               ]}
             <Route exact path="/" component={Welcome} />
-            <Route path="/wiki" component={Wiki} />
+            <Route exact path="/wiki" component={Wiki} />
+            {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}
+            {!isLoadingArmies &&
+              !armiesNeedRefetch && [
+                Object.keys(armies).map((armyName, index) => (
+                  <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview troops={armies[armyName]} />} />
+                ))
+              ]}
+
             <Route path="/register" component={Register} />
             {/* From here if we are not logged in we get automatically rerouted */}
             {!loggedIn && <Redirect to="/" />}

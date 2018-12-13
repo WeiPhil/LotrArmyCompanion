@@ -178,7 +178,7 @@
         "heroic_actions": [],
         "magical_powers": [],
         "notes": "",
-        "image_path": "elfic_background.jpg"
+        "image_path": "lothlorien.jpg"
       },
       {
         "display_name": "Uròn",
@@ -298,7 +298,7 @@
         "heroic_actions": [],
         "magical_powers": [],
         "notes": "Lancier statique",
-        "image_path": "elfic_background.jpg"
+        "image_path": "lothlorien.jpg"
       },
       {
         "display_name": "Tòril",
@@ -333,6 +333,6 @@
     ],
     "injured": ["lothir"],
     "notes": "Personal Note on the company",
-    "image_path": "elfic_background.jpg"
+    "image_path": "lothlorien.jpg"
   }
 ]

@@ -17,12 +17,18 @@ const styles = theme => ({
 });
 
 class CompaniesOverview extends Component {
-  renderCard(troop, index, companyIdx) {
+  renderCard(troop, index, companyIdx, mobile) {
     const { userTroop, baseTroop } = createCardData(troop, true, this.props.companies[companyIdx].faction_access_name, this.props.armies);
 
     return (
       <Grid item key={index}>
-        <CompanyTroopCard baseTroop={baseTroop} userTroop={userTroop} injured={this.props.companies[companyIdx].injured} isCompanyCard />
+        <CompanyTroopCard
+          baseTroop={baseTroop}
+          userTroop={userTroop}
+          injured={this.props.companies[companyIdx].injured}
+          isCompanyCard
+          mobile={mobile}
+        />
       </Grid>
     );
   }
@@ -32,20 +38,22 @@ class CompaniesOverview extends Component {
 
     return (
       <>
+        {/* Mobile */}
         <MediaQuery query="(max-width: 960px)">
-          <Grid style={{ height: "100%" }} container direction="column" spacing={16} alignItems="stretch" justify="center">
-            <Grid item>
+          <Grid container direction="column" spacing={16} alignItems="stretch" justify="center">
+            <Grid item style={{ margin: "0 auto" }}>
               <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
                 <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
               </Fab>
             </Grid>
-            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex))}
+            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex, true))}
           </Grid>
         </MediaQuery>
+        {/* Desktop */}
         <MediaQuery query="(min-width: 960px)">
-          <Grid container direction="row" alignItems="center" justify="center" spacing={16}>
-            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex))}
-            <Grid item>
+          <Grid container direction="row" alignItems="stretch" justify="center" spacing={16}>
+            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex, false))}
+            <Grid item style={{ margin: "auto 0" }}>
               <Fab className={classes.addTroop} variant="extended" color="primary" aria-label="Add">
                 <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Buy new Troop
               </Fab>
