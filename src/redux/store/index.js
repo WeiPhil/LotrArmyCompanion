@@ -11,13 +11,11 @@ const persistConfig = {
   key: "root",
   storage: storage,
   stateReconciler: autoMergeLevel2, // see "Merge Process" section for details.
-  whitelist: ["ui"]
+  whitelist: ["ui", "auth"]
 };
 
+// needed for redux dev tools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-// const store = createStore(reducer, /* preloadedState, */ composeEnhancers(
-//     applyMiddleware(...middleware)
-//   ));
 
 const pReducer = persistReducer(persistConfig, rootReducer);
 

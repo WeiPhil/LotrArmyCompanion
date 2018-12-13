@@ -13,6 +13,15 @@ import {
   DISCONNECT
 } from "../actions/types";
 
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from "redux-persist";
+
+const persistConfig = {
+  key: "auth",
+  storage: storage,
+  whitelist: ["accessToken", "loggedIn", "username"]
+};
+
 const authInitialState = {
   loggedIn: false,
   username: "",
@@ -24,7 +33,7 @@ const authInitialState = {
   accessToken: ""
 };
 
-export default function authReducer(state = authInitialState, action) {
+const authReducer = (state = authInitialState, action) => {
   //   console.log("Auth action type => ", action.type);
   switch (action.type) {
     case API_START:
@@ -83,4 +92,6 @@ export default function authReducer(state = authInitialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default persistReducer(persistConfig, authReducer);
