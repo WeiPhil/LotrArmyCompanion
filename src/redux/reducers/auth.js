@@ -9,7 +9,8 @@ import {
   CLOSE_REGISTER_SUCCESS_DIALOG,
   INTERNAL_ERROR_HANDLED,
   LOGIN_SUCCESS,
-  LOGIN_FAILURE
+  LOGIN_FAILURE,
+  DISCONNECT
 } from "../actions/types";
 
 const authInitialState = {
@@ -20,7 +21,7 @@ const authInitialState = {
   authMessage: "",
   registerSuccess: false,
   internalErrorCode: 0,
-  authToken: ""
+  accessToken: ""
 };
 
 export default function authReducer(state = authInitialState, action) {
@@ -70,12 +71,14 @@ export default function authReducer(state = authInitialState, action) {
     case REGISTER_FAILURE:
       return { ...state, registerSuccess: false };
 
-    case LOGIN_SUCCESS: {
-      console.log(state);
-      return { ...state, loggedIn: true, username: action.payload.username, authToken: action.payload.authToken };
-    }
+    case LOGIN_SUCCESS:
+      return { ...state, loggedIn: true, username: action.payload.username, accessToken: action.payload.accessToken };
+
     case LOGIN_FAILURE:
       return { ...state, loggedIn: false, username: action.payload };
+
+    case DISCONNECT:
+      return { ...state, loggedIn: false, username: "", accessToken: "" };
 
     default:
       return state;

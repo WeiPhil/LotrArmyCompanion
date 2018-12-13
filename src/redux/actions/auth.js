@@ -6,10 +6,13 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   LOGIN_SUCCESS,
-  LOGIN_FAILURE
+  LOGIN_FAILURE,
+  DISCONNECT
 } from "../actions/types";
 
 import { apiAction } from "./api";
+
+import { HOST_IP } from "./../../utils/Constants";
 
 /**
  * user : { username : string, password : string }
@@ -18,7 +21,7 @@ import { apiAction } from "./api";
 
 export function register(userData) {
   return apiAction({
-    url: "http://localhost:5000/register",
+    url: "http://" + HOST_IP + ":5000/register",
     method: "POST",
     data: userData,
     onSuccess: data => ({ type: REGISTER_SUCCESS, payload: data }),
@@ -35,9 +38,13 @@ export function internalErrorHandled() {
   return { type: INTERNAL_ERROR_HANDLED };
 }
 
+export function disconnect() {
+  return { type: DISCONNECT };
+}
+
 export function login(userData) {
   return apiAction({
-    url: "http://localhost:5000/login",
+    url: "http://" + HOST_IP + ":5000/login",
     method: "POST",
     data: userData,
     onSuccess: data => ({ type: LOGIN_SUCCESS, payload: data }),

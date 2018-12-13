@@ -68,7 +68,7 @@ class LoginPanel extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.loggedIn !== this.props.loggedIn) {
+    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true) {
       this.props.handleLoginClose();
     }
   }

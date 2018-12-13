@@ -1,3 +1,5 @@
+export const HOST_IP = "localhost";
+
 // List of constants used throughout the app
 export const MENU_WIDTH = 280;
 export const REACTION_TIMEOUT = 250;

@@ -10,12 +10,11 @@ from flask_jwt_extended import (JWTManager, create_access_token,
 from passlib.hash import pbkdf2_sha256
 
 app = Flask(__name__)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, resources={r"/register": {"origins": "*"}})
+CORS(app, expose_headers='Authorization')
 
 # Setup the Flask-JWT-Extended extension
-app.config['JWT_SECRET_KEY'] = 'bad-secret'  # Change this!
+app.config['JWT_SECRET_KEY'] = 'badSecret'  # Change this!
 jwt = JWTManager(app)
 
 USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
@@ -41,7 +40,7 @@ def home():
     # for now return the admin's company
     return getCompany("admin")
 
-# /!\ Temporary authentication (not worst ever but database should be linked and better security
+# /!\ Temporary authentication (not worst ever but database should be linked to the db
 
 # Provide a method to create access tokens. The create_access_token()
 # function is used to actually generate the token, and we can return
@@ -49,7 +48,6 @@ def home():
 
 
 @app.route('/login', methods=['POST'])
-@cross_origin(origin='*', headers=['Content- Type', 'Authorization'])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -84,8 +82,8 @@ def login():
         return response
 
     # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=username)
-    return jsonify(username=username, access_token=access_token), 200
+    accessToken = create_access_token(identity=username)
+    return jsonify(username=username, accessToken=accessToken), 200
 
 # # Protect a view with jwt_required, which requires a valid access token
 # # in the request to access.
@@ -100,7 +98,6 @@ def login():
 
 
 @app.route('/register', methods=['POST'])
-@cross_origin(origin='*', headers=['Content- Type', 'Authorization'])
 def register():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -147,14 +144,20 @@ def postJsonHandler():
 
 
 @app.route('/getCompany/<user_id>', methods=['GET'])
+@jwt_required
 def getCompany(user_id):
+
+    jwt_identity = get_jwt_identity()
+
+    if(jwt_identity != user_id):
+        return "Unauthorized Content", 401
+
     # check if company of given user exists
     company_path = os.path.join(USER_COMPANIES_PATH, user_id + ".json")
     if os.path.exists(company_path):
         # respond with data
         response = jsonify(loadJson(os.path.join(
             USER_COMPANIES_PATH, user_id + ".json")))
-        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
     # company not found
@@ -173,31 +176,31 @@ def postCompany(user_id):
     return "JSON invalid"
 
 
-@app.route('/getArmy/<user_id>', methods=['GET'])
-def getArmy(user_id):
+@app.route('/getArmy/<army_name>', methods=['GET'])
+def getArmy(army_name):
     # check if army of given user exists
-    company_path = os.path.join(USER_ARMIES_PATH, user_id + ".json")
+    company_path = os.path.join(USER_ARMIES_PATH, army_name + ".json")
     if os.path.exists(company_path):
         # respond with data
         response = jsonify(loadJson(os.path.join(
-            USER_ARMIES_PATH, user_id + ".json")))
-        response.headers.add('Access-Control-Allow-Origin', '*')
+            USER_ARMIES_PATH, army_name + ".json")))
         return response
 
     # company not found
     abort(404)
 
 
-@app.route('/postArmy/<user_id>', methods=['POST'])
-def postArmy(user_id):
-    if request.data:
-        army_path = os.path.join(USER_ARMIES_PATH, user_id + ".json")
-        # TODO: check if army exist, authentication, validation...
-        # for now override data
-        writeJson(request.get_json(), army_path)
+# This should not be possible
+# @app.route('/postArmy/<user_id>', methods=['POST'])
+# def postArmy(user_id):
+#     if request.data:
+#         army_path = os.path.join(USER_ARMIES_PATH, user_id + ".json")
+#         # TODO: check if army exist, authentication, validation...
+#         # for now override data
+#         writeJson(request.get_json(), army_path)
 
-        return "JSON written"
-    return "JSON invalid"
+#         return "JSON written"
+#     return "JSON invalid"
 
 
 @app.route('/getArmies', methods=['GET'])
@@ -213,7 +216,6 @@ def getArmies():
             formattedJson[0][armies[i][:-5]] = army[armies[i][:-5]]
 
     response = jsonify(formattedJson[0])
-    response.headers.add('Access-Control-Allow-Origin', '*')
 
     return response
 

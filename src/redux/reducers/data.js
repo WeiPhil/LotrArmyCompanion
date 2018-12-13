@@ -1,4 +1,4 @@
-import { SET_USER_COMPANIES, SET_ARMIES } from "../actions/types";
+import { SET_USER_COMPANIES, SET_ARMIES, DISCONNECT } from "../actions/types";
 
 const dataInitialState = {
   armies: {},
@@ -13,6 +13,9 @@ export default function dataReducer(state = dataInitialState, action) {
 
     case SET_ARMIES:
       return { ...state, armies: action.payload };
+
+    case DISCONNECT:
+      return { ...state, companies: {} };
 
     default:
       return state;

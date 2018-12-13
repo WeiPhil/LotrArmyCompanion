@@ -1,4 +1,4 @@
-import { GET_USER_COMPANIES, GET_ARMIES, API_START, API_END, ON_GET_ERROR, API_ERROR } from "../actions/types";
+import { GET_USER_COMPANIES, GET_ARMIES, API_START, API_END, ON_GET_ERROR, API_ERROR, DISCONNECT } from "../actions/types";
 
 const serverAccessInitialState = {
   isLoadingCompanies: false,
@@ -36,6 +36,9 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
       } else {
         return state;
       }
+
+    case DISCONNECT:
+      return { ...state, companiesNeedRefetch: true };
 
     default:
       return state;

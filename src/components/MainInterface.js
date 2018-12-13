@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
 
+import { disconnect } from "../redux/actions/auth";
 import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 
@@ -111,7 +112,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth }) => ({
   armiesNeedRefetch: databaseAccess.armiesNeedRefetch,
   isLoadingArmies: databaseAccess.isLoadingArmies,
   username: auth.username,
-  loggedIn: auth.loggedIn
+  loggedIn: auth.loggedIn,
+  accessToken: auth.accessToken
 });
 
 class MainInterface extends React.Component {
@@ -124,21 +126,23 @@ class MainInterface extends React.Component {
 
   componentDidMount() {
     console.log("Main Interface loading");
-    if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username);
+    if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
-    this.setState({ loginOpen: !this.props.loggedIn });
+    // this.setState({ loginOpen: !this.props.loggedIn });
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.loggedIn !== this.props.loggedIn) {
-      this.props.getUserCompanies(this.props.username);
-    }
-    if (prevProps.armiesNeedRefetch !== this.props.armiesNeedRefetch && this.props.armiesNeedRefetch === true) {
-      this.props.getArmies();
-    }
-    if (prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch && this.props.companiesNeedRefetch === true) {
-      this.props.getUserCompanies(this.props.username);
-    }
+    if (prevProps.armiesNeedRefetch !== this.props.armiesNeedRefetch && this.props.armiesNeedRefetch === true) this.props.getArmies();
+
+    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true && this.props.companiesNeedRefetch === true)
+      this.props.getUserCompanies(this.props.username, this.props.accessToken);
+
+    if (
+      this.props.loggedIn === true &&
+      prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch &&
+      this.props.companiesNeedRefetch === true
+    )
+      this.props.getUserCompanies(this.props.username, this.props.accessToken);
   }
 
   handleDrawerToggle = () => {
@@ -200,7 +204,7 @@ class MainInterface extends React.Component {
     } = this.props;
 
     const menuItems = this.createMenuItems();
-    const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 1);
+    const hasSubmenus = menuItems.map(menuItem => menuItem[3].length > 0);
     const NAME_IDX = 0;
     const ICON_IDX = 1;
     const LINK_IDX = 2;
@@ -280,7 +284,9 @@ class MainInterface extends React.Component {
                 Login
               </Button>
             ) : (
-              <Button color="inherit">Disconnect</Button>
+              <Button onClick={() => this.props.disconnect()} color="inherit">
+                Disconnect
+              </Button>
             )}
             <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
           </Toolbar>
@@ -360,6 +366,6 @@ MainInterface.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, getUserCompanies, getArmies }
+    { setTheme, getUserCompanies, getArmies, disconnect }
   )(withStyles(styles, { withTheme: true })(MainInterface))
 );

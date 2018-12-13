@@ -8,13 +8,15 @@ const apiMiddleware = ({ dispatch }) => next => action => {
 
   if (action.type !== API) return;
 
-  const { url, method, data, accessToken, onSuccess, onFailure, label, headers } = action.payload;
+  const { url, method, data, accessToken, onSuccess, onFailure, label, headersOverride } = action.payload;
   const dataOrParams = ["GET", "DELETE"].includes(method) ? "params" : "data";
 
   // axios default configs
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "";
-  axios.defaults.headers.common["Content-Type"] = "application/json";
   axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  axios.defaults.headers.common["Content-Type"] = "application/json";
+
+  const headers = headersOverride == null ? axios.defaults.headers.common : headersOverride;
 
   if (label) {
     dispatch(apiStart(label));
