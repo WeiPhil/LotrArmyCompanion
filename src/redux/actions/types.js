@@ -3,7 +3,7 @@ export const ADD_ATTACK_TO = "ADD_ATTACK_TO";
 
 // UI related modification
 export const SET_THEME = "SET_THEME";
-export const ARMY_TROOP_CARD_EXPAND_CLICK = "ARMY_TROOP_CARD_EXPAND_CLICK";
+export const THUMBNAIL_SWITCHER = "THUMBNAIL_SWITCHER";
 
 // Database get and posts
 export const GET_USER_COMPANIES = "GET_USER_COMPANIES";

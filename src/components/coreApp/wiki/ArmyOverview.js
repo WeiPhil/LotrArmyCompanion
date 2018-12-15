@@ -27,7 +27,6 @@ const ArmyOverview = props => {
       <MediaQuery query="(max-width: 960px)">
         <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
           {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, true))}
-          {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, true))}
         </Grid>
       </MediaQuery>
       {/* Desktop */}

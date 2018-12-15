@@ -1,9 +1,9 @@
-import { SET_THEME, ARMY_TROOP_CARD_EXPAND_CLICK } from "./types";
+import { SET_THEME, THUMBNAIL_SWITCHER } from "./types";
 
 export function setTheme(type) {
   return { type: SET_THEME, payload: type };
 }
 
-export function armyTroopCardExpandClick() {
-  return { type: ARMY_TROOP_CARD_EXPAND_CLICK };
+export function thumbnailSwitcher(switchID) {
+  return { type: THUMBNAIL_SWITCHER, payload: switchID };
 }

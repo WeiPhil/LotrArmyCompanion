@@ -1,4 +1,4 @@
-export const HOST_IP = "192.168.1.2";
+export const HOST_IP = "localhost";
 
 // List of constants used throughout the app
 export const MENU_WIDTH = 280;

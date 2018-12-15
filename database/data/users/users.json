@@ -12,5 +12,12 @@
     "email": "pierre.theveney@epfl.ch",
     "username": "test",
     "password": "$pbkdf2-sha256$29000$hhDCmNNaKyXk/B/DuPceAw$VGu.pWtWqcbzGvg6PeikEtBLqZ0KMt.A8E4LdjBGDLo"
+  },
+  {
+    "firstName": "Philippe",
+    "lastName": "Weier",
+    "email": "ph.weier@ail.com",
+    "username": "testi",
+    "password": "$pbkdf2-sha256$29000$11qr9R4DYGwt5TxHSOndew$2/7MLcWST/HTBFNrhYITYozBv9VKIqdiH0OZeM0YmHs"
   }
 ]

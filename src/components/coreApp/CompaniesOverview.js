@@ -12,7 +12,10 @@ import MediaQuery from "react-responsive";
 
 const styles = theme => ({
   addTroop: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
+    fontSize: "12px"
+    // marginRight: theme.spacing.unit,
+    // marginBottom: 2
   }
 });
 
@@ -40,13 +43,14 @@ class CompaniesOverview extends Component {
       <>
         {/* Mobile */}
         <MediaQuery query="(max-width: 960px)">
-          <Grid container direction="column" spacing={16} alignItems="stretch" justify="center">
-            <Grid item style={{ margin: "0 auto" }}>
-              <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
-                <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
+          <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
+            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex, true))}
+
+            <Grid item>
+              <Fab className={classes.addTroop} variant="extended" color="primary" aria-label="Add">
+                <AddIcon />
               </Fab>
             </Grid>
-            {companies[companyIndex].troops.map((troop, index) => this.renderCard(troop, index, companyIndex, true))}
           </Grid>
         </MediaQuery>
         {/* Desktop */}
