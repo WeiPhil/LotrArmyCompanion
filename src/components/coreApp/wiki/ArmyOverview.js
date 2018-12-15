@@ -12,6 +12,7 @@ function renderCard(troopName, index, troops, mobile) {
 
   return (
     <Grid item key={index}>
+      {/* <TumbnailTroop troopName={troopName} mobile={mobile} baseTroop={baseTroop} /> */}
       <ArmyTroopCard baseTroop={baseTroop} mobile={mobile} />
     </Grid>
   );
@@ -24,7 +25,8 @@ const ArmyOverview = props => {
     <>
       {/* Mobile */}
       <MediaQuery query="(max-width: 960px)">
-        <Grid container direction="column" spacing={16} alignItems="stretch" justify="center">
+        <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
+          {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, true))}
           {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, true))}
         </Grid>
       </MediaQuery>
@@ -34,6 +36,7 @@ const ArmyOverview = props => {
           {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, false))}
         </Grid>
       </MediaQuery>
+      {/* <TumbnailTroop /> */}
     </>
   );
 };

@@ -14,9 +14,6 @@ const styles = theme => ({
       width: CARD_MAX_WIDTH
     }
   },
-  cardContent: {
-    padding: theme.spacing.unit * 2
-  },
   wikiTitle: {
     margin: theme.spacing.unit * 2,
     fontWeight: 450,

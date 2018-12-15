@@ -1,4 +1,4 @@
-export const HOST_IP = "localhost";
+export const HOST_IP = "192.168.1.2";
 
 // List of constants used throughout the app
 export const MENU_WIDTH = 280;
@@ -8,6 +8,8 @@ export const REACTION_TIMEOUT = 250;
 export const CARD_MAX_WIDTH = 350;
 
 export const CARD_IMAGE_HEIGHT = 100;
+
+export const TUMBNAIL_IMAGE_SIZE = 100;
 
 export const FORM_FIELD_WIDTH = 400;
 // Madia query constants
