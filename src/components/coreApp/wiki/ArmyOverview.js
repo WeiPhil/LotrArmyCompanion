@@ -12,8 +12,7 @@ function renderCard(troopName, index, troops, mobile) {
 
   return (
     <Grid item key={index}>
-      {/* <TumbnailTroop troopName={troopName} mobile={mobile} baseTroop={baseTroop} /> */}
-      <ArmyTroopCard baseTroop={baseTroop} mobile={mobile} />
+      <ArmyTroopCard baseTroop={baseTroop} mobile={mobile} timeout={index * 1000} />
     </Grid>
   );
 }

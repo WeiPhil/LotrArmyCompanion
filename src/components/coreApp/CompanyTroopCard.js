@@ -239,6 +239,7 @@ function CompanyTroopCard(props) {
       floatRightContent={floatingTroopType}
       mobile={!forPreview && mobile}
       switchID={COMPANY_TROOP_CARD_SWITCH}
+      timeout={props.timeout}
     />
   );
 }

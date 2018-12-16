@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -72,161 +72,132 @@ const styles = theme => ({
   }
 });
 
-class ArmyTroopCard extends Component {
-  state = {
-    detailsOpen: !this.props.mobile,
-    collapseOpen: !this.props.mobile,
-    drawerJustClicked: false
-  };
+const ArmyTroopCard = props => {
+  const { baseTroop, classes, mobile } = props;
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.mobile) {
-      if (prevProps.troopCardSwitch !== this.props.troopCardSwitch && !this.state.drawerJustClicked) {
-        if (this.state.detailsOpen === true) this.setState(() => ({ detailsOpen: false }));
-      } else if (prevState.drawerJustClicked !== this.state.drawerJustClicked && this.state.drawerJustClicked === true) {
-        this.setState(state => ({ drawerJustClicked: false, detailsOpen: !state.detailsOpen }));
-      }
-      if (prevState.detailsOpen !== this.state.detailsOpen) {
-        if (this.state.detailsOpen) {
-          this.setState(() => ({ collapseOpen: true }));
-        } else {
-          this.setState(() => ({ collapseOpen: false }));
-        }
-      }
-    }
-  }
+  const heightStyle = mobile ? undefined : { height: "100%" };
 
-  handleExpandClick = () => {
-    this.setState(() => ({ drawerJustClicked: true }));
-    this.props.armyTroopCardExpandClick();
-  };
+  const cardContent = (
+    <>
+      <CardContent>
+        <Grid container alignItems="center" justify="space-evenly" spacing={16}>
+          <Grid item>
+            <Typography className={classes.troopTitle} variant="h5">
+              {baseTroop.troop_type === HERO && (
+                <Tooltip placement="top" title="Hero">
+                  <span>
+                    <IconButton className={classes.icons}>
+                      <LieutnantIcon />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
+              {baseTroop.troop_type !== HERO && (
+                <Tooltip placement="top" title="Warrior">
+                  <span>
+                    <IconButton className={classes.icons}>
+                      <WargearIcon fontSize={"small"} />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              )}
+              {baseTroop.name}
+            </Typography>
+          </Grid>
 
-  render() {
-    const { baseTroop, classes, mobile } = this.props;
+          <Grid item>
+            <Grid container direction="column" alignItems="center">
+              <Grid item>
+                <Typography color="textSecondary" variant="button">
+                  Points
+                </Typography>
+              </Grid>
 
-    const heightStyle = mobile ? undefined : { height: "100%" };
-
-    const cardContent = (
-      <>
-        <CardContent>
-          <Grid container alignItems="center" justify="space-evenly" spacing={16}>
-            <Grid item>
-              <Typography className={classes.troopTitle} variant="h5">
-                {baseTroop.troop_type === HERO && (
-                  <Tooltip placement="top" title="Hero">
-                    <span>
-                      <IconButton className={classes.icons}>
-                        <LieutnantIcon />
-                      </IconButton>
-                    </span>
-                  </Tooltip>
-                )}
-                {baseTroop.troop_type !== HERO && (
-                  <Tooltip placement="top" title="Warrior">
-                    <span>
-                      <IconButton className={classes.icons}>
-                        <WargearIcon fontSize={"small"} />
-                      </IconButton>
-                    </span>
-                  </Tooltip>
-                )}
-                {baseTroop.name}
-              </Typography>
-            </Grid>
-
-            <Grid item>
-              <Grid container direction="column" alignItems="center">
-                <Grid item>
-                  <Typography color="textSecondary" variant="button">
-                    Points
-                  </Typography>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="subtitle2">
-                    <Avatar className={classes.statusAvatar}>{baseTroop.points}</Avatar>
-                  </Typography>
-                </Grid>
+              <Grid item>
+                <Typography variant="subtitle2">
+                  <Avatar className={classes.statusAvatar}>{baseTroop.points}</Avatar>
+                </Typography>
               </Grid>
             </Grid>
           </Grid>
-          <UnitCharacteristics characs={baseTroop.characteristics} />
+        </Grid>
+        <UnitCharacteristics characs={baseTroop.characteristics} />
 
-          <Typography color="textPrimary" variant="button">
-            Wargear
-          </Typography>
-          <div className={classes.chipRoot}>
-            {/* Basic wargear */}
-            {baseTroop.base_wargear.map((weapon, index) => (
-              <Chip variant="outlined" key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
-            ))}
-            {/* Optional wargear */}
-            {baseTroop.optional_wargear.map((weapon, index) => (
-              <Chip variant={"default"} clickable key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
-            ))}
-          </div>
+        <Typography color="textPrimary" variant="button">
+          Wargear
+        </Typography>
+        <div className={classes.chipRoot}>
+          {/* Basic wargear */}
+          {baseTroop.base_wargear.map((weapon, index) => (
+            <Chip variant="outlined" key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+          ))}
+          {/* Optional wargear */}
+          {baseTroop.optional_wargear.map((weapon, index) => (
+            <Chip variant={"default"} clickable key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
+          ))}
+        </div>
 
-          <Typography color="textPrimary" variant="button">
-            Special Rules
-          </Typography>
-          <div className={classes.chipRoot}>
-            {/* Special Rules */}
-            {baseTroop.special_rules.map((rule, index) => (
-              <Chip variant="outlined" key={index} label={rule.replace(/_/g, " ")} className={classes.chip} />
-            ))}
-          </div>
+        <Typography color="textPrimary" variant="button">
+          Special Rules
+        </Typography>
+        <div className={classes.chipRoot}>
+          {/* Special Rules */}
+          {baseTroop.special_rules.map((rule, index) => (
+            <Chip variant="outlined" key={index} label={rule.replace(/_/g, " ")} className={classes.chip} />
+          ))}
+        </div>
 
-          <Typography color="textPrimary" variant="button">
-            Description
-          </Typography>
-          <Typography color="textSecondary" variant="body2">
-            {baseTroop.description}
-          </Typography>
-        </CardContent>
-      </>
-    );
+        <Typography color="textPrimary" variant="button">
+          Description
+        </Typography>
+        <Typography color="textSecondary" variant="body2">
+          {baseTroop.description}
+        </Typography>
+      </CardContent>
+    </>
+  );
 
-    const floatingPoints = (
-      <Typography className={classes.pointsMinimal} variant="subtitle2">
-        <Chip className={classes.statusAvatarMinimal} label={baseTroop.points + " Pts"} />
-      </Typography>
-    );
+  const floatingPoints = (
+    <Typography className={classes.pointsMinimal} variant="subtitle2">
+      <Chip className={classes.statusAvatarMinimal} label={baseTroop.points + " Pts"} />
+    </Typography>
+  );
 
-    const floatingTroopType = (
-      <>
-        {baseTroop.troop_type === HERO && (
-          <Avatar className={classes.floatingTroopType}>
-            <LieutnantIcon style={{ fontSize: 10 }} />
-          </Avatar>
-        )}
-        {baseTroop.troop_type !== HERO && (
-          <Avatar className={classes.floatingTroopType}>
-            <WargearIcon style={{ fontSize: 10 }} />
-          </Avatar>
-        )}
-      </>
-    );
+  const floatingTroopType = (
+    <>
+      {baseTroop.troop_type === HERO && (
+        <Avatar className={classes.floatingTroopType}>
+          <LieutnantIcon style={{ fontSize: 10 }} />
+        </Avatar>
+      )}
+      {baseTroop.troop_type !== HERO && (
+        <Avatar className={classes.floatingTroopType}>
+          <WargearIcon style={{ fontSize: 10 }} />
+        </Avatar>
+      )}
+    </>
+  );
 
-    const minimalContent = (
-      <Typography className={classes.troopTitleMinimal} variant="body2">
-        {baseTroop.name}
-      </Typography>
-    );
+  const minimalContent = (
+    <Typography className={classes.troopTitleMinimal} variant="body2">
+      {baseTroop.name}
+    </Typography>
+  );
 
-    return (
-      <Thumbnailer
-        cardStyleOverride={heightStyle}
-        cardMediaImagePath={baseTroop.image_path}
-        minimalContent={minimalContent}
-        cardContent={cardContent}
-        floatLeftContent={floatingPoints}
-        floatRightContent={floatingTroopType}
-        mobile={mobile}
-        switchID={ARMY_TROOP_CARD_SWITCH}
-      />
-    );
-  }
-}
+  return (
+    <Thumbnailer
+      cardStyleOverride={heightStyle}
+      cardMediaImagePath={baseTroop.image_path}
+      minimalContent={minimalContent}
+      cardContent={cardContent}
+      floatLeftContent={floatingPoints}
+      floatRightContent={floatingTroopType}
+      mobile={mobile}
+      switchID={ARMY_TROOP_CARD_SWITCH}
+      timeout={props.timeout}
+    />
+  );
+};
 
 ArmyTroopCard.propTypes = {
   classes: PropTypes.object.isRequired,

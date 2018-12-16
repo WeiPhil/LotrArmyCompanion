@@ -31,6 +31,7 @@ class CompaniesOverview extends Component {
           injured={this.props.companies[companyIdx].injured}
           isCompanyCard
           mobile={mobile}
+          timeout={index * 1000}
         />
       </Grid>
     );

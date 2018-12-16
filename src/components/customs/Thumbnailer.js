@@ -64,7 +64,7 @@ class Thumbnailer extends Component {
     const { cardMediaImagePath, minimalContent, cardContent, floatLeftContent, floatRightContent, classes, cardStyleOverride } = this.props;
 
     return (
-      <Grow in={true}>
+      <Grow in={true} timeout={this.props.timeout}>
         <div style={cardStyleOverride}>
           <Card style={cardStyleOverride} className={classes.card}>
             <CardActionArea disabled={!this.props.mobile} onClick={this.handleExpandClick}>
