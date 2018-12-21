@@ -7,8 +7,10 @@ import { connect } from "react-redux";
 // Material-UI imports
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MainInterface from "./components/MainInterface";
+import BattleMainInterface from "./components/coreApp/battle/BattleMainInterface";
+
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const themes = {
   light: createMuiTheme({
@@ -63,7 +65,10 @@ class App extends Component {
       <MuiThemeProvider theme={themes[this.props.themeType]}>
         <CssBaseline />
         <Router>
-          <MainInterface />
+          <Switch>
+            <Route exact path="/battle" component={BattleMainInterface} />
+            <Route path="/" component={MainInterface} />
+          </Switch>
         </Router>
       </MuiThemeProvider>
     );

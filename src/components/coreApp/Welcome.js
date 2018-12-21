@@ -24,7 +24,6 @@ const Welcome = props => {
           Here you will be able to create your companies for Battle Companies or simply an army for the Table top game Lord of the Ring.
         </Typography>
         <Typography variant="body2" gutterBottom>
-          {" "}
           Before doing anything I would login!
         </Typography>
         <InlineLink align="center" path={"/register"} text={"Create an account here!"} />

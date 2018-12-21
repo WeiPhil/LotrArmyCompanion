@@ -10,8 +10,8 @@ import { disconnect } from "../redux/actions/auth";
 import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 
-import { WIKI, MENU_WIDTH, REACTION_TIMEOUT } from "./../utils/Constants";
-import { LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
+import { WIKI, MENU_WIDTH, REACTION_TIMEOUT, NEW_BATTLE } from "./../utils/Constants";
+import { NewBattleIcon, LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
 
 import { withRouter, Redirect } from "react-router";
 
@@ -172,6 +172,7 @@ class MainInterface extends React.Component {
         : this.props.companies.map((company, idx) => [company.company_name, "/companiesOverview/" + company.company_access_name]);
 
     var menuItems = [
+      ["New Battle", <NewBattleIcon fontSize="large" nativeColor={iconColor} />, "/battle", []],
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Companies Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/companiesOverview", companyNames],
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
@@ -182,6 +183,7 @@ class MainInterface extends React.Component {
       delete menuItems[0];
       delete menuItems[1];
       delete menuItems[2];
+      delete menuItems[3];
     }
     return menuItems;
   };
@@ -227,7 +229,14 @@ class MainInterface extends React.Component {
                 </MenuItem>
               ) : (
                 <Link to={menuItem[LINK_IDX]} style={{ textDecoration: "none" }}>
-                  <MenuItem className={classes.menuItem} onClick={() => this.handleMenuClick(index, false)} button>
+                  <MenuItem
+                    className={classes.menuItem}
+                    onClick={() => {
+                      // avoid state update when clicking NEW_BATTLE link
+                      if (index !== NEW_BATTLE) this.handleMenuClick(index, false);
+                    }}
+                    button
+                  >
                     <ListItemIcon>{menuItem[ICON_IDX]}</ListItemIcon>
                     <ListItemText primary={menuItem[NAME_IDX]} />
                   </MenuItem>
@@ -251,6 +260,7 @@ class MainInterface extends React.Component {
               ))}
 
               {index === WIKI - 1 && <Divider />}
+              {index === NEW_BATTLE && <Divider />}
             </span>
           ))}
         </MenuList>
@@ -354,7 +364,7 @@ class MainInterface extends React.Component {
 
             <Route path="/register" component={Register} />
             {/* From here if we are not logged in we get automatically rerouted */}
-            {!loggedIn && <Redirect to="/" />}
+            <Redirect to="/" />
           </Switch>
           {loggedIn && (isLoadingArmies || armiesNeedRefetch || isLoadingCompanies || companiesNeedRefetch) && (
             <Grid container justify="center">

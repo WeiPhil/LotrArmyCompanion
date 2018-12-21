@@ -1,4 +1,4 @@
-export const HOST_IP = "192.168.1.2";
+export const HOST_IP = "localhost";
 
 // List of constants used throughout the app
 export const MENU_WIDTH = 280;
@@ -18,10 +18,11 @@ export const MIN_HEIGHT_600 = "(min-height: 600px)";
 // Constants for core app programm
 
 //Menu constants
-export const MY_COMPANIES = 0;
-export const ARMY_OVERVIEW = 1;
-export const BUY_TROOPS = 2;
-export const WIKI = 3;
+export const NEW_BATTLE = 0;
+export const MY_COMPANIES = 1;
+export const ARMY_OVERVIEW = 2;
+export const BUY_TROOPS = 3;
+export const WIKI = 4;
 
 //Database constants
 export const HERO = "hero";

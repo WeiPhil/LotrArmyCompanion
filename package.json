@@ -18,10 +18,15 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "redux-persist": "^5.10.0",
-    "typeface-roboto": "0.0.54"
+    "socket.io": "^2.2.0",
+    "typeface-roboto": "0.0.54",
+    "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently 'npm run react' 'npm run server' 'npm run database'",
+    "database": "cd database && python database.py",
+    "react": "react-scripts start",
+    "server": "nodemon src/gameServer/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,6 +41,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.9",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1"
   }

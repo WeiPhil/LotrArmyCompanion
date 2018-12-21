@@ -19,5 +19,12 @@
     "email": "ph.weier@ail.com",
     "username": "testi",
     "password": "$pbkdf2-sha256$29000$11qr9R4DYGwt5TxHSOndew$2/7MLcWST/HTBFNrhYITYozBv9VKIqdiH0OZeM0YmHs"
+  },
+  {
+    "firstName": "Antoine",
+    "lastName": "Eichelberger",
+    "email": "antoine.eichelb",
+    "username": "Juranic",
+    "password": "$pbkdf2-sha256$29000$mXMu5RyjVOrdm7N2zrk3Rg$n1p5sUWZ4/LyuC5XhDFsiQZSVxj4LgV.CZENmtBJgk0"
   }
 ]

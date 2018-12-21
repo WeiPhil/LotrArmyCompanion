@@ -10,13 +10,24 @@ In a console in the project directory run
 
 ## Ongoing Work and Todos
 
+> Todo Philippe
+
 - `[x]` Make a todo list as suggested by Gregoire
 - `[x]` Add elements to each company card (equipment,totalcost,experience, etc..)
 - `[x]` Add a some more sample elements to the database to work on
 - `[x]` Create a nice presentation of the company overview including stats, totalGold, effective and total cost, a way to add personal notes (+ linking to database)
 - `[x]` Add wiki submenus for all the equipments, special powers, etc..
 - `[x]` You can now have an account and login on your personal companies!
-- `[ ]` Add a menu item to go in a fight!
+- `[x]` Add a menu item to go in a fight!
+- `[x]` add a register form and unsecure user account system (just for testing)
 - `[ ]` Add a simple way to buy new troops if gold allows it in Buy Troops menu
 - `[ ]` a way to add personal notes (+ post to database) and calculate total and effective cost automatically
-- `[ ]` add a register form and unsecure user account system (just for testing)
+- `[ ]` change forms to handle enter key press (more natural behaviour)
+- `[ ]` use more carefull types in code, transform var's in let's
+- `[ ]` add a develepoment port and link it to the package.json scripts to run locally
+
+> Todo Pierre
+
+- `[ ]` get rid of current database and upgrade it to MariaDB
+- `[ ]` Remove static IP's and use dynamic ones instead
+- `[ ]` Add continuous integration.
