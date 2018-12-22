@@ -76,9 +76,6 @@ class BattleMainInterface extends Component {
 
     return (
       <div className={classes.container}>
-        <Typography align="center" variant="h3" gutterBottom>
-          Welcome to the battle Interface!
-        </Typography>
         <Divider className={classes.divider} />
 
         {!user ? (
