@@ -22,7 +22,7 @@ In a console in the project directory run
 - `[x]` add a register form and unsecure user account system (just for testing)
 - `[ ]` Add a simple way to buy new troops if gold allows it in Buy Troops menu
 - `[ ]` a way to add personal notes (+ post to database) and calculate total and effective cost automatically
-- `[ ]` change forms to handle enter key press (more natural behaviour)
+- `[x]` change forms to handle enter key press (more natural behaviour)
 - `[ ]` use more carefull types in code, transform var's in let's
 - `[ ]` add a develepoment port and link it to the package.json scripts to run locally
 - `[ ]` change color of bonuses

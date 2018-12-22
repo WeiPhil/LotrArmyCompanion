@@ -98,7 +98,8 @@ class Register extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  handleSubmit = () => {
+  handleSubmit = event => {
+    event.preventDefault();
     var errorTmp = { ...this.state.error };
 
     const error = Object.keys(this.state.form).reduce((acc, key) => {
@@ -106,15 +107,16 @@ class Register extends Component {
         errorTmp[key] = true;
         return acc || true;
       }
+      if (!this.state.form.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+        errorTmp[key] = true;
+        return acc || true;
+      }
+      if (this.state.form.password !== this.state.form.confirmPassword) {
+        errorTmp.password = true;
+        errorTmp.confirmPassword = true;
+      }
       return acc || false;
     }, false);
-
-    if (this.state.form.password !== this.state.form.confirmPassword) {
-      errorTmp.password = true;
-      errorTmp.confirmPassword = true;
-    }
-
-    if (!this.state.form.email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) errorTmp.email = true;
 
     this.setState({ error: errorTmp });
 
@@ -262,6 +264,7 @@ class Register extends Component {
               variant="contained"
               color="secondary"
               onClick={this.handleSubmit}
+              type="submit"
             >
               Register
             </Button>

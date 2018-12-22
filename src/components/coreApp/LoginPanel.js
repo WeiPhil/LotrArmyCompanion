@@ -97,7 +97,8 @@ class LoginPanel extends Component {
     this.setState(state => ({ showPassword: !state.showPassword }));
   };
 
-  login = () => {
+  login = event => {
+    event.preventDefault();
     var errorTmp = { ...this.state.error };
 
     const error = Object.keys(this.state.form).reduce((acc, key) => {
@@ -132,70 +133,79 @@ class LoginPanel extends Component {
             Login
           </DialogTitle>
           <DialogContent className={classes.dialog}>
-            <Grid container direction={"column"}>
-              <Grid item>
-                <TextField
-                  id="username-field"
-                  label="Username"
-                  placeholder="Username"
-                  className={classNames(classes.margin)}
-                  value={this.state.form.username}
-                  onChange={this.handleChange("username")}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                />
-                {this.state.error["username"] && <FormHelperText error>Enter a username</FormHelperText>}
-                {internalErrorCode === 103 && <FormHelperText error>{authMessage}</FormHelperText>}
-              </Grid>
-              <Grid item>
-                <TextField
-                  id="password-field"
-                  label="Password"
-                  placeholder="Password"
-                  className={classNames(classes.margin, classes.textField)}
-                  type={this.state.showPassword ? "text" : "password"}
-                  value={this.state.form.password}
-                  onChange={this.handleChange("password")}
-                  InputLabelProps={{
-                    shrink: true
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                          {this.state.showPassword ? <VisibilityOff fontSize={"small"} /> : <Visibility fontSize={"small"} />}
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
-                {this.state.error["password"] && <FormHelperText error>Enter a password</FormHelperText>}
-                {internalErrorCode === 104 && <FormHelperText error>{authMessage}</FormHelperText>}
-              </Grid>
-              <Grid item>
-                <FormControlLabel
-                  control={<Checkbox checked={this.state.rememberMe} onChange={this.handleChange("rememberMe")} value="rememberMe" />}
-                  label="Remember me"
-                />
-              </Grid>
-
-              <Grid item>
-                <InlineLink onClick={handleLoginClose} style={{ fontSize: "10px" }} text={"Password forgotten?"} />
-              </Grid>
-              <Grid item>
-                <DialogActions>
-                  <Button disabled={logging} variant="contained" className={classes.button} onClick={this.login} color="secondary">
-                    Sign In
-                  </Button>
-                </DialogActions>
-              </Grid>
-              <Grid container justify={"flex-end"}>
+            <form>
+              <Grid container direction={"column"}>
                 <Grid item>
-                  <InlineLink onClick={handleLoginClose} path={"/register"} text={"Create new account"} />
+                  <TextField
+                    id="username-field"
+                    label="Username"
+                    placeholder="Username"
+                    className={classNames(classes.margin)}
+                    value={this.state.form.username}
+                    onChange={this.handleChange("username")}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                  />
+                  {this.state.error["username"] && <FormHelperText error>Enter a username</FormHelperText>}
+                  {internalErrorCode === 103 && <FormHelperText error>{authMessage}</FormHelperText>}
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id="password-field"
+                    label="Password"
+                    placeholder="Password"
+                    className={classNames(classes.margin, classes.textField)}
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.form.password}
+                    onChange={this.handleChange("password")}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
+                            {this.state.showPassword ? <VisibilityOff fontSize={"small"} /> : <Visibility fontSize={"small"} />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                  {this.state.error["password"] && <FormHelperText error>Enter a password</FormHelperText>}
+                  {internalErrorCode === 104 && <FormHelperText error>{authMessage}</FormHelperText>}
+                </Grid>
+                <Grid item>
+                  <FormControlLabel
+                    control={<Checkbox checked={this.state.rememberMe} onChange={this.handleChange("rememberMe")} value="rememberMe" />}
+                    label="Remember me"
+                  />
+                </Grid>
+
+                <Grid item>
+                  <InlineLink onClick={handleLoginClose} style={{ fontSize: "10px" }} text={"Password forgotten?"} />
+                </Grid>
+                <Grid item>
+                  <DialogActions>
+                    <Button
+                      type="submit"
+                      disabled={logging}
+                      variant="contained"
+                      className={classes.button}
+                      onClick={this.login}
+                      color="secondary"
+                    >
+                      Sign In
+                    </Button>
+                  </DialogActions>
+                </Grid>
+                <Grid container justify={"flex-end"}>
+                  <Grid item>
+                    <InlineLink onClick={handleLoginClose} path={"/register"} text={"Create new account"} />
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            </form>
           </DialogContent>
         </Dialog>
         <Dialog

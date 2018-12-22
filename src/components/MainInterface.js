@@ -130,7 +130,6 @@ class MainInterface extends React.Component {
     console.log("Main Interface loading");
     if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
-    // this.setState({ loginOpen: !this.props.loggedIn });
   }
 
   componentDidUpdate(prevProps) {
