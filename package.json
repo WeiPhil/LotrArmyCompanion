@@ -23,10 +23,11 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "concurrently 'npm run react' 'npm run server' 'npm run database'",
-    "database": "cd database && python database.py",
-    "react": "react-scripts start",
+    "start": "concurrently 'npm run react' 'npm run webserver_dev' 'npm run server'",
+    "webserver": "cd webserver && python webserver.py",
+    "webserver_dev": "cd webserver && WEBSERVER_PORT=3131 python webserver.py",
     "server": "nodemon src/gameServer/index.js",
+    "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

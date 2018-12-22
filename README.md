@@ -25,9 +25,14 @@ In a console in the project directory run
 - `[ ]` change forms to handle enter key press (more natural behaviour)
 - `[ ]` use more carefull types in code, transform var's in let's
 - `[ ]` add a develepoment port and link it to the package.json scripts to run locally
+- `[ ]` change color of bonuses
 
 > Todo Pierre
 
 - `[ ]` get rid of current database and upgrade it to MariaDB
 - `[ ]` Remove static IP's and use dynamic ones instead
 - `[ ]` Add continuous integration.
+
+> Todo All
+
+- `[ ]` Token expiration management (currently no expiration)

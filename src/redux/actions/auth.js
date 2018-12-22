@@ -12,7 +12,7 @@ import {
 
 import { apiAction } from "./api";
 
-import { HOST_IP } from "./../../utils/Constants";
+import { HOST_NAME, WEBSERVER_PORT } from "./../../utils/Constants";
 
 /**
  * user : { username : string, password : string }
@@ -21,7 +21,7 @@ import { HOST_IP } from "./../../utils/Constants";
 
 export function register(userData) {
   return apiAction({
-    url: "http://" + HOST_IP + ":5000/register",
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/register",
     method: "POST",
     data: userData,
     onSuccess: data => ({ type: REGISTER_SUCCESS, payload: data }),
@@ -44,7 +44,7 @@ export function disconnect() {
 
 export function login(userData) {
   return apiAction({
-    url: "http://" + HOST_IP + ":5000/login",
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/login",
     method: "POST",
     data: userData,
     onSuccess: data => ({ type: LOGIN_SUCCESS, payload: data }),

@@ -1,4 +1,5 @@
-export const HOST_IP = "localhost";
+export const HOST_NAME = window.location.hostname;
+export const WEBSERVER_PORT = process.env.NODE_ENV === "development" ? 3131 : 3000;
 
 // List of constants used throughout the app
 export const MENU_WIDTH = 280;

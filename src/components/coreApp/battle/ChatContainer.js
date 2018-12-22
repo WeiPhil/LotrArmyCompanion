@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Typography, Paper, Divider, TextField, Grid, Icon, IconButton, Button } from "@material-ui/core";
+import { Typography, Paper, Divider, TextField, Icon, IconButton, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import {} from "./../../../gameServer/Events";
+import { MESSAGE_SENT } from "./../../../gameServer/Events";
 
 const styles = theme => ({
   chatHeader: {
@@ -49,16 +49,20 @@ const styles = theme => ({
 class ChatContainer extends Component {
   state = {
     chats: [],
-    activeChat: null
+    activeChat: null,
+    message: ""
   };
 
   handleSubmit = event => {
     event.preventDefault();
+    const { socket, user } = this.props;
+    const { message } = this.state;
+    if (message !== "") socket.emit(MESSAGE_SENT, this.state.message, user.name);
   };
 
   render() {
-    const { socket, logout, user, classes } = this.props;
-    const { chats, activeChat } = this.state;
+    const { logout, user, classes } = this.props;
+    // const { chats, activeChat } = this.state;
 
     return (
       <>
@@ -69,7 +73,7 @@ class ChatContainer extends Component {
                 A Minimal Chat - Logged as {user.name}
               </Typography>
               <IconButton style={{ margin: "0px 0px 0px auto" }}>
-                <Icon fontSize="small">list</Icon>
+                <Icon fontSize="small">more_vert</Icon>
               </IconButton>
             </div>
             <Divider />
