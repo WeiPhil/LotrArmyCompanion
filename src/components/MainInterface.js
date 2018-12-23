@@ -45,6 +45,7 @@ import Register from "./coreApp/Register";
 
 import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
+import ChatAppBar from "./coreApp/chat/ChatAppBar";
 
 const styles = theme => ({
   root: {
@@ -163,7 +164,7 @@ class MainInterface extends React.Component {
   };
 
   createMenuItems = () => {
-    const iconColor = this.props.theme.palette.type === "dark" ? "#ccccc" : this.props.theme.palette.secondary.main;
+    const iconColor = this.props.theme.palette.type === "dark" ? "#FFFFFF" : this.props.theme.palette.secondary.main;
 
     const companyNames =
       this.props.isLoadingCompanies || this.props.companiesNeedRefetch
@@ -370,6 +371,7 @@ class MainInterface extends React.Component {
               <CircularProgress color="secondary" />
             </Grid>
           )}
+          <ChatAppBar />
         </main>
       </div>
     );

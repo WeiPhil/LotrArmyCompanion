@@ -55,7 +55,6 @@ module.exports = function(socket) {
   });
 
   socket.on(MESSAGE_SENT, ({ chatId, message }) => {
-    console.log("Message " + message + " sent by " + socket.user + "on chat with id : " + chatId);
     sendMessageToChatFromUser(chatId, message);
   });
 };
@@ -78,8 +77,6 @@ function isUser(userList, username) {
 
 function sendMessageToChat(sender) {
   return (chatId, message) => {
-    console.log("sent " + chatId);
-    console.log(`${MESSAGE_RECEIVED}-${chatId}`);
     io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender }));
   };
 }

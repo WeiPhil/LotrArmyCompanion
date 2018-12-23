@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 // Material-UI imports
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MainInterface from "./components/MainInterface";
-import BattleMainInterface from "./components/coreApp/battle/BattleMainInterface";
+import ChatInterface from "./components/coreApp/chat/ChatInterface";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -66,7 +66,7 @@ class App extends Component {
         <CssBaseline />
         <Router>
           <Switch>
-            <Route exact path="/battle" component={BattleMainInterface} />
+            <Route exact path="/chat" component={ChatInterface} />
             <Route path="/" component={MainInterface} />
           </Switch>
         </Router>

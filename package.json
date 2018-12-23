@@ -26,7 +26,7 @@
     "start": "concurrently 'npm run react' 'npm run webserver_dev' 'npm run server'",
     "webserver": "cd webserver && python webserver.py",
     "webserver_dev": "cd webserver && WEBSERVER_PORT=3131 python webserver.py",
-    "server": "nodemon src/gameServer/index.js",
+    "server": "nodemon src/server/index.js",
     "react": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

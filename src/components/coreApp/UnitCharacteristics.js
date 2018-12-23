@@ -1,15 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
+import { Typography, TableBody, TableCell, TableRow, TableHead, Table, Paper } from "@material-ui/core";
 
 import { WEAPON_BONUSES } from "./../../utils/Constants";
+
+import { extraPalette } from "./../../utils/UIColors";
 
 const CustomTableHeader = withStyles(theme => ({
   root: {
@@ -29,62 +25,6 @@ const CustomTableCell = withStyles(theme => ({
   }
 }))(TableCell);
 
-function getCharacteristicFor(charac, improv, add = "") {
-  return improv > 0 ? (
-    <Typography style={{ display: "inline-block" }} color="error">
-      {charac + improv}
-    </Typography>
-  ) : (
-    <Typography style={{ display: "inline-block" }}>{charac + improv + add}</Typography>
-  );
-}
-
-function createDataUser(improvs, characs, wargear, baseWargear) {
-  var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defense: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
-
-  wargear
-    .filter(weapon => baseWargear.indexOf(weapon) === -1 && weapon in WEAPON_BONUSES)
-    .map(weapon => {
-      const ameliorations = WEAPON_BONUSES[weapon];
-      for (var key in ameliorations) {
-        if (ameliorations.hasOwnProperty(key)) {
-          bonus[key] += ameliorations[key];
-        }
-      }
-      return null; //does not return anything
-    });
-
-  return {
-    move: getCharacteristicFor(characs.move, improvs.move + bonus.move, '"'),
-    fight: getCharacteristicFor(characs.fight, improvs.fight + bonus.fight),
-    shoot: getCharacteristicFor(characs.shoot, improvs.shoot + bonus.shoot, "+"),
-    strength: getCharacteristicFor(characs.strength, improvs.strength + bonus.strength),
-    defense: getCharacteristicFor(characs.defense, improvs.defense + bonus.defense),
-    attacks: getCharacteristicFor(characs.attacks, improvs.attacks + bonus.attacks),
-    wounds: getCharacteristicFor(characs.wounds, improvs.wounds + bonus.wounds),
-    courage: getCharacteristicFor(characs.courage, improvs.courage + bonus.courage),
-    might: getCharacteristicFor(characs.might, improvs.might + bonus.might),
-    will: getCharacteristicFor(characs.will, improvs.will + bonus.will),
-    faith: getCharacteristicFor(characs.faith, improvs.faith + bonus.faith)
-  };
-}
-
-function createDataBase(characs) {
-  return {
-    move: characs.move + '"',
-    fight: characs.fight,
-    shoot: characs.shoot + "+",
-    strength: characs.strength,
-    defense: characs.defense,
-    attacks: characs.attacks,
-    wounds: characs.wounds,
-    courage: characs.courage,
-    might: characs.might,
-    will: characs.will,
-    faith: characs.faith
-  };
-}
-
 const styles = theme => ({
   root: {
     width: "100%",
@@ -94,52 +34,116 @@ const styles = theme => ({
   },
   head: {
     backgroundColor: theme.palette.type === "dark" ? theme.palette.secondary.dark : theme.palette.secondary.main
+  },
+  bonusTypography: {
+    color: theme.palette.type === "dark" ? extraPalette.dark.bonus.light : extraPalette.light.bonus.dark
+  },
+  malusTypography: {
+    color: theme.palette.type === "dark" ? extraPalette.dark.malus.light : extraPalette.light.malus.dark
   }
 });
 
-function UnitCharacteristics(props) {
-  const { improvs, characs, classes, wargear, baseWargear } = props;
+class UnitCharacteristics extends Component {
+  getCharacteristicFor(charac, improv, add = "") {
+    return improv > 0 ? (
+      <Typography className={this.props.classes.bonusTypography} style={{ display: "inline-block" }}>
+        {charac + improv}
+      </Typography>
+    ) : (
+      <Typography style={{ display: "inline-block" }}>{charac + improv + add}</Typography>
+    );
+  }
 
-  const forBaseTroop = improvs === undefined;
+  createDataUser(improvs, characs, wargear, baseWargear) {
+    var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defense: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
 
-  const characteristics = forBaseTroop ? createDataBase(characs) : createDataUser(improvs, characs, wargear, baseWargear);
+    wargear
+      .filter(weapon => baseWargear.indexOf(weapon) === -1 && weapon in WEAPON_BONUSES)
+      .map(weapon => {
+        const ameliorations = WEAPON_BONUSES[weapon];
+        for (var key in ameliorations) {
+          if (ameliorations.hasOwnProperty(key)) {
+            bonus[key] += ameliorations[key];
+          }
+        }
+        return null; //does not return anything
+      });
 
-  return (
-    <Paper className={classes.root}>
-      <Table>
-        <TableHead>
-          <TableRow className={classes.head}>
-            <CustomTableHeader>Move</CustomTableHeader>
-            <CustomTableHeader>F/S+</CustomTableHeader>
-            <CustomTableHeader>S</CustomTableHeader>
-            <CustomTableHeader>D</CustomTableHeader>
-            <CustomTableHeader>A</CustomTableHeader>
-            <CustomTableHeader>W</CustomTableHeader>
-            <CustomTableHeader>C</CustomTableHeader>
-            <CustomTableHeader>M/W/F</CustomTableHeader>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <CustomTableCell component="th" scope="row">
-              {characteristics.move}
-            </CustomTableCell>
-            <CustomTableCell>
-              {characteristics.fight}/{characteristics.shoot}
-            </CustomTableCell>
-            <CustomTableCell>{characteristics.strength}</CustomTableCell>
-            <CustomTableCell>{characteristics.defense}</CustomTableCell>
-            <CustomTableCell>{characteristics.attacks}</CustomTableCell>
-            <CustomTableCell>{characteristics.wounds}</CustomTableCell>
-            <CustomTableCell>{characteristics.courage}</CustomTableCell>
-            <CustomTableCell>
-              {characteristics.might}/{characteristics.will}/{characteristics.faith}
-            </CustomTableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+    return {
+      move: this.getCharacteristicFor(characs.move, improvs.move + bonus.move, '"'),
+      fight: this.getCharacteristicFor(characs.fight, improvs.fight + bonus.fight),
+      shoot: this.getCharacteristicFor(characs.shoot, improvs.shoot + bonus.shoot, "+"),
+      strength: this.getCharacteristicFor(characs.strength, improvs.strength + bonus.strength),
+      defense: this.getCharacteristicFor(characs.defense, improvs.defense + bonus.defense),
+      attacks: this.getCharacteristicFor(characs.attacks, improvs.attacks + bonus.attacks),
+      wounds: this.getCharacteristicFor(characs.wounds, improvs.wounds + bonus.wounds),
+      courage: this.getCharacteristicFor(characs.courage, improvs.courage + bonus.courage),
+      might: this.getCharacteristicFor(characs.might, improvs.might + bonus.might),
+      will: this.getCharacteristicFor(characs.will, improvs.will + bonus.will),
+      faith: this.getCharacteristicFor(characs.faith, improvs.faith + bonus.faith)
+    };
+  }
+
+  createDataBase(characs) {
+    return {
+      move: characs.move + '"',
+      fight: characs.fight,
+      shoot: characs.shoot + "+",
+      strength: characs.strength,
+      defense: characs.defense,
+      attacks: characs.attacks,
+      wounds: characs.wounds,
+      courage: characs.courage,
+      might: characs.might,
+      will: characs.will,
+      faith: characs.faith
+    };
+  }
+
+  render() {
+    const { improvs, characs, classes, wargear, baseWargear } = this.props;
+
+    const forBaseTroop = improvs === undefined;
+
+    const characteristics = forBaseTroop ? this.createDataBase(characs) : this.createDataUser(improvs, characs, wargear, baseWargear);
+
+    return (
+      <Paper className={classes.root}>
+        <Table>
+          <TableHead>
+            <TableRow className={classes.head}>
+              <CustomTableHeader>Move</CustomTableHeader>
+              <CustomTableHeader>F/S+</CustomTableHeader>
+              <CustomTableHeader>S</CustomTableHeader>
+              <CustomTableHeader>D</CustomTableHeader>
+              <CustomTableHeader>A</CustomTableHeader>
+              <CustomTableHeader>W</CustomTableHeader>
+              <CustomTableHeader>C</CustomTableHeader>
+              <CustomTableHeader>M/W/F</CustomTableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <CustomTableCell component="th" scope="row">
+                {characteristics.move}
+              </CustomTableCell>
+              <CustomTableCell>
+                {characteristics.fight}/{characteristics.shoot}
+              </CustomTableCell>
+              <CustomTableCell>{characteristics.strength}</CustomTableCell>
+              <CustomTableCell>{characteristics.defense}</CustomTableCell>
+              <CustomTableCell>{characteristics.attacks}</CustomTableCell>
+              <CustomTableCell>{characteristics.wounds}</CustomTableCell>
+              <CustomTableCell>{characteristics.courage}</CustomTableCell>
+              <CustomTableCell>
+                {characteristics.might}/{characteristics.will}/{characteristics.faith}
+              </CustomTableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
 }
 
 UnitCharacteristics.propTypes = {
@@ -147,4 +151,4 @@ UnitCharacteristics.propTypes = {
   characs: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
-export default withStyles(styles)(UnitCharacteristics);
+export default withStyles(styles, { withTheme: true })(UnitCharacteristics);
