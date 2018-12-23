@@ -3,10 +3,21 @@
 ![alt text](https://raw.githubusercontent.com/WeiPhil/LotrArmyCompanion/master/src/assets/images/tempCardBackground1.jpg)
 
 ## THIS PROJECT IS A WORK IN PROGRESS
+It should not be run in production.
 
-In a console in the project directory run
-`npm install` : to install all necesary libraries  
-`npm start` : to run the app on localhost
+## Build
+
+Build the frontend react app:
+> npm install  
+> npm run build  
+
+Build the backend:
+> docker-compose build
+
+## Run
+> docker-compose up
+
+Visit localhost:3000 to see the website.
 
 ## Ongoing Work and Todos
 
@@ -32,6 +43,7 @@ In a console in the project directory run
 - `[ ]` get rid of current database and upgrade it to MariaDB
 - `[ ]` Remove static IP's and use dynamic ones instead
 - `[ ]` Add continuous integration.
+- `[ ]` Use docker secrets for database credentials
 
 > Todo All
 

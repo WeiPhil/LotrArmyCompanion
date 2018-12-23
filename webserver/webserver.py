@@ -1,41 +1,34 @@
-from passlib.hash import pbkdf2_sha256
+import atexit
+import json
+import logging
+import logging.handlers as loghandlers
+import os
+import sys
+import time
+
+import _mysql as mariadb
+from flask import Flask, abort, jsonify, request, send_from_directory
+from flask_cors import CORS, cross_origin
 from flask_jwt_extended import (JWTManager, create_access_token,
                                 get_jwt_identity, jwt_required)
-from flask_cors import CORS, cross_origin
-from flask import Flask, abort, jsonify, request, send_from_directory
-import time
-import json
-from flask import Flask, send_from_directory
-from flask import request
-
-import os
+from passlib.hash import pbkdf2_sha256
+from settings import DATABASE_CFG, WEBSERVER_PORT
 
 app = Flask(__name__, static_folder='./../build')
 
-WEBSERVER_PORT = int(os.getenv('WEBSERVER_PORT', 3000))
-
-
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    if path != "" and os.path.exists("./../build/" + path):
-        return send_from_directory('./../build', path)
-    else:
-        return send_from_directory('./../build', 'index.html')
-
-
-CORS(app, expose_headers='Authorization')
-
-# Setup the Flask-JWT-Extended extension
-app.config['JWT_SECRET_KEY'] = 'badSecret'  # Change this!
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False  # No tokenn expiration (easier)
-
-jwt = JWTManager(app)
-
+# TODO: refactor
 USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
 USER_ARMIES_PATH = os.path.join("data", "armies")
 USERS_AUTH_PATH = os.path.join("data", "users")
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    """Serve static app pages."""
+    if path != "" and os.path.exists("./../build/" + path):
+        return send_from_directory('./../build', path)
+    else:
+        return send_from_directory('./../build', 'index.html')
 
 def loadJson(path):
     with open(path, encoding='utf-8') as f:
@@ -46,6 +39,13 @@ def loadJson(path):
 def writeJson(content, path):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(content, f)
+
+# TODO: remove this
+def favorite_colors():
+    cursor = db_connection.cursor()
+    cursor.execute('SELECT * FROM favorite_colors')
+    results = [{name: color} for (name, color) in cursor]
+    cursor.close()
 
 # /!\ Temporary authentication (not worst ever but database should be linked to the db
 
@@ -204,9 +204,47 @@ def getArmies():
 
     return response
 
-# Serve React App
-
+# Serve Static App
 
 if __name__ == "__main__":
+    
+    # logging
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.INFO)
+    app.logger.addHandler(handler)
+    app.logger.info("logger initialized")
+
+
+    # database connection setup
+    app.logger.info("connecting to database...")
+    db = mariadb.connect(
+        host=DATABASE_CFG["host"],
+        user=DATABASE_CFG["user"],
+        passwd=DATABASE_CFG["password"],
+        db=DATABASE_CFG["database"]
+    )
+    app.logger.info("database connected")
+
+    CORS(app, expose_headers='Authorization')
+
+    # Setup the Flask-JWT-Extended extension
+    app.config['JWT_SECRET_KEY'] = 'badSecret'  # Change this!
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False  # No tokenn expiration (easier)
+
+    jwt = JWTManager(app)
+
+    def shutdown():
+        """
+        Shutdown hook.
+        Perform shutdown / cleanup actions here.
+        """
+        # closes database connection
+        print("closing database ")
+        db.close()
+
+    app.logger.info("adding shutdown hook")
+    atexit.register(shutdown)
+
+    app.logger.info("starting web server")
     app.run(host='0.0.0.0', use_reloader=True,
             port=WEBSERVER_PORT, threaded=True)
