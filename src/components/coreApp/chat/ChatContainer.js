@@ -1,21 +1,8 @@
 import React, { Component } from "react";
-import {
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Typography,
-  Paper,
-  Divider,
-  TextField,
-  Icon,
-  IconButton,
-  Button
-} from "@material-ui/core";
+import { List, ListItem, ListItemText, Typography, Paper, Divider, TextField, Icon, IconButton, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import { TYPING, MESSAGE_SENT, MESSAGE_RECEIVED, COMMUNITY_CHAT } from "./../../../gameServer/Events";
+import { TYPING, MESSAGE_SENT, MESSAGE_RECEIVED, COMMUNITY_CHAT } from "../../../server/Events";
 
 const styles = theme => ({
   chatHeader: {
@@ -27,10 +14,15 @@ const styles = theme => ({
     margin: theme.spacing.unit * 2
   },
   chatList: {
-    minHeight: "50vh",
+    display: "flex",
+    flexDirection: "column"
+  },
+  chatMessages: {
     display: "flex",
     flexDirection: "column",
-    marginBottom: theme.spacing.unit * 4
+    height: "50vh",
+    overflow: "auto",
+    marginTop: -19
   },
   theirPaper: {
     padding: theme.spacing.unit,
@@ -43,19 +35,26 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.light + "CC"
   },
   theirChats: {
+    maxWidth: "30vw",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "70vw"
+    },
+    flexWrap: "wrap",
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
-    maxWidth: "30vw",
     alignSelf: "flex-start"
   },
   myChats: {
+    flexWrap: "wrap",
+    maxWidth: "30vw",
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: "70vw"
+    },
     marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
-    maxWidth: "30vw",
     alignSelf: "flex-end"
   },
   messageBar: {
-    margin: theme.spacing.unit,
     marginTop: theme.spacing.unit * 2,
     display: "flex",
     alignItems: "flex-end"
@@ -74,7 +73,16 @@ class ChatContainer extends Component {
   componentDidMount() {
     const { socket } = this.props;
     socket.emit(COMMUNITY_CHAT, this.resetChat);
+    this.scrollToBottom();
   }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  };
 
   resetChat = chat => {
     this.setState({ activeChat: chat });
@@ -90,8 +98,6 @@ class ChatContainer extends Component {
 
     const messageEvent = `${MESSAGE_RECEIVED}-${chat.id}`;
     const typingEvent = `${TYPING}-${chat.id}`;
-
-    console.log(messageEvent);
 
     socket.on(typingEvent);
     socket.on(messageEvent, this.addMessageToChat(chat.id));
@@ -136,36 +142,33 @@ class ChatContainer extends Component {
   };
 
   render() {
-    const { logout, user, classes } = this.props;
-    const { menuAnchor, chats, activeChat } = this.state;
+    const { user, classes } = this.props;
+    const { chats, activeChat } = this.state;
 
     return (
       <>
-        <Paper className={classes.chatContainer} elevation={1}>
-          <div className={classes.chatList}>
-            <div className={classes.chatHeader}>
-              <Typography variant="subtitle2" color="textSecondary" style={{ display: "inline-block" }}>
-                A Minimal Chat - Logged as {user.name}
-              </Typography>
-              <IconButton
-                onClick={event => this.setState({ menuAnchor: event.currentTarget })}
-                aria-owns={menuAnchor ? "chat-menu-options" : undefined}
-                style={{ margin: "0px 0px 0px auto" }}
-              >
-                <Icon fontSize="small">more_vert</Icon>
-              </IconButton>
-              <Menu
-                id="chat-menu-options"
-                anchorEl={menuAnchor}
-                open={Boolean(menuAnchor)}
-                onClose={() => this.setState({ menuAnchor: null })}
-              >
-                <MenuItem onClick={logout}>Logout</MenuItem>
-              </Menu>
-            </div>
-            <Divider />
-            <br />
-
+        {/* <Paper className={classes.chatContainer} elevation={1}> */}
+        <div className={classes.chatList}>
+          {/* <div className={classes.chatHeader}>
+            <IconButton
+              onClick={event => this.setState({ menuAnchor: event.currentTarget })}
+              aria-owns={menuAnchor ? "chat-menu-options" : undefined}
+              style={{ margin: "0px 0px 0px auto" }}
+            >
+              <Icon fontSize="small">more_vert</Icon>
+            </IconButton>
+            <Menu
+              id="chat-menu-options"
+              anchorEl={menuAnchor}
+              open={Boolean(menuAnchor)}
+              onClose={() => this.setState({ menuAnchor: null })}
+            >
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </Menu>
+          </div> */}
+          <Divider />
+          <br />
+          <div className={classes.chatMessages}>
             {activeChat !== null ? (
               activeChat.messages.map((mes, key) => {
                 const chatClassName = user.name === mes.sender ? classes.myChats : classes.theirChats;
@@ -223,26 +226,28 @@ class ChatContainer extends Component {
                 })}
               </List>
             )}
-          </div>
-          <Divider />
-          <form onSubmit={this.sendMessage} className={classes.messageBar}>
-            <TextField
-              onChange={this.handleMessageChange}
-              style={{ marginBottom: "10px" }}
-              fullWidth
-              value={this.state.message}
-              placeholder={"Enter Message"}
+            <div
+              style={{ float: "left", clear: "both" }}
+              ref={el => {
+                this.messagesEnd = el;
+              }}
             />
-            <IconButton onClick={this.sendMessage}>
-              <Icon fontSize="small">send</Icon>
-            </IconButton>
-          </form>
-        </Paper>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button variant="contained" onClick={logout}>
-            Logout
-          </Button>
+          </div>
         </div>
+        <Divider />
+        <form onSubmit={this.sendMessage} className={classes.messageBar}>
+          <TextField
+            onChange={this.handleMessageChange}
+            style={{ marginBottom: "10px" }}
+            fullWidth
+            value={this.state.message}
+            placeholder={"Enter Message"}
+          />
+          <IconButton onClick={this.sendMessage}>
+            <Icon fontSize="small">send</Icon>
+          </IconButton>
+        </form>
+        {/* </Paper> */}
       </>
     );
   }

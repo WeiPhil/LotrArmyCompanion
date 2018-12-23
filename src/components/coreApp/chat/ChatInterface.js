@@ -1,23 +1,22 @@
 import React, { Component } from "react";
-import { Typography, TextField, Divider, FormHelperText } from "@material-ui/core";
+import { TextField, FormHelperText } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import io from "socket.io-client";
 
-import { USER_CONNECTED, LOGOUT, VERIFY_USER } from "./../../../gameServer/Events";
+import { USER_CONNECTED, LOGOUT, VERIFY_USER } from "../../../server/Events";
 
 import ChatContainer from "./ChatContainer";
+import { HOST_NAME } from "../../../utils/Constants";
 
 const styles = theme => ({
   container: {
+    paddingTop: 0,
     padding: theme.spacing.unit * 3
-  },
-  divider: {
-    margin: theme.spacing.unit
   }
 });
 
-const socketUrl = "http://localhost:3231";
+const socketUrl = "http://" + HOST_NAME + ":3231";
 
 class BattleMainInterface extends Component {
   state = {
@@ -32,7 +31,14 @@ class BattleMainInterface extends Component {
   }
 
   initSocket = () => {
-    const socket = io(socketUrl);
+    const socket = io.connect(
+      socketUrl,
+      {
+        reconnection: true,
+        reconnectionDelay: 500,
+        reconnectionAttempts: 10
+      }
+    );
     socket.on("connect", () => {
       this.setState({ socketInfo: "Connected" });
     });
@@ -41,7 +47,6 @@ class BattleMainInterface extends Component {
   };
 
   setUser = ({ user, isUser }) => {
-    console.log(user, isUser);
     if (isUser) {
       this.setState({ error: true });
     } else {
@@ -76,8 +81,6 @@ class BattleMainInterface extends Component {
 
     return (
       <div className={classes.container}>
-        <Divider className={classes.divider} />
-
         {!user ? (
           <form className={classes.container} onSubmit={this.handleSubmit} style={{ display: "flex", justifyContent: "center" }}>
             <TextField
