@@ -24,8 +24,11 @@ In a console in the project directory run
 - `[ ]` a way to add personal notes (+ post to database) and calculate total and effective cost automatically
 - `[x]` change forms to handle enter key press (more natural behaviour)
 - `[ ]` use more carefull types in code, transform var's in let's
-- `[ ]` add a develepoment port and link it to the package.json scripts to run locally
+- `[x]` add a develepoment port and link it to the package.json scripts to run locally
 - `[ ]` change color of bonuses
+- `[ ]` Add a "typing..." feature to the chat
+- `[ ]` Find a way to save messages from chats on server
+- `[ ]` add private messaging over peer2peer
 
 > Todo Pierre
 

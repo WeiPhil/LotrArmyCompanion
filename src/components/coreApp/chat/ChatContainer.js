@@ -1,8 +1,17 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+
+import { sendMessage } from "../../../redux/actions/chat";
+
 import { List, ListItem, ListItemText, Typography, Paper, Divider, TextField, Icon, IconButton, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
-import { TYPING, MESSAGE_SENT, MESSAGE_RECEIVED, COMMUNITY_CHAT } from "../../../server/Events";
+const mapStateToProps = ({ chat, auth }) => ({
+  username: auth.username,
+  loggedIn: auth.loggedIn,
+  chats: chat.chats,
+  activeChat: chat.activeChat
+});
 
 const styles = theme => ({
   chatHeader: {
@@ -63,16 +72,12 @@ const styles = theme => ({
 
 class ChatContainer extends Component {
   state = {
-    chats: [],
-    activeChat: null,
     menuAnchor: undefined,
     message: "",
     isTyping: false
   };
 
   componentDidMount() {
-    const { socket } = this.props;
-    socket.emit(COMMUNITY_CHAT, this.resetChat);
     this.scrollToBottom();
   }
 
@@ -84,70 +89,26 @@ class ChatContainer extends Component {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
 
-  resetChat = chat => {
-    this.setState({ activeChat: chat });
-    return this.addChat(chat, true);
-  };
-
-  addChat = (chat, reset) => {
-    const { socket } = this.props;
-    const { chats } = this.state;
-
-    const newChats = reset ? [chat] : [...chats, chat];
-    this.setState({ chats: newChats });
-
-    const messageEvent = `${MESSAGE_RECEIVED}-${chat.id}`;
-    const typingEvent = `${TYPING}-${chat.id}`;
-
-    socket.on(typingEvent);
-    socket.on(messageEvent, this.addMessageToChat(chat.id));
-  };
-
-  addMessageToChat = chatId => {
-    return message => {
-      const { chats } = this.state;
-      let newChats = chats.map(chat => {
-        if (chat.id === chatId) chat.messages.push(message);
-        return chat;
-      });
-
-      this.setState({ chats: newChats });
-    };
-  };
-
   sendMessage = event => {
     event.preventDefault();
-    const { socket } = this.props;
-    const { message, activeChat } = this.state;
-    const chatId = activeChat.id;
-    if (message !== "" && chatId != null) {
-      socket.emit(MESSAGE_SENT, { chatId, message });
+
+    const { message } = this.state;
+    const { activeChat } = this.props;
+    if (message !== "" && activeChat != null) {
+      this.props.sendMessage({ chatId: activeChat.id, message: message });
       this.setState({ message: "" });
     }
   };
 
-  sendTyping = (chatId, isTyping) => {
-    const { socket } = this.props;
-    socket.emit(TYPING, { chatId, isTyping });
-  };
-
-  setActiveChat = activeChat => {
-    this.setState({ activeChat });
-  };
-
   handleMessageChange = event => {
-    const { activeChat } = this.state;
-    this.sendTyping(activeChat.id, true);
     this.setState({ message: event.target.value });
   };
 
   render() {
-    const { user, classes } = this.props;
-    const { chats, activeChat } = this.state;
+    const { username, classes, activeChat, chats } = this.props;
 
     return (
       <>
-        {/* <Paper className={classes.chatContainer} elevation={1}> */}
         <div className={classes.chatList}>
           {/* <div className={classes.chatHeader}>
             <IconButton
@@ -171,8 +132,8 @@ class ChatContainer extends Component {
           <div className={classes.chatMessages}>
             {activeChat !== null ? (
               activeChat.messages.map((mes, key) => {
-                const chatClassName = user.name === mes.sender ? classes.myChats : classes.theirChats;
-                const paperClassName = user.name === mes.sender ? classes.myPaper : classes.theirPaper;
+                const chatClassName = username === mes.sender ? classes.myChats : classes.theirChats;
+                const paperClassName = username === mes.sender ? classes.myPaper : classes.theirPaper;
                 return (
                   <div key={key} className={chatClassName}>
                     <Paper elevation={2} className={paperClassName}>
@@ -247,10 +208,12 @@ class ChatContainer extends Component {
             <Icon fontSize="small">send</Icon>
           </IconButton>
         </form>
-        {/* </Paper> */}
       </>
     );
   }
 }
 
-export default withStyles(styles, { withTheme: true })(ChatContainer);
+export default connect(
+  mapStateToProps,
+  { sendMessage }
+)(withStyles(styles, { withTheme: true })(ChatContainer));

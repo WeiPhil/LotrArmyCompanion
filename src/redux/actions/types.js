@@ -21,6 +21,13 @@ export const ACCESS_DENIED = "ACCESS_DENIED";
 export const API_ERROR = "API_ERROR";
 export const CONFLICT = "CONFLICT";
 
+// Middleware SOCKET actions
+export const SOCKET_EMIT = "SOCKET_EMIT";
+export const SOCKET_ON = "SOCKET_ON";
+
+// Chat
+// See "../../server/Events"
+
 //Auth
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILURE = "REGISTER_FAILURE";

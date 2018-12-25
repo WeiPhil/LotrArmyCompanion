@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { disconnect } from "../redux/actions/auth";
 import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
+import { getCommunityChat } from "./../redux/actions/chat";
 
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT, NEW_BATTLE } from "./../utils/Constants";
 import { NewBattleIcon, LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
@@ -106,7 +107,7 @@ const styles = theme => ({
   }
 });
 
-const mapStateToProps = ({ ui, data, databaseAccess, auth }) => ({
+const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   themeType: ui.themeType,
   companies: data.companies,
   armies: data.armies,
@@ -116,7 +117,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth }) => ({
   isLoadingArmies: databaseAccess.isLoadingArmies,
   username: auth.username,
   loggedIn: auth.loggedIn,
-  accessToken: auth.accessToken
+  accessToken: auth.accessToken,
+  activeChat: chat.activeChat
 });
 
 class MainInterface extends React.Component {
@@ -131,6 +133,8 @@ class MainInterface extends React.Component {
     console.log("Main Interface loading");
     if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
+
+    if (this.props.loggedIn) this.props.getCommunityChat();
   }
 
   componentDidUpdate(prevProps) {
@@ -145,6 +149,9 @@ class MainInterface extends React.Component {
       this.props.companiesNeedRefetch === true
     )
       this.props.getUserCompanies(this.props.username, this.props.accessToken);
+
+    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true && this.props.activeChat === null)
+      this.props.getCommunityChat();
   }
 
   handleDrawerToggle = () => {
@@ -387,6 +394,6 @@ MainInterface.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, getUserCompanies, getArmies, disconnect }
+    { setTheme, getUserCompanies, getArmies, disconnect, getCommunityChat }
   )(withStyles(styles, { withTheme: true })(MainInterface))
 );

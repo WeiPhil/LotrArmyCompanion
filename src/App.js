@@ -11,6 +11,7 @@ import ChatInterface from "./components/coreApp/chat/ChatInterface";
 
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import BattleInterface from "./components/coreApp/battle/BattleInterface";
 
 const themes = {
   light: createMuiTheme({
@@ -66,6 +67,7 @@ class App extends Component {
         <CssBaseline />
         <Router>
           <Switch>
+            <Route exact path="/battle" component={BattleInterface} />
             <Route exact path="/chat" component={ChatInterface} />
             <Route path="/" component={MainInterface} />
           </Switch>

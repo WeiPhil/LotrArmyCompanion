@@ -1,6 +1,6 @@
 const io = require("./index.js").io;
 
-const { VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, LOGOUT, COMMUNITY_CHAT, MESSAGE_SENT, MESSAGE_RECEIVED } = require("./Events");
+const { USER_CONNECTED, USER_DISCONNECTED, SET_COMMUNITY_CHAT, GET_COMMUNITY_CHAT, NEW_MESSAGE } = require("./Events");
 
 const { createUser, createMessage, createChat } = require("./Factories");
 
@@ -8,21 +8,23 @@ let connectedUsers = {};
 
 let communityChat = createChat();
 
+const SOCKET_MESSAGE = "message";
+
 module.exports = function(socket) {
   console.log("Socket Id: " + socket.id);
 
+  console.log("CommunityChat Id: " + communityChat.id);
+
   let sendMessageToChatFromUser;
-  //Verify Username
-  socket.on(VERIFY_USER, (nickname, callback) => {
-    if (isUser(connectedUsers, nickname)) {
-      callback({ isUser: true, user: null });
-    } else {
-      callback({ isUser: false, user: createUser({ name: nickname }) });
-    }
-  });
 
   //User connects with username
-  socket.on(USER_CONNECTED, user => {
+  socket.on(USER_CONNECTED, username => {
+    if (username in connectedUsers) {
+      //TODO
+      // Handle duplicate user connecting (from two sockets for example)
+    }
+
+    user = createUser({ name: username });
     connectedUsers = addUser(connectedUsers, user);
     socket.user = user;
 
@@ -42,19 +44,15 @@ module.exports = function(socket) {
     }
   });
 
-  // User logouts
-  socket.on(LOGOUT, () => {
-    connectedUsers = removeUser(connectedUsers, socket.user.name);
-
-    io.emit(USER_DISCONNECTED, connectedUsers);
-    console.log(connectedUsers);
+  // Every time someone reconnects resends actual communityChat id (not best way)
+  socket.on(GET_COMMUNITY_CHAT, () => {
+    console.log("Server got: GET_COMMUNITY_CHAT");
+    io.emit(SOCKET_MESSAGE, { message: SET_COMMUNITY_CHAT, payload: communityChat });
   });
 
-  socket.on(COMMUNITY_CHAT, callback => {
-    callback(communityChat);
-  });
+  socket.on(NEW_MESSAGE, ({ chatId, message }) => {
+    console.log("Server got: NEW_MESSAGE");
 
-  socket.on(MESSAGE_SENT, ({ chatId, message }) => {
     sendMessageToChatFromUser(chatId, message);
   });
 };
@@ -71,12 +69,10 @@ function removeUser(userList, username) {
   return newList;
 }
 
-function isUser(userList, username) {
-  return username in userList;
-}
-
 function sendMessageToChat(sender) {
   return (chatId, message) => {
-    io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender }));
+    const payload = { chatId: chatId, message: createMessage({ message, sender }) };
+
+    io.emit(SOCKET_MESSAGE, { message: NEW_MESSAGE, payload: payload });
   };
 }
