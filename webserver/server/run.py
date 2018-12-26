@@ -1,6 +1,6 @@
 #!/bin/env python
 from settings import WEBSERVER_PORT
-from src import create_app
+from server import create_app
 from flask_socketio import SocketIO
 
 socketio = SocketIO()
