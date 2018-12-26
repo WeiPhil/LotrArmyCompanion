@@ -8,6 +8,8 @@ import logging
 import logging.handlers as loghandlers
 import sys
 
+from settings import DATABASE_CFG
+
 socketio = SocketIO()
 
 
@@ -21,7 +23,7 @@ def create_app(debug=False):
     app.logger.addHandler(handler)
     app.logger.info("logger initialized")
 
-    database connection setup
+    # database connection setup
     app.logger.info("connecting to database...")
     db = mariadb.connect(
         host=DATABASE_CFG["host"],
