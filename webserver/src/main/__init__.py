@@ -3,4 +3,4 @@ from flask import Blueprint
 
 main = Blueprint('main', __name__)
 
-from . import routes, chat, database
+from . import routes, chat
