@@ -118,7 +118,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   username: auth.username,
   loggedIn: auth.loggedIn,
   accessToken: auth.accessToken,
-  activeChat: chat.activeChat
+  activeChat: chat.activeChat,
+  socketConnected: chat.socketConnected
 });
 
 class MainInterface extends React.Component {
@@ -134,7 +135,7 @@ class MainInterface extends React.Component {
     if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
 
-    if (this.props.loggedIn) this.props.getCommunityChat();
+    if (this.props.socketConnected) this.props.getCommunityChat();
   }
 
   componentDidUpdate(prevProps) {
@@ -150,8 +151,7 @@ class MainInterface extends React.Component {
     )
       this.props.getUserCompanies(this.props.username, this.props.accessToken);
 
-    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true && this.props.activeChat === null)
-      this.props.getCommunityChat();
+    if (prevProps.socketConnected !== this.props.socketConnected && this.props.socketConnected === true) this.props.getCommunityChat();
   }
 
   handleDrawerToggle = () => {

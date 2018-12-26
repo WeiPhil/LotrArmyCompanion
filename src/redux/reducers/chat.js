@@ -1,7 +1,7 @@
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
 
-const { NEW_MESSAGE, SET_COMMUNITY_CHAT } = require("../../server/Events");
+import { NEW_MESSAGE, SET_COMMUNITY_CHAT, CONNECTED_TO_SOCKET, DISCONNECTED_FROM_SOCKET, RESET_MESSAGE_COUNTER } from "../actions/types";
 
 const persistConfig = {
   key: "chat",
@@ -11,7 +11,9 @@ const persistConfig = {
 
 const chatInitialState = {
   activeChat: null,
-  chats: []
+  chats: [],
+  socketConnected: false,
+  messageCounter: 0
 };
 
 const chatReducer = (state = chatInitialState, action) => {
@@ -54,7 +56,19 @@ const chatReducer = (state = chatInitialState, action) => {
         return chat;
       });
 
-      return { ...state, activeChat: newActiveChat, chats: newChats };
+      return { ...state, activeChat: newActiveChat, chats: newChats, messageCounter: state.messageCounter + 1 };
+    }
+
+    case CONNECTED_TO_SOCKET: {
+      return { ...state, socketConnected: true };
+    }
+
+    case DISCONNECTED_FROM_SOCKET: {
+      return { ...state, socketConnected: false };
+    }
+
+    case RESET_MESSAGE_COUNTER: {
+      return { ...state, messageCounter: 0 };
     }
 
     default:

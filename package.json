@@ -23,9 +23,9 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "concurrently 'npm run react' 'npm run webserver_dev' 'npm run server'",
+    "start": "concurrently 'npm run react' 'npm run webserver_dev'",
     "webserver": "cd webserver && python webserver.py",
-    "webserver_dev": "cd webserver && WEBSERVER_PORT=3131 python webserver.py",
+    "webserver_dev": "cd webserver && WEBSERVER_PORT=3131 python webserverV2.py",
     "server": "nodemon src/server/index.js",
     "react": "react-scripts start",
     "build": "react-scripts build",

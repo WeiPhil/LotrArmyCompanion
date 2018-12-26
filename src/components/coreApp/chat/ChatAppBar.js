@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { resetMessageCounter } from "./../../../redux/actions/chat";
+
 import { Typography, Paper, Slide, CardActionArea, Grid, Badge } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { MailIcon } from "./../../icons/MenuIcons";
@@ -30,7 +32,8 @@ const styles = theme => ({
 
 const mapStateToProps = ({ chat, auth }) => ({
   chats: chat.chats,
-  loggedIn: auth.loggedIn
+  loggedIn: auth.loggedInm,
+  messageCounter: chat.messageCounter
 });
 
 class ChatAppBar extends Component {
@@ -40,27 +43,27 @@ class ChatAppBar extends Component {
   };
 
   componentDidUpdate(prevProps, prevStates) {
-    if (this.props.loggedIn) {
-      // increment if user did not open pannel
-      if (!this.state.open && prevProps.chats.length > 0 && prevProps.chats !== this.props.chats) {
-        this.setState({ messageCounter: this.state.messageCounter + 1 });
-      }
-      if (this.state.open !== prevStates.open) {
-        // reset if user toggels pannel
-        this.setState({ messageCounter: 0 });
-      }
-    } else if (prevProps.loggedIn !== this.props.loggedIn) {
-      this.setState({ messageCounter: 0 });
+    // increment if user did not open pannel
+    if (this.state.open !== prevStates.open) {
+      // reset if user toggels pannel
+      this.props.resetMessageCounter();
+    }
+    if (prevProps.loggedIn !== this.props.loggedIn) {
+      this.props.resetMessageCounter();
     }
   }
 
   render() {
-    const { classes } = this.props;
-    const { messageCounter } = this.state;
+    const { classes, messageCounter } = this.props;
 
     return (
       <Paper className={classes.bottomBar}>
-        <Badge invisible={messageCounter === 0} badgeContent={messageCounter} color="primary" style={{ display: "block" }}>
+        <Badge
+          invisible={messageCounter === 0 || this.state.open}
+          badgeContent={messageCounter}
+          color="primary"
+          style={{ display: "block" }}
+        >
           <CardActionArea onClick={() => this.setState({ open: !this.state.open })} className={classes.content}>
             <Grid container justify="space-between">
               <Grid item>
@@ -83,4 +86,7 @@ class ChatAppBar extends Component {
   }
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(ChatAppBar));
+export default connect(
+  mapStateToProps,
+  { resetMessageCounter }
+)(withStyles(styles)(ChatAppBar));

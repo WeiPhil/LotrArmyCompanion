@@ -1,6 +1,6 @@
 import { socketEmitAction } from "./socket";
 
-const { GET_COMMUNITY_CHAT, NEW_MESSAGE } = require("../../server/Events");
+import { GET_COMMUNITY_CHAT, NEW_MESSAGE, RESET_MESSAGE_COUNTER } from "./types";
 
 export const getCommunityChat = () => {
   return socketEmitAction({
@@ -14,4 +14,8 @@ export const sendMessage = message => {
     message: NEW_MESSAGE,
     emitPayload: message
   });
+};
+
+export const resetMessageCounter = () => {
+  return { type: RESET_MESSAGE_COUNTER, payload: null };
 };

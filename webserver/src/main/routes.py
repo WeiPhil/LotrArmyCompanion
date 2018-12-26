@@ -1,29 +1,20 @@
-import atexit
-import json
-import logging
-import logging.handlers as loghandlers
-import os
-import sys
+from . import main
 import time
-
-import _mysql as mariadb
-from flask import Flask, abort, jsonify, request, send_from_directory
+import json
+import os
+from flask import abort, jsonify, request, send_from_directory
 from flask_cors import CORS, cross_origin
-from flask_jwt_extended import (JWTManager, create_access_token,
-                                get_jwt_identity, jwt_required)
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from passlib.hash import pbkdf2_sha256
-from settings import DATABASE_CFG, WEBSERVER_PORT
 
-app = Flask(__name__, static_folder='./../build')
 
-# TODO: refactor
 USER_COMPANIES_PATH = os.path.join("data", "usersCompanies")
 USER_ARMIES_PATH = os.path.join("data", "armies")
 USERS_AUTH_PATH = os.path.join("data", "users")
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+@main.route('/', defaults={'path': ''})
+@main.route('/<path:path>')
 def serve(path):
     """Serve static app pages."""
     if path != "" and os.path.exists("./../build/" + path):
@@ -42,14 +33,6 @@ def writeJson(content, path):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(content, f)
 
-# TODO: remove this
-
-
-def favorite_colors():
-    cursor = db_connection.cursor()
-    cursor.execute('SELECT * FROM favorite_colors')
-    results = [{name: color} for (name, color) in cursor]
-    cursor.close()
 
 # /!\ Temporary authentication (not worst ever but database should be linked to the db
 
@@ -58,7 +41,7 @@ def favorite_colors():
 # it to the caller however we choose.
 
 
-@app.route('/login', methods=['POST'])
+@main.route('/login', methods=['POST'])
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -97,7 +80,7 @@ def login():
     return jsonify(username=username, accessToken=accessToken), 200
 
 
-@app.route('/register', methods=['POST'])
+@main.route('/register', methods=['POST'])
 def register():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -135,7 +118,7 @@ def register():
     return "You have successfully been registered!", 200
 
 
-@app.route('/postJson', methods=['POST'])
+@main.route('/postJson', methods=['POST'])
 def postJsonHandler():
     print(request.is_json)
     content = request.get_json()
@@ -143,7 +126,7 @@ def postJsonHandler():
     return 'JSON posted'
 
 
-@app.route('/getCompany/<user_id>', methods=['GET'])
+@main.route('/getCompany/<user_id>', methods=['GET'])
 @jwt_required
 def getCompany(user_id):
 
@@ -164,7 +147,7 @@ def getCompany(user_id):
     abort(404)
 
 
-@app.route('/postCompany/<user_id>', methods=['POST'])
+@main.route('/postCompany/<user_id>', methods=['POST'])
 def postCompany(user_id):
     if request.data:
         company_path = os.path.join(USER_COMPANIES_PATH, user_id + ".json")
@@ -176,7 +159,7 @@ def postCompany(user_id):
     return "JSON invalid"
 
 
-@app.route('/getArmy/<army_name>', methods=['GET'])
+@main.route('/getArmy/<army_name>', methods=['GET'])
 def getArmy(army_name):
     # check if army of given user exists
     company_path = os.path.join(USER_ARMIES_PATH, army_name + ".json")
@@ -192,7 +175,7 @@ def getArmy(army_name):
     abort(404)
 
 
-@app.route('/getArmies', methods=['GET'])
+@main.route('/getArmies', methods=['GET'])
 def getArmies():
     armies = os.listdir(USER_ARMIES_PATH)
 
@@ -207,49 +190,3 @@ def getArmies():
     response = jsonify(formattedJson[0])
 
     return response
-
-# Serve Static App
-
-
-if __name__ == "__main__":
-
-    # logging
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(logging.INFO)
-    app.logger.addHandler(handler)
-    app.logger.info("logger initialized")
-
-    # database connection setup
-    app.logger.info("connecting to database...")
-    db = mariadb.connect(
-        host=DATABASE_CFG["host"],
-        user=DATABASE_CFG["user"],
-        passwd=DATABASE_CFG["password"],
-        db=DATABASE_CFG["database"]
-    )
-    app.logger.info("database connected")
-
-    CORS(app, expose_headers='Authorization')
-
-    # Setup the Flask-JWT-Extended extension
-    app.config['JWT_SECRET_KEY'] = 'badSecret'  # Change this!
-    # No tokenn expiration (easier)
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
-
-    jwt = JWTManager(app)
-
-    def shutdown():
-        """
-        Shutdown hook.
-        Perform shutdown / cleanup actions here.
-        """
-        # closes database connection
-        print("closing database ")
-        db.close()
-
-    app.logger.info("adding shutdown hook")
-    atexit.register(shutdown)
-
-    app.logger.info("starting web server")
-    app.run(host='0.0.0.0', use_reloader=True,
-            port=WEBSERVER_PORT, threaded=True)

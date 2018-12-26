@@ -2,7 +2,7 @@ import io from "socket.io-client";
 
 import { SOCKET_EMIT, DISCONNECT } from "../actions/types";
 
-const { USER_CONNECTED, USER_DISCONNECTED } = require("../../server/Events");
+import { USER_CONNECTED, USER_DISCONNECTED, CONNECTED_TO_SOCKET, DISCONNECTED_FROM_SOCKET } from "../actions/types";
 
 let connected = false;
 let currentUsername = null;
@@ -25,16 +25,27 @@ const createSocketMiddleware = socketUrl => {
         socket.on("connect", () => {
           currentUsername = getState().auth.username;
           socket.emit(USER_CONNECTED, currentUsername);
+
+          dispatch({
+            type: CONNECTED_TO_SOCKET,
+            payload: null
+          });
           console.log("Connected to socket throug middleware");
         });
 
         socket.on("disconnect", () => {
           socket.emit(USER_DISCONNECTED, getState().auth.username);
+          dispatch({
+            type: DISCONNECTED_FROM_SOCKET,
+            payload: null
+          });
           console.log("Disconnected from socket");
         });
 
         // respond to send events
-        socket.on("message", ({ message, payload }) => {
+        socket.on("message", data => {
+          const { message, payload } = JSON.parse(data);
+          // console.log();
           // Dispatch the action to the reducer
           dispatch({
             type: message,
@@ -45,6 +56,10 @@ const createSocketMiddleware = socketUrl => {
 
       if (connected && action.type === DISCONNECT) {
         connected = false;
+        dispatch({
+          type: DISCONNECTED_FROM_SOCKET,
+          payload: null
+        });
         socket.disconnect();
       }
 

@@ -127,6 +127,7 @@ class ChatContainer extends Component {
               <MenuItem onClick={logout}>Logout</MenuItem>
             </Menu>
           </div> */}
+
           <Divider />
           <br />
           <div className={classes.chatMessages}>
