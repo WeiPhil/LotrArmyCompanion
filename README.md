@@ -19,6 +19,13 @@ Build the backend:
 
 Visit localhost:3000 to see the website.
 
+## Test
+
+### Flask webserver
+
+> cd webserver  
+> pytest
+
 ## Ongoing Work and Todos
 
 > Todo Philippe
