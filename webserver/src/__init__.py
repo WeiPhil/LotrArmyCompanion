@@ -1,5 +1,5 @@
 import _mysql as mariadb
-from flask import Flask
+from flask import Flask, g
 from flask_socketio import SocketIO
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -9,9 +9,6 @@ import logging.handlers as loghandlers
 import sys
 
 from settings import DATABASE_CFG
-
-socketio = SocketIO()
-
 
 def create_app(debug=False):
     """Create an application."""
@@ -51,9 +48,12 @@ def create_app(debug=False):
         print("closing database ")
         db.close()
 
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    socketio.init_app(app)
+    # import modules
+    from .main import main as main_module
+    app.register_blueprint(main_module)
+    from .auth import auth as auth_module
+    app.register_blueprint(auth_module)
+    # from .chat import chat as chat_module
+    # app.register_blueprint(chat_module)
 
     return app

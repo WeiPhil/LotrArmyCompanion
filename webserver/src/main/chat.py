@@ -1,7 +1,7 @@
 import json
 import datetime
 import uuid
-from .. import socketio
+from ..run import socketio
 from flask_socketio import emit
 from flask import jsonify, session
 
