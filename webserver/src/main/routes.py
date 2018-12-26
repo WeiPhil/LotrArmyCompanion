@@ -18,9 +18,9 @@ USERS_AUTH_PATH = os.path.join("data", "users")
 def serve(path):
     """Serve static app pages."""
     if path != "" and os.path.exists("./../build/" + path):
-        return send_from_directory('./../build', path)
+        return send_from_directory(os.path.abspath('./../build'), path)
     else:
-        return send_from_directory('./../build', 'index.html')
+        return send_from_directory(os.path.abspath('./../build'), 'index.html')
 
 
 def loadJson(path):

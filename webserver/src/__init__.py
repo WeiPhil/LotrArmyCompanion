@@ -24,14 +24,14 @@ def create_app(debug=False):
     app.logger.info("logger initialized")
 
     # database connection setup
-    app.logger.info("connecting to database...")
-    db = mariadb.connect(
-        host=DATABASE_CFG["host"],
-        user=DATABASE_CFG["user"],
-        passwd=DATABASE_CFG["password"],
-        db=DATABASE_CFG["database"]
-    )
-    app.logger.info("database connected")
+    # app.logger.info("connecting to database...")
+    # db = mariadb.connect(
+    #     host=DATABASE_CFG["host"],
+    #     user=DATABASE_CFG["user"],
+    #     passwd=DATABASE_CFG["password"],
+    #     db=DATABASE_CFG["database"]
+    # )
+    # app.logger.info("database connected")
 
     CORS(app, expose_headers='Authorization')
 
@@ -42,14 +42,14 @@ def create_app(debug=False):
 
     jwt = JWTManager(app)
 
-    def shutdown():
-        """
-        Shutdown hook.
-        Perform shutdown / cleanup actions here.
-        """
-        # closes database connection
-        print("closing database ")
-        db.close()
+    # def shutdown():
+    #     """
+    #     Shutdown hook.
+    #     Perform shutdown / cleanup actions here.
+    #     """
+    #     # closes database connection
+    #     print("closing database ")
+    #     db.close()
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
