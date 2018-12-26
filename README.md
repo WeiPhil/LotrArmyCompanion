@@ -2,6 +2,8 @@
 
 ![alt text](https://raw.githubusercontent.com/WeiPhil/LotrArmyCompanion/master/src/assets/images/tempCardBackground1.jpg)
 
+![travis](https://travis-ci.org/WeiPhil/LotrArmyCompanion.svg?branch=master)
+
 ## THIS PROJECT IS A WORK IN PROGRESS
 It should not be run in production.
 
