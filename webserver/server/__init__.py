@@ -1,14 +1,14 @@
-import _mysql as mariadb
+import logging
+import logging.handlers as loghandlers
+import sys
+
 from flask import Flask, g
 from flask_socketio import SocketIO
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 from . import database
-
-import logging
-import logging.handlers as loghandlers
-import sys
+from settings import DATABASE_CFG
 
 
 def create_app(debug=False):
@@ -22,7 +22,10 @@ def create_app(debug=False):
     app.logger.info("logger initialized")
 
     # database setup
-    database.init_app(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://'+DATABASE_CFG['user']+':' + \
+        DATABASE_CFG['password']+'@'+DATABASE_CFG['host'] + \
+        '/'+DATABASE_CFG['database']
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(app, expose_headers='Authorization')
 

@@ -1,11 +1,17 @@
 #!/bin/env python
-from settings import WEBSERVER_PORT
-from server import create_app
 from flask_socketio import SocketIO
+from flask_sqlalchemy import SQLAlchemy
+
+
+from settings import WEBSERVER_PORT
+import server
 
 socketio = SocketIO()
+db = SQLAlchemy()
+
 
 def start():
-    app = create_app(debug=False)
+    app = server.create_app(debug=False)
     socketio.init_app(app)
+    db.init_app(app)
     socketio.run(app, host='0.0.0.0', port=WEBSERVER_PORT, use_reloader=True)

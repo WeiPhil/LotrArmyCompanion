@@ -1,30 +1,22 @@
 import _mysql as mariadb
 from flask import current_app, g
 from flask.cli import with_appcontext
-from settings import DATABASE_CFG
+
+from .run import db
 
 
-def get_db():
-    if 'db' not in g:
+class Actor(db.Model):
+    actor_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(45), unique=True, nullable=False)
+    last_name = db.Column(db.String(60), unique=True, nullable=False)
 
-        g.db = mariadb.connect(
-            host=DATABASE_CFG["host"],
-            user=DATABASE_CFG["user"],
-            passwd=DATABASE_CFG["password"],
-            db=DATABASE_CFG["database"]
-        )
-    return g.db
+    def __repr__(self):
+        return '<Actor %r>' % self.first_name
 
 
-def close_db(e=None):
-    db = g.pop('db', None)
-
-    if db is not None:
-        db.close()
-
-def init_db():
-    # does nothing for now
-    pass
-
-def init_app(app):
-    app.teardown_appcontext(close_db)
+def test():
+    db.create_all()
+    newActor = Actor(first_name="Hey", last_name="Doe")
+    db.session.add(newActor)
+    db.session.commit()
+    return str(Actor.query.all)
