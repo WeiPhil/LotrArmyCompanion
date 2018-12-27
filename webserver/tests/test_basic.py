@@ -1,10 +1,11 @@
-from server import create_app
+from server.run import create_app
 """
     Basic tests for the flask webserver.
 """
 
 import os
 import unittest
+
 
 class BasicTests(unittest.TestCase):
 
