@@ -18,9 +18,9 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
 
     case API_START:
       if (action.payload === GET_USER_COMPANIES) {
-        return { ...state, isLoadingCompanies: true };
+        return { ...state, isLoadingCompanies: true, getError: false };
       } else if (action.payload === GET_ARMIES) {
-        return { ...state, isLoadingArmies: true };
+        return { ...state, isLoadingArmies: true, getError: false };
       } else {
         return state;
       }
@@ -38,7 +38,7 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
       }
 
     case DISCONNECT:
-      return { ...state, companiesNeedRefetch: true };
+      return { ...state, companiesNeedRefetch: true, getError: false };
 
     default:
       return state;

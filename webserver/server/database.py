@@ -18,4 +18,4 @@ def test():
     newActor = Actor(first_name="Hey", last_name="Doe")
     db.session.add(newActor)
     db.session.commit()
-    return str(Actor.query.all)
+    print(Actor.query.all)

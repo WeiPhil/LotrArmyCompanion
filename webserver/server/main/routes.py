@@ -106,3 +106,10 @@ def getArmies():
     response = jsonify(formattedJson[0])
 
     return response
+
+
+@main.route('/databaseTest', methods=['GET'])
+def databaseTest():
+    from ..database import test
+    test()
+    return "Test runned"

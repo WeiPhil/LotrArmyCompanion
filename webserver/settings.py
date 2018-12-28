@@ -11,5 +11,5 @@ DATABASE_CFG = {
     'password': os.getenv('MYSQL_PASSWORD', os.getenv('MYSQL_ROOT_PASSWORD', 'root')),
     'host': os.getenv("MYSQL_HOST", 'database'),
     'port': 3306,
-    'database': 'app'
+    'database': 'lotr'
 }
