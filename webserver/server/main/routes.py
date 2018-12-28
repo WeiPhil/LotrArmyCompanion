@@ -110,6 +110,11 @@ def getArmies():
 
 @main.route('/databaseTest', methods=['GET'])
 def databaseTest():
-    from ..database import test
-    test()
+    from ..database import query
+
+    try:
+        query()
+    except:
+        return "Something went wrong in query see console for info"
+
     return "Test runned"
