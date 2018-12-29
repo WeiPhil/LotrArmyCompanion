@@ -7,10 +7,9 @@ matrix:
       install:
         - pip install -r requirements.txt
       script:
-        - pytest
+        - cd webserver && pytest
 
 notifications:
   email:
     - pierre.thevenet@protonmail.com
     - philippe.weier@epfl.ch
-  
