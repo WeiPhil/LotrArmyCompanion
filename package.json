@@ -24,8 +24,8 @@
   },
   "scripts": {
     "start": "concurrently 'npm run react' 'npm run webserver_dev' 'npm run database'",
-    "webserver": "cd webserver && python webserver.py",
-    "webserver_dev": "cd webserver && MYSQL_HOST='0.0.0.0' WEBSERVER_PORT=3131 python webserver.py",
+    "webserver": "cd webserver && PYTHONIOENCODING=utf8 python webserver.py",
+    "webserver_dev": "cd webserver && PYTHONIOENCODING=utf8 MYSQL_HOST='0.0.0.0' WEBSERVER_PORT=3131 python webserver.py",
     "database": "docker-compose start database",
     "server": "nodemon src/server/index.js",
     "react": "react-scripts start",

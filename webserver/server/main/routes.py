@@ -112,9 +112,10 @@ def getArmies():
 def databaseTest():
     from ..database import query
 
-    try:
-        query()
-    except:
-        return "Something went wrong in query see console for info"
+    content = query()
+    # try:
+    #     content =
+    # except Exception as e:
+    #     return str(e)
 
-    return "Test runned"
+    return str(content)

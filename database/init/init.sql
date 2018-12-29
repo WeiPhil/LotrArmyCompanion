@@ -1,5 +1,7 @@
 -- database setup
-USE `lotr` ;
+USE `lotr`;
+
+ALTER DATABASE lotr CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `lotr`.`faction`
@@ -7,10 +9,10 @@ USE `lotr` ;
 CREATE TABLE IF NOT EXISTS `lotr`.`faction` (
   `faction_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `alignment` ENUM('good', 'bad', 'neutral') NOT NULL,
+  `alignment` ENUM('good', 'evil', 'neutral') NOT NULL,
   PRIMARY KEY (`faction_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`)
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -44,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit` (
     REFERENCES `lotr`.`faction` (`faction_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -64,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`altering_effect` (
   `will_bonus` INT UNSIGNED NULL DEFAULT 0,
   `faith_bonus` INT UNSIGNED NULL DEFAULT 0,
   PRIMARY KEY (`altering_effect_id`)
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -86,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`equipement` (
     REFERENCES `lotr`.`altering_effect` (`altering_effect_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -99,7 +101,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`user` (
   `password` VARCHAR(32) NOT NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `username_UNIQUE` (`username`));
+  UNIQUE INDEX `username_UNIQUE` (`username`)
+);
 
 
 -- -----------------------------------------------------
@@ -140,8 +143,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`magical_power` (
     FOREIGN KEY (`altering_effect_id`)
     REFERENCES `lotr`.`altering_effect` (`altering_effect_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `lotr`.`injury`
@@ -157,7 +160,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`injury` (
     FOREIGN KEY (`altering_effect_id`)
     REFERENCES `lotr`.`altering_effect` (`altering_effect_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION
+);
 
 
 -- -----------------------------------------------------
@@ -229,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`promotion` (
     REFERENCES `lotr`.`company_unit` (`company_unit_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------
@@ -311,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_equipement` (
     REFERENCES `lotr`.`equipement` (`equipement_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+;
 
 
 -- -----------------------------------------------------
@@ -354,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_heroic_action` (
     REFERENCES `lotr`.`heroic_action` (`heroic_action_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+;
 
 
 -- -----------------------------------------------------
@@ -376,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_magical_power` (
     REFERENCES `lotr`.`magical_power` (`magical_power_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+;
 
 
 -- -----------------------------------------------------
@@ -419,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_special_rule` (
     REFERENCES `lotr`.`special_rule` (`special_rule_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-)ENGINE = InnoDB;
+);
 
 
 -- -----------------------------------------------------

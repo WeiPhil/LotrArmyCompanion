@@ -1,5 +1,4 @@
 
-
 import logging
 import logging.handlers as loghandlers
 import sys
@@ -24,7 +23,7 @@ def create_app(debug=False):
     # database setup
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://'+DATABASE_CFG['user']+':' + \
         DATABASE_CFG['password']+'@'+DATABASE_CFG['host'] + \
-        '/'+DATABASE_CFG['database']
+        '/'+DATABASE_CFG['database']+'?charset=utf8mb4'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     CORS(app, expose_headers='Authorization')

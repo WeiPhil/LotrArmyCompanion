@@ -1,14 +1,17 @@
 # development docker-compose
 
-version: '3'
+version: "3"
 
 services:
   database:
     image: mariadb
     restart: always
     environment:
+      # So hard to find and yet this makes SQL INSERT queries suuport UTF-8
+      LANG: C.UTF-8
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: app
+      MYSQL_DATABASE: lotr
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     networks:
       - backend
     volumes:
@@ -22,8 +25,10 @@ services:
       - database
     build: ./webserver
     restart: always
+    # Python encoding for correct utf-8 json behaviour
     environment:
       - WEBSERVER_PORT=3000
+      - PYTHONIOENCODING=utf8
     volumes:
       - ./build:/app/build
     ports:
