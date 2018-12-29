@@ -3,11 +3,12 @@ matrix:
     - language: python
       python: 3.6.7
       before_install:
+        - mkdir build && touch build/index.html
         - cd webserver
       install:
         - pip install -r requirements.txt
       script:
-        - cd webserver && pytest
+        - pytest
 
 notifications:
   email:
