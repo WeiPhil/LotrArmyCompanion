@@ -55,7 +55,7 @@ class UnitCharacteristics extends Component {
   }
 
   createDataUser(improvs, characs, wargear, baseWargear) {
-    var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defense: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
+    var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defence: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
 
     wargear
       .filter(weapon => baseWargear.indexOf(weapon) === -1 && weapon in WEAPON_BONUSES)
@@ -74,7 +74,7 @@ class UnitCharacteristics extends Component {
       fight: this.getCharacteristicFor(characs.fight, improvs.fight + bonus.fight),
       shoot: this.getCharacteristicFor(characs.shoot, improvs.shoot + bonus.shoot, "+"),
       strength: this.getCharacteristicFor(characs.strength, improvs.strength + bonus.strength),
-      defense: this.getCharacteristicFor(characs.defense, improvs.defense + bonus.defense),
+      defence: this.getCharacteristicFor(characs.defence, improvs.defence + bonus.defence),
       attacks: this.getCharacteristicFor(characs.attacks, improvs.attacks + bonus.attacks),
       wounds: this.getCharacteristicFor(characs.wounds, improvs.wounds + bonus.wounds),
       courage: this.getCharacteristicFor(characs.courage, improvs.courage + bonus.courage),
@@ -90,7 +90,7 @@ class UnitCharacteristics extends Component {
       fight: characs.fight,
       shoot: characs.shoot + "+",
       strength: characs.strength,
-      defense: characs.defense,
+      defence: characs.defence,
       attacks: characs.attacks,
       wounds: characs.wounds,
       courage: characs.courage,
@@ -131,7 +131,7 @@ class UnitCharacteristics extends Component {
                 {characteristics.fight}/{characteristics.shoot}
               </CustomTableCell>
               <CustomTableCell>{characteristics.strength}</CustomTableCell>
-              <CustomTableCell>{characteristics.defense}</CustomTableCell>
+              <CustomTableCell>{characteristics.defence}</CustomTableCell>
               <CustomTableCell>{characteristics.attacks}</CustomTableCell>
               <CustomTableCell>{characteristics.wounds}</CustomTableCell>
               <CustomTableCell>{characteristics.courage}</CustomTableCell>

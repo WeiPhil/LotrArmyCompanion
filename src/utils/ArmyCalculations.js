@@ -28,7 +28,7 @@ export function calculatePoints(baseTroop, userTroop) {
         if (
           charac === "fight" ||
           charac === "strength" ||
-          charac === "defense" ||
+          charac === "defence" ||
           charac === "courage" ||
           charac === "might" ||
           charac === "will" ||

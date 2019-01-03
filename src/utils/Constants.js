@@ -58,13 +58,13 @@ export const ARMOURED_HORSE = "horse";
 
 export const WEAPON_BONUSES = {
   shield: {
-    defense: 1
+    defence: 1
   },
   armour: {
-    defense: 1
+    defence: 1
   },
   heavy_armor: {
-    defense: 2
+    defence: 2
   }
 };
 
