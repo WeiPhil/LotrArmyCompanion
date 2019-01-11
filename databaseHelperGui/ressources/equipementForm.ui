@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>865</width>
+    <height>662</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="text">
+        <string>New Equipement</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>839</width>
+        <height>549</height>
+       </rect>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>710</height>
+       </size>
+      </property>
+      <layout class="QFormLayout" name="formLayout">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="nameLabel">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QHBoxLayout" name="nameLayout">
+         <item>
+          <widget class="QLineEdit" name="nameInput">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="helperName">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <italic>true</italic>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>(e.g. Spear)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>true</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>(Cost in Gold or Points) If the cost of the weapon is fixed put twice the same cost, if it's a free equipment or not specified let 0.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="pointsLabel">
+         <property name="text">
+          <string>Cost</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <italic>false</italic>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Low cost</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="lowCostSpinBox"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="font">
+            <font>
+             <weight>50</weight>
+             <italic>false</italic>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>High Cost</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="highCostSpinBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="1">
+        <widget class="QCheckBox" name="isExtraCheckBox">
+         <property name="text">
+          <string>An equipement from the &quot;Companies Rule's Book&quot; exclusively (e.g Torch)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="descriptionLabel">
+         <property name="text">
+          <string>Description (Optional)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPlainTextEdit" name="descriptionPlainTextEdit"/>
+       </item>
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="createNewSpecialRuleButton">
+           <property name="text">
+            <string>Create New Special Rule</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="specialRulesComboBox">
+           <property name="font">
+            <font>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="minimumContentsLength">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addSpecialRuleButton">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>Add Special Rule</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Associated Special Rules</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeSpecialRuleButton">
+           <property name="text">
+            <string>Remove Selected Rule</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="1">
+        <widget class="QListWidget" name="specialRulesListWidget"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="hintName">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>true</italic>
+           <bold>true</bold>
+           <underline>false</underline>
+          </font>
+         </property>
+         <property name="text">
+          <string>That equipement already exists!</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>checkFormAndSave()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>735</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>confirmQuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>735</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addSpecialRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>791</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>469</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createNewSpecialRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>createSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>280</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>469</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeSpecialRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>removeSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>824</x>
+     <y>657</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>469</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nameInput</sender>
+   <signal>editingFinished()</signal>
+   <receiver>Dialog</receiver>
+   <slot>checkNameNotExists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>478</x>
+     <y>83</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>330</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>checkFormAndSave()</slot>
+  <slot>confirmQuit()</slot>
+  <slot>addSpecialRule()</slot>
+  <slot>createSpecialRule()</slot>
+  <slot>removeSpecialRule()</slot>
+  <slot>checkNameNotExists()</slot>
+ </slots>
+</ui>

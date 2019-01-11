@@ -17,6 +17,13 @@
 # production
 /build
 
+# database data
+database/data
+
+# database helper gui production
+databaseHelperGui/build
+databaseHelperGui/dist
+
 # misc
 .DS_Store
 .env.local

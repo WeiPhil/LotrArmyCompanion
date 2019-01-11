@@ -76,12 +76,12 @@ const styles = theme => ({
 });
 
 function CompanyTroopCard(props) {
-  const { baseTroop, userTroop, classes, injured, forPreview = false, mobile } = props;
-  const isDead = injured.indexOf(userTroop.access_name) !== -1 && !forPreview;
+  const { unit, company_unit, classes, injured, forPreview = false, mobile } = props;
+  const isDead = injured.indexOf(company_unit.access_name) !== -1 && !forPreview;
 
   const height = mobile ? undefined : "100%";
 
-  const calculatedPoints = calculatePoints(baseTroop, userTroop);
+  const calculatedPoints = calculatePoints(unit, company_unit);
 
   const floatingPoints = (
     <Typography className={classes.pointsMinimal} variant="subtitle2">
@@ -91,17 +91,17 @@ function CompanyTroopCard(props) {
 
   const floatingTroopType = (
     <>
-      {userTroop.troop_type === LIEUTNANT && (
+      {company_unit.troop_type === LIEUTNANT && (
         <Avatar key={LIEUTNANT} className={classes.floatingTroopType}>
           <LieutnantIcon style={{ fontSize: 14 }} />
         </Avatar>
       )}
-      {userTroop.troop_type === SERGEANT && (
+      {company_unit.troop_type === SERGEANT && (
         <Avatar key={SERGEANT} className={classes.floatingTroopType}>
           <SergeantIcon style={{ fontSize: 14 }} />
         </Avatar>
       )}
-      {userTroop.troop_type !== LIEUTNANT && userTroop.troop_type !== SERGEANT && (
+      {company_unit.troop_type !== LIEUTNANT && company_unit.troop_type !== SERGEANT && (
         <Avatar key={"warrior"} className={classes.floatingTroopType}>
           <WargearIcon style={{ fontSize: 14 }} />
         </Avatar>
@@ -110,8 +110,8 @@ function CompanyTroopCard(props) {
   );
 
   const minimalContent = (
-    <Typography className={classes.troopTitleMinimal} variant="body2">
-      {userTroop.display_name}
+    <Typography noWrap className={classes.troopTitleMinimal} variant="body2">
+      {company_unit.display_name}
     </Typography>
   );
 
@@ -119,7 +119,7 @@ function CompanyTroopCard(props) {
     <>
       <CardContent>
         <Typography variant="h5" gutterBottom>
-          {userTroop.troop_type === LIEUTNANT && (
+          {company_unit.troop_type === LIEUTNANT && (
             <Tooltip placement="top" title="Lieutnant">
               <span>
                 <IconButton disabled={isDead} className={classes.icons}>
@@ -128,7 +128,7 @@ function CompanyTroopCard(props) {
               </span>
             </Tooltip>
           )}
-          {userTroop.troop_type === SERGEANT && (
+          {company_unit.troop_type === SERGEANT && (
             <Tooltip placement="top" title="Sergeant">
               <span>
                 <IconButton disabled={isDead} className={classes.icons}>
@@ -137,7 +137,7 @@ function CompanyTroopCard(props) {
               </span>
             </Tooltip>
           )}
-          {userTroop.troop_type !== LIEUTNANT && userTroop.troop_type !== SERGEANT && (
+          {company_unit.troop_type !== LIEUTNANT && company_unit.troop_type !== SERGEANT && (
             <Tooltip placement="top" title="Warrior">
               <span>
                 <IconButton disabled={isDead} className={classes.icons}>
@@ -146,7 +146,7 @@ function CompanyTroopCard(props) {
               </span>
             </Tooltip>
           )}
-          {userTroop.display_name}
+          {company_unit.display_name}
         </Typography>
 
         <Grid container justify="space-evenly">
@@ -174,7 +174,7 @@ function CompanyTroopCard(props) {
               </Grid>
               <Grid item>
                 <Typography variant="subtitle2">
-                  <Avatar className={classes.statusAvatar}>{userTroop.experience}</Avatar>
+                  <Avatar className={classes.statusAvatar}>{company_unit.experience}</Avatar>
                 </Typography>
               </Grid>
             </Grid>
@@ -183,10 +183,10 @@ function CompanyTroopCard(props) {
 
         {!forPreview && (
           <UnitCharacteristics
-            wargear={userTroop.wargear}
-            baseWargear={baseTroop.base_wargear}
-            improvs={userTroop.improvements}
-            characs={baseTroop.characteristics}
+            wargear={company_unit.wargear}
+            baseWargear={unit.base_wargear}
+            improvs={company_unit.improvements}
+            characs={unit.characteristics}
           />
         )}
 
@@ -195,14 +195,14 @@ function CompanyTroopCard(props) {
         </Typography>
         <div className={classes.chipRoot}>
           {/* Basic wargear */}
-          {userTroop.wargear
-            .filter(weapon => baseTroop.base_wargear.indexOf(weapon) !== -1)
+          {company_unit.wargear
+            .filter(weapon => unit.base_wargear.indexOf(weapon) !== -1)
             .map((weapon, index) => (
               <Chip variant="outlined" key={index} label={weapon.replace(/_/g, " ")} className={classes.chip} />
             ))}
           {/* Optional wargear */}
-          {userTroop.wargear
-            .filter(weapon => !(baseTroop.base_wargear.indexOf(weapon) !== -1))
+          {company_unit.wargear
+            .filter(weapon => !(unit.base_wargear.indexOf(weapon) !== -1))
             .map((weapon, index) => (
               <Chip
                 variant={isDead ? "outlined" : "default"}
@@ -218,7 +218,7 @@ function CompanyTroopCard(props) {
           Description
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {baseTroop.description}
+          {unit.description}
         </Typography>
       </CardContent>
       <CardActions>
@@ -231,8 +231,8 @@ function CompanyTroopCard(props) {
 
   return (
     <Thumbnailer
-      cardStyleOverride={isDead ? { height: height, opacity: 0.6, backgroundColor: "rgba(255, 255, 255, 0.2)" } : { height: height }}
-      cardMediaImagePath={userTroop.image_path}
+      additionalCardStyle={isDead ? { height: height, opacity: 0.6, backgroundColor: "rgba(255, 255, 255, 0.2)" } : { height: height }}
+      cardMediaImagePath={require("./../../assets/images/" + company_unit.image_path)}
       minimalContent={minimalContent}
       cardContent={cardContent}
       floatLeftContent={floatingPoints}
@@ -250,8 +250,8 @@ CompanyTroopCard.defaultProps = {
 
 CompanyTroopCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  userTroop: PropTypes.object.isRequired,
-  baseTroop: PropTypes.object.isRequired,
+  company_unit: PropTypes.object.isRequired,
+  unit: PropTypes.object.isRequired,
   injured: PropTypes.array.isRequired,
   forPreview: PropTypes.bool.isRequired,
   mobile: PropTypes.bool.isRequired

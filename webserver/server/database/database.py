@@ -4,25 +4,23 @@ from sqlalchemy import exc
 from flask_sqlalchemy import SQLAlchemy
 
 import json
+import os
+from functools import reduce
 
 from server.run import db
 from .models import *
-from .utility import writeModelToJson
+from .utility import writeModelToJson, AlchemyEncoder
+from .queries import *
 
 
 def query():
+    factionName = "angmar"
 
-    # json_str = """{"name": "SuperJson", "alignment": "bad"}"""
-    # obj = json.loads(json_str)
+    # except exc.SQLAlchemyError as error:
 
-    # newFaction = Faction(name='The Shire', alignment='good')
-    # db.session.add(newFaction)
+    # print(writeModelToJson(Unit.query.all(), isList=True, filename='units'))
+    factionJson = getUnits(factionName)
+    with open(os.path.join("queriedData", factionName+'.json'), 'w', encoding='utf8') as outfile:
+        json.dump(factionJson, ensure_ascii=False, fp=outfile)
 
-    try:
-        db.session.commit()
-    except exc.SQLAlchemyError as error:
-        print(str(error))
-    # sys.stdout.reconfigure(encoding='utf-8')
-
-    print(writeModelToJson(Faction.query.all(), isList=True))
-    return "Noting"
+    return factionJson

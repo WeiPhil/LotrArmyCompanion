@@ -1,0 +1,4 @@
+moria_goblin_warrior
+moria_blackshield
+wild_warg
+the_balrog

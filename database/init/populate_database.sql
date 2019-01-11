@@ -69,8 +69,7 @@ VALUES
     ('drum',NULL,NULL,NULL,'no',NULL), 
     ('claws',NULL,NULL,NULL,'no',NULL),
     ('teeth',NULL,NULL,NULL,'no',NULL), 
-    ('two-handed_axe',NULL,1,5,'no',NULL), 
-    ('nenya','This unobtrusive ring is one of the three Elven Rings of power.',NULL,NULL,'no',NULL), 
+    ('two-handed_axe',NULL,1,5,'no',NULL),
     ('elven-made_sword',NULL,1,5,'no',NULL),
     ('elven-made_hand-and-a-half_sword',NULL,1,5,'no',NULL),
     ('elven_cloak',NULL,5,10,'no',NULL), 
@@ -79,50 +78,24 @@ VALUES
     ('warg',NULL,6,10,'no',NULL), 
     ('armoured_horse',NULL,9,15,'no',NULL);
 
-
--- ---------------------------------
--- Populating Unit
--- ---------------------------------
-
--- Warriors
-INSERT INTO unit 
-    (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
-VALUES 
-    -- Moria
-    ((SELECT faction_id FROM faction WHERE name='Moria'),
-    'moria_goblin_warrior',4,
-    5,2,5,3,4,1,1,2,
-    'Since the fall of Khazad-dûm, the former Dwarven kingdom of Moria has become overrun by swrms of these foul and stunted creatures.',
-    'goblin_fall.jpg'),
-
-    ((SELECT faction_id FROM faction WHERE name='Moria'),
-    'moria_blackshield',8,
-    5,2,5,3,6,1,1,3,
-    'Moria Blackshield are just awesome! Anything to argue?.',
-    'tempCardBackground1.jpg'),
-    -- Angmar    
-    ((SELECT faction_id FROM faction WHERE name='Angmar'),
-    'wild_warg',8,
-    10,3,5,4,4,1,1,2,
-    'Wargs are always hunting like beasts.',
-    'warg_rider.jpg'),
-    -- Lothlorien    
-    ((SELECT faction_id FROM faction WHERE name='Lothlórien'),
-    'wood_elf_warrior',8,
-    6,5,3,3,3,1,1,5,
-    'An epic wood elf description.',
-    'tempCardBackground1.jpg');
-
 -- ---------------------------------
 -- Populating Special Rule
 -- ---------------------------------
 
-INSERT INTO special_rule 
-    (name,type,description,origin)
+-- receivedSpecialRules.sql
+
+-- ---------------------------------
+-- Populating Heroic Actions
+-- ---------------------------------
+
+INSERT INTO heroic_action 
+    (name,description,alternative_name,alternative_description)
 VALUES 
-    ('Cave Dweller','active',
-    'A model with this special rule adds 1 to all Jump, Leap and Climb tests. They also suffer no penalties for fighting in the dark.',
-    'basic');
+    ('heroic_move','A Heroic Move enables a Hero model to move before other models – essentially defying the usual Priority system. The Hero can then move, jump, climb, Charge and even use their Stand Fast! in the usual manner.
+This Heroic Action can prove extremely valuable, so when a Heroic Move is declared by the player without Priority, the opposing player will often choose to also declare a Heroic Move in an attempt to keep the initiative.
+    If a Hero declares that they will attempt a Heroic Move, but is charged before they can perform it, the Heroic Move is cancelled and the Might point spent to attempt it is lost.',
+    'with_me!','A Hero model performing a Heroic Move may choose to shout “With Me!” In this case, note their starting position before moving them. Any friendly models within 6" of that point may also move, so long as they end their move within 6" of the Hero (if they are not able to end within 6" of the Hero then they may not move at all this phase). Any model in range of the Heroic Move that chooses not to move as part of the Heroic Move, will forgo their movement, and cannot act any further during that Move phase. The Hero calling the With Me! must fully complete their move before any friendly models can start their move as part of the With Me!
+Note that a Hero model can utilise their Heroic Move and call With Me! without actually moving themselves, even if they fail a Courage test as a result of the Terror special rule, they are simply goading those around them into action. However, should a Hero call With Me! and then subsequently flee the board as a result of their force being Broken, their Heroic Move will automatically be cancelled.');
 
 -- ---------------------------------
 -- Populating Keywords
@@ -135,3 +108,11 @@ VALUES
     ('infantry'),('cavalry'),('monster'),
     ('hobbit'),('elf'),('orc'),('pony'),('warg'),('goblin'),('wizard'),('man'),('dwarf'),('spirit'),('ringwraith'),('spider'),('troll'),('siege_engine'),('uruk-hai'),('great_beast'),('war_beast'),('drake'),('dragon'),('kraken'),('bat'),('mûmak'),('pony'),('ent'),('eagle'),
     ('gondor'),('mirkwood'),('erebor'),('númenor'),('arnor'),('rohan'),('rivendell'),('lórien'),('khazad-dûm'),('moria'),('iron_hills'),('mordor'),('angmar'),('easterling'),('isengard'),('dunlending'),('khandish'),('haradrim'),('mahûd'),('corsair'),('ruffian');
+
+
+
+-- ---------------------------------
+-- Populating Unit
+-- ---------------------------------
+
+-- received3Units.sql

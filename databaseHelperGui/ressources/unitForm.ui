@@ -1,0 +1,1206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>885</width>
+    <height>924</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="text">
+        <string>New Unit</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>859</width>
+        <height>1166</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QFormLayout" name="formLayout_3">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <property name="labelAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="factionLabel">
+         <property name="text">
+          <string>Faction</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="factionComboBox">
+         <item>
+          <property name="text">
+           <string>The Fellowship</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Shire</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Rangers</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Númenor</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Minas Tirith</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Fiefdoms</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Dead of Dunharrow</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Arnor</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Rohan</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Wildmen of Drúadan</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Rivendell</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Lothlórien</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Fangorn</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Misty Mountains</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Kingdom of Khazad-Dûm</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Wanderers in the Wild</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Barad-Dûr</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Angmar</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Mordor</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Moria</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Isengard</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Easterlings</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Variags of Khand</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>The Serpent Horde</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Far Harad</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Corsairs of Umbar</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Sharkey''s Rogues</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="nameLabel">
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QHBoxLayout" name="nameLayout">
+         <item>
+          <widget class="QLineEdit" name="nameInput">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="helperName">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+             <italic>true</italic>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="text">
+            <string>(e.g. Moria Goblin Warrior)</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="hintName">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+           <weight>75</weight>
+           <italic>true</italic>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>That name already exists!</string>
+         </property>
+         <property name="indent">
+          <number>20</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="pointsLabel">
+         <property name="text">
+          <string>Points</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QSpinBox" name="pointsSpinBox">
+           <property name="maximum">
+            <number>999</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="unitRankLabel">
+         <property name="text">
+          <string>Keywords</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QComboBox" name="keywordsComboBox">
+           <property name="font">
+            <font>
+             <underline>false</underline>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="minimumContentsLength">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addKeywordButton">
+           <property name="text">
+            <string>Add Keyword</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="6" column="1">
+        <widget class="QListWidget" name="keywordListWidget"/>
+       </item>
+       <item row="7" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <item>
+          <spacer name="horizontalSpacer_11">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeKeywordButton">
+           <property name="text">
+            <string>Remove Selected Keyword</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="characteristicsLabel">
+         <property name="text">
+          <string>Characteristics</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="moveLabel">
+           <property name="maximumSize">
+            <size>
+             <width>18</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Mv</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="moveInput">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="inputMask">
+            <string/>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="inchLabel">
+           <property name="maximumSize">
+            <size>
+             <width>10</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>&quot;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="fightLabel">
+           <property name="minimumSize">
+            <size>
+             <width>11</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>14</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>F</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="fightInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="barLabel">
+           <property name="text">
+            <string>/</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="shootInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="plusLabel">
+           <property name="minimumSize">
+            <size>
+             <width>21</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>+</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="strengthLabel">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>S</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="strengthInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="defenceLabel">
+           <property name="text">
+            <string>D</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="defenceInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="attacksLabel">
+           <property name="text">
+            <string>A</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="attacksInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="woundsLabel">
+           <property name="text">
+            <string>W</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="woundsInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="courageLabel">
+           <property name="text">
+            <string>C</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="courageInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="mightLabel">
+           <property name="text">
+            <string>M</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="mightInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="willLabel">
+           <property name="text">
+            <string>W</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="willInput"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="faithLabel">
+           <property name="text">
+            <string>F</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="faithInput"/>
+         </item>
+        </layout>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="descriptionLabel">
+         <property name="text">
+          <string>Description (Optional)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QPlainTextEdit" name="descriptionPlainTextEdit"/>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="wargearLabel">
+         <property name="text">
+          <string>Wargear</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="createNewEquipementButton">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Create New Equipement</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="wargearComboBox"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Points</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="equipementCostSpinBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addItemButton">
+           <property name="text">
+            <string>Add Item</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="14" column="1">
+        <widget class="QListWidget" name="wargearListWidget"/>
+       </item>
+       <item row="15" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_3">
+           <property name="text">
+            <string>Remove Selected Item</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="16" column="0">
+        <widget class="QLabel" name="specialRuleLabel">
+         <property name="text">
+          <string>Special Rules</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QPushButton" name="createNewSpecialRuleButton">
+           <property name="text">
+            <string>Create New Special Rule</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_8">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="specialRulesComboBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addRuleButton">
+           <property name="text">
+            <string>Add Rule</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="17" column="1">
+        <widget class="QListWidget" name="specialRuleslistWidget"/>
+       </item>
+       <item row="18" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeSpecialRuleButton">
+           <property name="text">
+            <string>Remove Selected Rule</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="19" column="0">
+        <widget class="QLabel" name="heroicActionlabel">
+         <property name="text">
+          <string>Heroic Actions</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="1">
+        <layout class="QHBoxLayout" name="heroicActionLayout">
+         <item>
+          <widget class="QComboBox" name="heroicActionComboBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addHeroicActionButton">
+           <property name="text">
+            <string>Add Heroic Action</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="20" column="1">
+        <widget class="QListWidget" name="heroicActionListWidget"/>
+       </item>
+       <item row="21" column="1">
+        <layout class="QHBoxLayout" name="heroicActionRemoveLayout">
+         <item>
+          <spacer name="horizontalSpacer_13">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeHeroicActionButton">
+           <property name="text">
+            <string>Remove Selected Heroic Action</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="22" column="0">
+        <widget class="QLabel" name="magicalPowersLabel">
+         <property name="text">
+          <string>Magical Powers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="22" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QPushButton" name="createMagicalPowerButton">
+           <property name="text">
+            <string>Create New Magical Power</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_16">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Minimum</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QComboBox" name="magicalPowerComboBox"/>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addMagicalPowerButton">
+           <property name="text">
+            <string>Add Magical Power</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="24" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_11">
+         <item>
+          <spacer name="horizontalSpacer_15">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeMagicalPowerButton">
+           <property name="text">
+            <string>Remove Selected Magical Power</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="23" column="1">
+        <widget class="QListWidget" name="magicalPowerListWidget"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>checkFormAndSave()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>987</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>confirmQuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>322</x>
+     <y>987</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createNewEquipementButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>createEquipement()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addItemButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addEquipement()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>860</x>
+     <y>473</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>860</x>
+     <y>627</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createNewSpecialRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>createSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>262</x>
+     <y>627</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeKeywordButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>removeKeyword()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>806</x>
+     <y>328</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>466</x>
+     <y>495</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeSpecialRuleButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>removeSpecialRule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>819</x>
+     <y>740</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>466</x>
+     <y>495</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addKeywordButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addKeyword()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>784</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>466</x>
+     <y>495</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>nameInput</sender>
+   <signal>editingFinished()</signal>
+   <receiver>Dialog</receiver>
+   <slot>checkNameNotExists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>442</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>441</x>
+     <y>499</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeHeroicActionButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>removeHeroicAction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>832</x>
+     <y>423</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>487</x>
+     <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addHeroicActionButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addHeroicAction()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>818</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>487</x>
+     <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addMagicalPowerButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>addMagicalPower()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>954</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>582</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>createMagicalPowerButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>createMagicalPower()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>269</x>
+     <y>954</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>582</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removeMagicalPowerButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>removeMagicalPower()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>685</x>
+     <y>1084</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>582</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>checkFormAndSave()</slot>
+  <slot>confirmQuit()</slot>
+  <slot>createEquipement()</slot>
+  <slot>addEquipement()</slot>
+  <slot>addSpecialRule()</slot>
+  <slot>createSpecialRule()</slot>
+  <slot>addKeyword()</slot>
+  <slot>removeKeyword()</slot>
+  <slot>removeSpecialRule()</slot>
+  <slot>removeEquipement()</slot>
+  <slot>checkNameNotExists()</slot>
+  <slot>addHeroicAction()</slot>
+  <slot>removeHeroicAction()</slot>
+  <slot>createMagicalPower()</slot>
+  <slot>addMagicalPower()</slot>
+  <slot>removeMagicalPower()</slot>
+ </slots>
+</ui>

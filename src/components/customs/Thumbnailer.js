@@ -6,7 +6,7 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 
-import { TUMBNAIL_IMAGE_SIZE, CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH } from "../../utils/Constants";
+import { TUMBNAIL_CARD_SIZE, CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH } from "../../utils/Constants";
 
 import { Grow, Collapse } from "@material-ui/core";
 
@@ -23,9 +23,9 @@ const styles = theme => ({
     height: CARD_IMAGE_HEIGHT
   },
   media: {
-    minWidth: TUMBNAIL_IMAGE_SIZE,
+    minWidth: TUMBNAIL_CARD_SIZE,
     width: "100%",
-    height: TUMBNAIL_IMAGE_SIZE * 0.5
+    height: TUMBNAIL_CARD_SIZE * 0.5
   }
 });
 
@@ -61,12 +61,23 @@ class Thumbnailer extends Component {
   };
 
   render() {
-    const { cardMediaImagePath, minimalContent, cardContent, floatLeftContent, floatRightContent, classes, cardStyleOverride } = this.props;
+    const {
+      cardMediaImagePath,
+      minimalContent,
+      cardContent,
+      floatLeftContent,
+      floatRightContent,
+      classes,
+      additionalCardStyle,
+      mobile
+    } = this.props;
+
+    const widthConstraint = { width: mobile && !this.state.detailsOpen ? TUMBNAIL_CARD_SIZE : undefined };
 
     return (
       <Grow in={true} timeout={this.props.timeout}>
-        <div style={cardStyleOverride}>
-          <Card style={cardStyleOverride} className={classes.card}>
+        <div style={additionalCardStyle}>
+          <Card style={{ ...additionalCardStyle, ...widthConstraint }} className={classes.card}>
             <CardActionArea disabled={!this.props.mobile} onClick={this.handleExpandClick}>
               <CardMedia
                 className={this.state.detailsOpen ? classes.mediaExpanded : classes.media}

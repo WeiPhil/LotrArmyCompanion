@@ -2,7 +2,7 @@ import json
 
 from server.run import db
 
-from .utility import alchemy_encoder
+from .utility import AlchemyEncoder
 
 
 class Company(db.Model):
@@ -10,7 +10,7 @@ class Company(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class CompanyUnit(db.Model):
@@ -18,7 +18,7 @@ class CompanyUnit(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class CompanyUnitHasEquipement(db.Model):
@@ -26,7 +26,7 @@ class CompanyUnitHasEquipement(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class CompanyUnitHasHeroicAction(db.Model):
@@ -34,15 +34,15 @@ class CompanyUnitHasHeroicAction(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
-class company_unit_has_injury(db.Model):
+class CompanyUnitHasInjury(db.Model):
     __table__ = db.Table('company_unit_has_injury', db.Model.metadata,
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class CompanyUnitHasMagicalPower(db.Model):
@@ -50,7 +50,7 @@ class CompanyUnitHasMagicalPower(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class CompanyUnitHasSpecialRule(db.Model):
@@ -58,7 +58,7 @@ class CompanyUnitHasSpecialRule(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class Equipement(db.Model):
@@ -66,7 +66,7 @@ class Equipement(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class Faction(db.Model):
@@ -74,7 +74,7 @@ class Faction(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class HeroicAction(db.Model):
@@ -82,7 +82,7 @@ class HeroicAction(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class Injury(db.Model):
@@ -90,7 +90,7 @@ class Injury(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class MagicalPower(db.Model):
@@ -98,7 +98,7 @@ class MagicalPower(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class Promotion(db.Model):
@@ -106,7 +106,7 @@ class Promotion(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class SpecialRule(db.Model):
@@ -114,7 +114,15 @@ class SpecialRule(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
+
+
+class Keyword(db.Model):
+    __table__ = db.Table('keyword', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class Unit(db.Model):
@@ -122,7 +130,7 @@ class Unit(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class UnitHasEquipement(db.Model):
@@ -130,7 +138,15 @@ class UnitHasEquipement(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
+
+
+class UnitHasKeyword(db.Model):
+    __table__ = db.Table('unit_has_keyword', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class UnitHasHeroicAction(db.Model):
@@ -138,7 +154,7 @@ class UnitHasHeroicAction(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class UnitHasMagicalPower(db.Model):
@@ -146,7 +162,7 @@ class UnitHasMagicalPower(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class UnitHasSpecialRule(db.Model):
@@ -154,7 +170,7 @@ class UnitHasSpecialRule(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)
 
 
 class User(db.Model):
@@ -162,18 +178,4 @@ class User(db.Model):
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):
-        return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
-
-
-# class Actor(db.Model):
-#     actor_id = db.Column(db.Integer, primary_key=True)
-#     first_name = db.Column(db.String(45), nullable=False)
-#     last_name = db.Column(db.String(60), nullable=False)
-
-#     def __repr__(self):
-#         return json.dumps(self, cls=alchemy_encoder(), check_circular=False, ensure_ascii=False)
-#         # return '<Actor %r>' % self.first_name
-
-#     # Extends init with custom arguments
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
+        return json.dumps(self, cls=AlchemyEncoder(), check_circular=False, ensure_ascii=False)

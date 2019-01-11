@@ -103,9 +103,9 @@ class UnitCharacteristics extends Component {
   render() {
     const { improvs, characs, classes, wargear, baseWargear } = this.props;
 
-    const forBaseTroop = improvs === undefined;
+    const forunit = improvs === undefined;
 
-    const characteristics = forBaseTroop ? this.createDataBase(characs) : this.createDataUser(improvs, characs, wargear, baseWargear);
+    const characteristics = forunit ? this.createDataBase(characs) : this.createDataUser(improvs, characs, wargear, baseWargear);
 
     return (
       <Paper className={classes.root}>

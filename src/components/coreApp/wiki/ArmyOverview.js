@@ -3,16 +3,12 @@ import React from "react";
 import ArmyTroopCard from "./ArmyTroopCard";
 import { Grid } from "@material-ui/core/";
 
-import { createCardData } from "../../DataCreation";
-
 import MediaQuery from "react-responsive";
 
 function renderCard(troopName, index, troops, mobile) {
-  const { baseTroop } = createCardData(troops[troopName], false, null, null);
-
   return (
     <Grid item key={index}>
-      <ArmyTroopCard baseTroop={baseTroop} mobile={mobile} timeout={index * 1000} />
+      <ArmyTroopCard unit={troops[troopName]} mobile={mobile} timeout={index * 1000} />
     </Grid>
   );
 }
@@ -21,7 +17,8 @@ const ArmyOverview = props => {
   const { troops } = props;
 
   return (
-    <>
+    // Small gap for the chat in the bottom
+    <div style={{ marginBottom: 20 }}>
       {/* Mobile */}
       <MediaQuery query="(max-width: 960px)">
         <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
@@ -35,7 +32,7 @@ const ArmyOverview = props => {
         </Grid>
       </MediaQuery>
       {/* <TumbnailTroop /> */}
-    </>
+    </div>
   );
 };
 

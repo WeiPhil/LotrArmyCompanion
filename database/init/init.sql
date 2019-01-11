@@ -166,11 +166,13 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company` (
 -- Table `lotr`.`magical_power`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`magical_power` (
-  `magical_power_id` INT NOT NULL,
+  `magical_power_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT NOT NULL,
   `description_channelled` TEXT NOT NULL,
   `duration` ENUM('temporary', 'instant', 'exhaustion') NOT NULL,
+  `range` INT NOT NULL DEFAULT 0,
+  `casting` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`magical_power_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`)
 );
@@ -266,19 +268,11 @@ CREATE TABLE IF NOT EXISTS `lotr`.`promotion` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`heroic_action` (
   `heroic_action_id` INT NOT NULL AUTO_INCREMENT,
-  `name` ENUM('heroic_move', 'heroic_shoot', 'heroic_combat','heroic_resolve','heroic_march','heroic_channelling','heroic_accuracy','heroic_strike','heroic_defence','heroic_strength','heroic_challenge') NOT NULL,
+  `name` ENUM('heroic_move', 'heroic_shoot', 'heroic_combat', 'heroic_resolve', 'heroic_march', 'heroic_channelling', 'heroic_accuracy', 'heroic_strike', 'heroic_defence', 'heroic_strength', 'heroic_challenge') NOT NULL,
   `description` TEXT NULL,
   `alternative_name` VARCHAR(45) NULL,
   `alternative_description` TEXT NULL,
-  `altering_effect_id` INT NULL,
-  PRIMARY KEY (`heroic_action_id`),
-  UNIQUE INDEX `name_UNIQUE` (`name`),
-  INDEX `fk_special_rule_altering_effect1_idx` (`altering_effect_id`),
-  CONSTRAINT `fk_special_rule_altering_effect10`
-    FOREIGN KEY (`altering_effect_id`)
-    REFERENCES `lotr`.`altering_effect` (`altering_effect_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  PRIMARY KEY (`heroic_action_id`));
 
 
 -- -----------------------------------------------------

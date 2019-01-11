@@ -6,8 +6,6 @@ import { Grid, withStyles, Fab } from "@material-ui/core/";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import { createCardData } from "../DataCreation";
-
 import MediaQuery from "react-responsive";
 
 const styles = theme => ({
@@ -21,13 +19,16 @@ const styles = theme => ({
 
 class CompaniesOverview extends Component {
   renderCard(troop, index, companyIdx, mobile) {
-    const { userTroop, baseTroop } = createCardData(troop, true, this.props.companies[companyIdx].faction_access_name, this.props.armies);
+    const company_unit = troop;
+    const unit_name = company_unit.unit_name;
+
+    const unit = this.props.armies[company_unit["faction_name"]][unit_name];
 
     return (
       <Grid item key={index}>
         <CompanyTroopCard
-          baseTroop={baseTroop}
-          userTroop={userTroop}
+          unit={unit}
+          company_unit={company_unit}
           injured={this.props.companies[companyIdx].injured}
           isCompanyCard
           mobile={mobile}

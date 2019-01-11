@@ -5,23 +5,39 @@
 ![travis](https://travis-ci.org/WeiPhil/LotrArmyCompanion.svg?branch=master)
 
 ## THIS PROJECT IS A WORK IN PROGRESS
+
 It should not be run in production.
 
 ## Build
 
 Build the frontend react app:
+
 > npm install  
-> npm run build  
+> npm run build
 
 Build the backend:
+
 > docker-compose build
 
 ## Run
+
 > docker-compose up
 
 Visit localhost:3000 to see the website.
 
 ## Test
+
+## Database Helper GUI
+
+Build for MacOS:
+
+> cd ./databaseHelperGui
+> pyinstaller app_mac.spec
+
+Build for Windows:
+
+> cd ./databaseHelperGui
+> pyinstaller app_windows.spec
 
 ### Flask webserver
 
@@ -45,10 +61,11 @@ Visit localhost:3000 to see the website.
 - `[x]` change forms to handle enter key press (more natural behaviour)
 - `[ ]` use more carefull types in code, transform var's in let's
 - `[x]` add a develepoment port and link it to the package.json scripts to run locally
-- `[ ]` change color of bonuses
+- `[x]` change color of bonuses
 - `[ ]` Add a "typing..." feature to the chat
 - `[ ]` Find a way to save messages from chats on server
 - `[ ]` add private messaging over peer2peer
+- `[ ]` add a bar allowing filtering, thumbnailing on desktop research, custom options to the cards displaying designs
 
 > Todo Pierre
 

@@ -20,8 +20,6 @@ import {
 import { MIN_HEIGHT_600, CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH } from "../../utils/Constants";
 import { GoldSackIcon, VictoryIcon, DrawIcon, DeathIcon } from "../icons/OverviewIcons";
 
-import { createCardData } from "../DataCreation";
-
 import CompanyTroopCard from "./CompanyTroopCard";
 
 import { calculateRating } from "../../utils/ArmyCalculations";
@@ -95,9 +93,13 @@ class CompanyCard extends Component {
 
   renderInjuredCard(company) {
     const injuredIndex = company.access_map[this.state.injured];
-    const { userTroop, baseTroop } = createCardData(company.troops[injuredIndex], true, company.faction_access_name, this.props.armies);
 
-    return <CompanyTroopCard forPreview injured={company.injured} userTroop={userTroop} baseTroop={baseTroop} />;
+    const company_unit = company.troops[injuredIndex];
+    const unit_name = company_unit.unit_name;
+
+    const unit = this.props.armies[company_unit["faction_name"]][unit_name];
+
+    return <CompanyTroopCard forPreview injured={company.injured} company_unit={company_unit} unit={unit} />;
   }
 
   render() {

@@ -1,0 +1,1 @@
+-- Magical Power queries --

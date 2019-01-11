@@ -6,11 +6,11 @@ export const MENU_WIDTH = 280;
 export const REACTION_TIMEOUT = 250;
 
 // Constants for core app style
-export const CARD_MAX_WIDTH = 350;
+export const CARD_MAX_WIDTH = 360;
 
 export const CARD_IMAGE_HEIGHT = 100;
 
-export const TUMBNAIL_IMAGE_SIZE = 100;
+export const TUMBNAIL_CARD_SIZE = 100;
 
 export const FORM_FIELD_WIDTH = 400;
 // Madia query constants
