@@ -28,6 +28,9 @@ class AlchemyEncoder(json.JSONEncoder):
             if(self.exclude):
                 for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata' and not x.startswith('query') and x not in self.list]:
                     fields[field] = obj.__getattribute__(field)
+            elif(self.list == []):
+                for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata' and not x.startswith('query')]:
+                    fields[field] = obj.__getattribute__(field)
             else:
                 for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata' and not x.startswith('query') and x in self.list]:
                     fields[field] = obj.__getattribute__(field)

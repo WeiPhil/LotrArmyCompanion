@@ -36,11 +36,19 @@ VALUES
 -- Populating Altering Effects
 -- ---------------------------------
 
-INSERT INTO altering_effect (defence_bonus)
-VALUES (1);
-
-INSERT INTO altering_effect (defence_bonus)
-VALUES (2);
+INSERT INTO altering_effect (characteristic,value)
+VALUES 
+    ('move',1),('move',-1),('move',2),('move',-2),
+    ('fight',1),('fight',-1),('fight',2),('fight',-2),
+    ('shoot',1),('shoot',-1),('shoot',2),('shoot',-2),
+    ('strength',1),('strength',-1),('strength',2),('strength',-2),
+    ('defence',1),('defence',-1),('defence',2),('defence',-2),
+    ('attacks',1),('attacks',-1),('attacks',2),('attacks',-2),
+    ('wounds',1),('wounds',-1),('wounds',2),('wounds',-2),
+    ('courage',1),('courage',-1),('courage',2),('courage',-2),
+    ('might',1),('might',-1),('might',2),('might',-2),
+    ('will',1),('will',-1),('will',2),('will',-2),
+    ('faith',1),('faith',-1),('faith',2),('faith',-2);
 
 -- ---------------------------------
 -- Populating Equipements
@@ -49,22 +57,13 @@ VALUES (2);
 INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
 VALUES 
     ('sword',NULL,1,5,'no',NULL),
-    ('armour',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  
-                            (fight_bonus,shoot_bonus,strength_bonus,defence_bonus,attacks_bonus,wounds_bonus,courage_bonus,might_bonus,will_bonus,faith_bonus) =
-                            (0          ,0          ,0             ,1            ,0            ,0           ,0            ,0          ,0         ,0)
-                            )),
-    ('heavy_armour',NULL,2,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  
-                            (fight_bonus,shoot_bonus,strength_bonus,defence_bonus,attacks_bonus,wounds_bonus,courage_bonus,might_bonus,will_bonus,faith_bonus) =
-                            (0          ,0          ,0             ,2            ,0            ,0           ,0            ,0          ,0         ,0)
-                            )),
+    ('armour',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
+    ('heavy_armour',NULL,2,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',2))),
     ('orc_bow',NULL,1,5,'no',NULL),
     ('throwing_daggers',NULL,1,5,'no',NULL),
     ('spear',NULL,1,5,'no',NULL),
     ('pike',NULL,1,5,'no',NULL),
-    ('shield',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  
-                            (fight_bonus,shoot_bonus,strength_bonus,defence_bonus,attacks_bonus,wounds_bonus,courage_bonus,might_bonus,will_bonus,faith_bonus) =
-                            (0          ,0          ,0             ,1            ,0            ,0           ,0            ,0          ,0         ,0)
-                            )),
+    ('shield',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
     ('clubs',NULL,NULL,NULL,'no',NULL),
     ('drum',NULL,NULL,NULL,'no',NULL), 
     ('claws',NULL,NULL,NULL,'no',NULL),
@@ -77,6 +76,18 @@ VALUES
     ('horse',NULL,6,10,'no',NULL), 
     ('warg',NULL,6,10,'no',NULL), 
     ('armoured_horse',NULL,9,15,'no',NULL);
+
+-- ---------------------------------
+-- Populating Promotions
+-- ---------------------------------
+
+INSERT INTO promotion (name,description,altering_effect_id,special_rule_id)
+VALUES 
+    ('Fight','Hero''s Fight characteristic is improved by 1 to a maximum of 6.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fight',1)),NULL),
+    ('Shoot','Hero''s Shoot characteristic is reduced by 1 to a minimum of 3+.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('shoot',-1)),NULL),
+    ('Strength','Hero''s Strength is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('strength',1)),NULL),
+    ('Defence','Hero''s Defence is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1)),NULL);
+
 
 -- ---------------------------------
 -- Populating Special Rule

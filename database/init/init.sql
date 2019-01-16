@@ -58,17 +58,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`altering_effect` (
   `altering_effect_id` INT NOT NULL AUTO_INCREMENT,
-  `move_bonus` INT NULL DEFAULT 0,
-  `fight_bonus` INT NULL DEFAULT 0,
-  `shoot_bonus` INT NULL DEFAULT 0,
-  `strength_bonus` INT NULL DEFAULT 0,
-  `defence_bonus` INT NULL DEFAULT 0,
-  `attacks_bonus` INT NULL DEFAULT 0,
-  `wounds_bonus` INT NULL DEFAULT 0,
-  `courage_bonus` INT NULL DEFAULT 0,
-  `might_bonus` INT NULL DEFAULT 0,
-  `will_bonus` INT NULL DEFAULT 0,
-  `faith_bonus` INT NULL DEFAULT 0,
+  `characteristic` ENUM('move', 'fight', 'shoot', 'strength', 'defence', 'attacks', 'wounds', 'courage', 'might', 'will', 'faith') NOT NULL,
+  `value` INT NOT NULL,
   PRIMARY KEY (`altering_effect_id`)
 );
 
@@ -244,20 +235,21 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_unit` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`promotion` (
   `promotion_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
   `description` TEXT NULL,
   `altering_effect_id` INT NULL,
-  `company_unit_id` INT NOT NULL,
+  `special_rule_id` INT NULL,
   PRIMARY KEY (`promotion_id`),
   INDEX `fk_promotion_altering_effect1_idx` (`altering_effect_id`),
-  INDEX `fk_promotion_company_unit1_idx` (`company_unit_id`),
+  INDEX `fk_promotion_special_rule1_idx` (`special_rule_id`),
   CONSTRAINT `fk_promotion_altering_effect1`
     FOREIGN KEY (`altering_effect_id`)
     REFERENCES `lotr`.`altering_effect` (`altering_effect_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_promotion_company_unit1`
-    FOREIGN KEY (`company_unit_id`)
-    REFERENCES `lotr`.`company_unit` (`company_unit_id`)
+  CONSTRAINT `fk_promotion_special_rule_id1`
+    FOREIGN KEY (`special_rule_id`)
+    REFERENCES `lotr`.`special_rule` (`special_rule_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -316,6 +308,26 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_unit_has_injury` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+-- -----------------------------------------------------
+-- Table `lotr`.`company_unit_has_promotion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lotr`.`company_unit_has_promotion` (
+  `company_unit_id` INT NOT NULL,
+  `promotion_id` INT NOT NULL,
+  `number` INT NOT NULL,
+  PRIMARY KEY (`company_unit_id`, `promotion_id`),
+  INDEX `fk_company_unit_has_promotion_promotion1_idx` (`promotion_id`),
+  INDEX `fk_company_unit_has_promotion_company_unit1_idx` (`company_unit_id`),
+  CONSTRAINT `fk_company_unit_has_promotion_company_unit1`
+    FOREIGN KEY (`company_unit_id`)
+    REFERENCES `lotr`.`company_unit` (`company_unit_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_company_unit_has_promotion_promotion1`
+    FOREIGN KEY (`promotion_id`)
+    REFERENCES `lotr`.`promotion` (`promotion_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
 -- Table `lotr`.`unit_has_equipement`

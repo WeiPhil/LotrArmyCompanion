@@ -224,7 +224,7 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 -- New Unit: galadriel
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
     VALUES
-        ((SELECT faction_id FROM faction WHERE name='the_fellowship'),
+        ((SELECT faction_id FROM faction WHERE name='lothlórien'),
         'galadriel',130,
         6,6,3,3,3,1,3,7,
         '',

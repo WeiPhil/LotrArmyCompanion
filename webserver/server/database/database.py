@@ -13,14 +13,33 @@ from .utility import writeModelToJson, AlchemyEncoder
 from .queries import *
 
 
+def writeEquipementsToJson():
+    equipements = getAllEquipements()
+    with open(os.path.join("cachedData/equipements", "equipements.json"), 'w', encoding='utf8') as outfile:
+        json.dump(equipements, ensure_ascii=False, fp=outfile)
+
+
+def writeSpecialRulesToJson():
+    specialRules = getAllSpecialRules()
+    with open(os.path.join("cachedData/special_rules", "special_rules.json"), 'w', encoding='utf8') as outfile:
+        json.dump(specialRules, ensure_ascii=False, fp=outfile)
+
+
+def writeArmiesToJson():
+    armies = getAllArmies()
+    for (army_name, army) in armies:
+        if army:
+            with open(os.path.join("cachedData/armies", army_name+'.json'), 'w', encoding='utf8') as outfile:
+                json.dump(army, ensure_ascii=False, fp=outfile)
+
+
 def query():
-    factionName = "angmar"
 
     # except exc.SQLAlchemyError as error:
 
-    # print(writeModelToJson(Unit.query.all(), isList=True, filename='units'))
-    factionJson = getUnits(factionName)
-    with open(os.path.join("queriedData", factionName+'.json'), 'w', encoding='utf8') as outfile:
-        json.dump(factionJson, ensure_ascii=False, fp=outfile)
+    # writeArmiesToJson()
 
-    return factionJson
+    # writeSpecialRulesToJson()
+    result = createCompanyUnit()
+
+    return result
