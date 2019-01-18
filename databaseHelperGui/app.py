@@ -765,7 +765,7 @@ class UnitForm(QtWidgets.QDialog, Ui_UnitForm):
         unitObject["courage"] = self.courageInput.text()
         unitObject["might"] = self.mightInput.text()
         unitObject["will"] = self.willInput.text()
-        unitObject["faith"] = self.faithInput.text()
+        unitObject["fate"] = self.fateInput.text()
 
         unitObject["description"] = sanitizeText(self.descriptionPlainTextEdit.toPlainText())
 
@@ -777,7 +777,7 @@ class UnitForm(QtWidgets.QDialog, Ui_UnitForm):
                 valid = False
             elif(key not in ['description', 'specialRules','heroicActions','magicalPowers'] and value == ''):
                 valid = False
-            elif(key in ['move', 'fight','shoot','strength','defence','attacks','wounds','courage','might','will','faith']):
+            elif(key in ['move', 'fight','shoot','strength','defence','attacks','wounds','courage','might','will','fate']):
                 try: 
                     int(value)
                 except ValueError:

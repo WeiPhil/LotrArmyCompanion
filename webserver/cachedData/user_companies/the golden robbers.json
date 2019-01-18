@@ -1,0 +1,125 @@
+{
+  "Gormungur": {
+    "company_unit_name": "Gormungur",
+    "company_unit_rank": "lieutenant",
+    "experience": 0,
+    "effective_points": 17,
+    "can_promote": "no",
+    "notes": null,
+    "unit_name": "moria_goblin_warrior",
+    "company_name": "The Golden Robbers",
+    "characteristics": {
+      "move": 5,
+      "fight": 2,
+      "shoot": 5,
+      "strength": 3,
+      "defence": 4,
+      "attacks": 1,
+      "wounds": 1,
+      "courage": 2,
+      "might": 0,
+      "will": 0,
+      "fate": 0
+    },
+    "wargear": [
+      { "name": "sword", "points": 0 },
+      { "name": "armour", "points": 0 },
+      { "name": "throwing_daggers", "points": 0 },
+      { "name": "shield", "points": 0 }
+    ],
+    "special_rules": [{ "name": "cave_dweller", "origin": "basic" }],
+    "promotions": [
+      {
+        "name": "lieutenant_might",
+        "description": "Lieutenant's base Might characteristic.",
+        "altering_effect": { "characteristic": "might", "value": 1 },
+        "special_rule": null,
+        "number": 1
+      },
+      {
+        "name": "hero_fate",
+        "description": "Hero's base Fate characteristic.",
+        "altering_effect": { "characteristic": "fate", "value": 1 },
+        "special_rule": null,
+        "number": 1
+      },
+      { "name": "test_special_rule", "description": "Special RUle.", "altering_effect": null, "special_rule": "ancient_evil", "number": 1 }
+    ]
+  },
+  "Warg Fort": {
+    "company_unit_name": "Warg Fort",
+    "company_unit_rank": "lieutenant",
+    "experience": 0,
+    "effective_points": 19,
+    "can_promote": "no",
+    "notes": null,
+    "unit_name": "wild_warg",
+    "company_name": "The Golden Robbers",
+    "characteristics": {
+      "move": 10,
+      "fight": 3,
+      "shoot": 5,
+      "strength": 4,
+      "defence": 4,
+      "attacks": 1,
+      "wounds": 1,
+      "courage": 2,
+      "might": 0,
+      "will": 0,
+      "fate": 0
+    },
+    "wargear": [{ "name": "throwing_daggers", "points": 0 }, { "name": "claws", "points": 0 }, { "name": "teeth", "points": 0 }],
+    "special_rules": [],
+    "promotions": [
+      {
+        "name": "lieutenant_might",
+        "description": "Lieutenant's base Might characteristic.",
+        "altering_effect": { "characteristic": "might", "value": 1 },
+        "special_rule": null,
+        "number": 1
+      },
+      {
+        "name": "hero_fate",
+        "description": "Hero's base Fate characteristic.",
+        "altering_effect": { "characteristic": "fate", "value": 1 },
+        "special_rule": null,
+        "number": 1
+      },
+      { "name": "test_special_rule", "description": "Special RUle.", "altering_effect": null, "special_rule": "ancient_evil", "number": 7 }
+    ]
+  },
+  "Warg Faible": {
+    "company_unit_name": "Warg Faible",
+    "company_unit_rank": "sergeant",
+    "experience": 0,
+    "effective_points": 14,
+    "can_promote": "no",
+    "notes": null,
+    "unit_name": "wild_warg",
+    "company_name": "The Golden Robbers",
+    "characteristics": {
+      "move": 10,
+      "fight": 3,
+      "shoot": 5,
+      "strength": 4,
+      "defence": 4,
+      "attacks": 1,
+      "wounds": 1,
+      "courage": 2,
+      "might": 0,
+      "will": 0,
+      "fate": 0
+    },
+    "wargear": [{ "name": "throwing_daggers", "points": 2 }, { "name": "claws", "points": 0 }, { "name": "teeth", "points": 0 }],
+    "special_rules": [],
+    "promotions": [
+      {
+        "name": "hero_fate",
+        "description": "Hero's base Fate characteristic.",
+        "altering_effect": { "characteristic": "fate", "value": 1 },
+        "special_rule": null,
+        "number": 1
+      }
+    ]
+  }
+}

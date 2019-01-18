@@ -1,0 +1,29 @@
+{
+  "galadriel": {
+    "faction_id": 12,
+    "unit_id": 9,
+    "name": "galadriel",
+    "points": 130,
+    "description": "",
+    "mount_id": null,
+    "image_path": "tempCardBackground2.jpg",
+    "characteristics": {
+      "move": 6,
+      "fight": 6,
+      "shoot": 3,
+      "strength": 3,
+      "defence": 3,
+      "attacks": 1,
+      "wounds": 3,
+      "courage": 7,
+      "might": 0,
+      "will": 0,
+      "fate": 0
+    },
+    "base_wargear": ["nenya"],
+    "optional_wargear": ["mirror_of_galadriel"],
+    "keywords": ["hero_of_legend", "infantry", "elf", "lórien"],
+    "magical_powers": ["blessing_of_the_valar", "blinding_light", "command/compel", "immobilise/transfix"],
+    "special_rules": [{ "name": "terror", "origin": "basic" }, { "name": "woodland_creature", "origin": "basic" }]
+  }
+}

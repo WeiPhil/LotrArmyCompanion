@@ -1,4 +1,14 @@
 -- ---------------------------------
+-- Populating Users
+-- ---------------------------------
+
+INSERT INTO user (username,firstname,lastname,email,password_hash)
+VALUES
+    ('admin','Philippe','Weier','lotr.armycompanion@gmail.com','$pbkdf2-sha256$29000$6L0XgnCude79P6dUSsn5Hw$rz//QBn/OQxvkvusipwseZLBQVFkdBTq6z3ygGFe7l0'),
+    ('Sulrin','Philippe','Weier','ph.weier@gmail.com','$pbkdf2-sha256$29000$SYlR6h0DYExp7f0fI6S0lg$QcoFsG1l9PCDIQV7E8WUqYeSxirN2q8bfAj22nuv57Q');
+
+
+-- ---------------------------------
 -- Populating Factions
 -- ---------------------------------
 
@@ -48,7 +58,7 @@ VALUES
     ('courage',1),('courage',-1),('courage',2),('courage',-2),
     ('might',1),('might',-1),('might',2),('might',-2),
     ('will',1),('will',-1),('will',2),('will',-2),
-    ('faith',1),('faith',-1),('faith',2),('faith',-2);
+    ('fate',1),('fate',-1),('fate',2),('fate',-2);
 
 -- ---------------------------------
 -- Populating Equipements
@@ -60,7 +70,7 @@ VALUES
     ('armour',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
     ('heavy_armour',NULL,2,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',2))),
     ('orc_bow',NULL,1,5,'no',NULL),
-    ('throwing_daggers',NULL,1,5,'no',NULL),
+    ('throwing_daggers',NULL,2,5,'no',NULL),
     ('spear',NULL,1,5,'no',NULL),
     ('pike',NULL,1,5,'no',NULL),
     ('shield',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
@@ -83,10 +93,18 @@ VALUES
 
 INSERT INTO promotion (name,description,altering_effect_id,special_rule_id)
 VALUES 
-    ('Fight','Hero''s Fight characteristic is improved by 1 to a maximum of 6.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fight',1)),NULL),
-    ('Shoot','Hero''s Shoot characteristic is reduced by 1 to a minimum of 3+.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('shoot',-1)),NULL),
-    ('Strength','Hero''s Strength is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('strength',1)),NULL),
-    ('Defence','Hero''s Defence is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1)),NULL);
+    ('fight_increase','Hero''s Fight characteristic is improved by 1 to a maximum of 6.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fight',1)),NULL),
+    ('shoot_increase','Hero''s Shoot characteristic is reduced by 1 to a minimum of 3+.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('shoot',-1)),NULL),
+    ('strength_increase','Hero''s Strength is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('strength',1)),NULL),
+    ('defence_increase','Hero''s Defence is increased by 1. May be improved once.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1)),NULL),
+    ('attacks_increase','Hero''s Attacks characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('attacks',1)),NULL),
+    ('wounds_increase','Hero''s Wounds characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('wounds',1)),NULL),
+    ('courage_increase','Hero''s Courage characteristic is increased by 1 to a maximum of 6',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('courage',1)),NULL),
+    ('will_increase','Hero''s Will characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('will',1)),NULL),
+    ('might_increase','Hero''s Might characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
+    ('lieutenant_might','Lieutenant''s base Might characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
+    ('hero_fate','Hero''s base Fate characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fate',1)),NULL);
+    
 
 
 -- ---------------------------------

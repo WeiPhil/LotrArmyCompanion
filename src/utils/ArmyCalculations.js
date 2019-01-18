@@ -6,18 +6,13 @@ export function calculatePoints(unit, company_unit) {
   const troop_type = company_unit.troop_type;
 
   const totalAttackWounds =
-    company_unit.improvements["attacks"] +
-    company_unit.improvements["wounds"] +
-    unit.characteristics["attacks"] +
-    unit.characteristics["wounds"];
+    company_unit.improvements["attacks"] + company_unit.improvements["wounds"] + unit.characteristics["attacks"] + unit.characteristics["wounds"];
 
   var costWargear = 0;
 
   const troopWargearState = totalAttackWounds < 3 ? "low" : "high";
 
-  company_unit.wargear
-    .filter(weapon => !(unit.base_wargear.indexOf(weapon) !== -1))
-    .map(weapon => (costWargear += WEAPON_COSTS[weapon][troopWargearState]));
+  company_unit.wargear.filter(weapon => !(unit.base_wargear.indexOf(weapon) !== -1)).map(weapon => (costWargear += WEAPON_COSTS[weapon][troopWargearState]));
 
   var costImprovements = 0;
 
@@ -32,7 +27,7 @@ export function calculatePoints(unit, company_unit) {
           charac === "courage" ||
           charac === "might" ||
           charac === "will" ||
-          charac === "faith"
+          charac === "fate"
         ) {
           costImprovements += company_unit.improvements[charac] * 5;
         } else if (charac === "attacks" || charac === "wounds") {

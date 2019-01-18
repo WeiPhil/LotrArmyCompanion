@@ -576,14 +576,14 @@
           <widget class="QLineEdit" name="willInput"/>
          </item>
          <item>
-          <widget class="QLabel" name="faithLabel">
+          <widget class="QLabel" name="fateLabel">
            <property name="text">
             <string>F</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="faithInput"/>
+          <widget class="QLineEdit" name="fateInput"/>
          </item>
         </layout>
        </item>

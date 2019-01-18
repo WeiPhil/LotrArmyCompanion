@@ -59,3 +59,43 @@ def writeModelToJson(object, filename, isList=False, list=[], exclude=False):
         outfile.write(jsonString)
 
     return jsonString
+
+
+def calculateCompanyUnitCost():
+    pass
+#   companyUnit_type = company_unit.troop_type;
+
+#   totalAttackWounds = company_unit.improvements["attacks"] + company_unit.improvements["wounds"] + unit.characteristics["attacks"] + unit.characteristics["wounds"];
+
+#   costWargear = 0;
+
+#   companyUnitWargearState = totalAttackWounds < 3 ? "low" : "high";
+
+#   company_unit.wargear
+#     .filter(weapon => !(unit.base_wargear.indexOf(weapon) !== -1))
+#     .map(weapon => (costWargear += WEAPON_COSTS[weapon][troopWargearState]));
+
+#   var costImprovements = 0;
+
+#   if (troop_type !== WARRIOR) {
+#     for (var charac in company_unit.improvements) {
+#       // check if the property/key is defined in the object itself, not in parent
+#       if (company_unit.improvements.hasOwnProperty(charac)) {
+#         if (
+#           charac === "fight" ||
+#           charac === "strength" ||
+#           charac === "defence" ||
+#           charac === "courage" ||
+#           charac === "might" ||
+#           charac === "will" ||
+#           charac === "fate"
+#         ) {
+#           costImprovements += company_unit.improvements[charac] * 5;
+#         } else if (charac === "attacks" || charac === "wounds") {
+#           costImprovements += company_unit.improvements[charac] * 10;
+#         }
+#       }
+#     }
+#   }
+
+#   return unit.points + costImprovements + costWargear + company_unit.special_rules.length * 5;

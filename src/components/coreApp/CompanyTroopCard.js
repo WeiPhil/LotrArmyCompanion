@@ -9,9 +9,9 @@ import Typography from "@material-ui/core/Typography";
 
 import UnitCharacteristics from "./UnitCharacteristics";
 
-import { CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH, LIEUTNANT, SERGEANT } from "../../utils/Constants";
+import { CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH, LIEUTENANT, SERGEANT } from "../../utils/Constants";
 
-import { LieutnantIcon, SergeantIcon, WargearIcon } from "./../icons/CardIcons";
+import { LieutenantIcon, SergeantIcon, WargearIcon } from "./../icons/CardIcons";
 import { Grid, Avatar, IconButton, Tooltip, Chip } from "@material-ui/core";
 
 import { calculatePoints } from "./../../utils/ArmyCalculations.js";
@@ -91,9 +91,9 @@ function CompanyTroopCard(props) {
 
   const floatingTroopType = (
     <>
-      {company_unit.troop_type === LIEUTNANT && (
-        <Avatar key={LIEUTNANT} className={classes.floatingTroopType}>
-          <LieutnantIcon style={{ fontSize: 14 }} />
+      {company_unit.troop_type === LIEUTENANT && (
+        <Avatar key={LIEUTENANT} className={classes.floatingTroopType}>
+          <LieutenantIcon style={{ fontSize: 14 }} />
         </Avatar>
       )}
       {company_unit.troop_type === SERGEANT && (
@@ -101,7 +101,7 @@ function CompanyTroopCard(props) {
           <SergeantIcon style={{ fontSize: 14 }} />
         </Avatar>
       )}
-      {company_unit.troop_type !== LIEUTNANT && company_unit.troop_type !== SERGEANT && (
+      {company_unit.troop_type !== LIEUTENANT && company_unit.troop_type !== SERGEANT && (
         <Avatar key={"warrior"} className={classes.floatingTroopType}>
           <WargearIcon style={{ fontSize: 14 }} />
         </Avatar>
@@ -119,11 +119,11 @@ function CompanyTroopCard(props) {
     <>
       <CardContent>
         <Typography variant="h5" gutterBottom>
-          {company_unit.troop_type === LIEUTNANT && (
-            <Tooltip placement="top" title="Lieutnant">
+          {company_unit.troop_type === LIEUTENANT && (
+            <Tooltip placement="top" title="Lieutenant">
               <span>
                 <IconButton disabled={isDead} className={classes.icons}>
-                  <LieutnantIcon />
+                  <LieutenantIcon />
                 </IconButton>
               </span>
             </Tooltip>
@@ -137,7 +137,7 @@ function CompanyTroopCard(props) {
               </span>
             </Tooltip>
           )}
-          {company_unit.troop_type !== LIEUTNANT && company_unit.troop_type !== SERGEANT && (
+          {company_unit.troop_type !== LIEUTENANT && company_unit.troop_type !== SERGEANT && (
             <Tooltip placement="top" title="Warrior">
               <span>
                 <IconButton disabled={isDead} className={classes.icons}>

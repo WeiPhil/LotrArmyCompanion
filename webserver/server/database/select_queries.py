@@ -8,87 +8,15 @@ from .models import *
 from collections import OrderedDict
 
 unit_characteristic_fields = ['move', 'fight', 'shoot', 'strength',
-                              'defence', 'attacks', 'wounds', 'courage', 'might', 'will', 'faith']
+                              'defence', 'attacks', 'wounds', 'courage', 'might', 'will', 'fate']
 
 unit_fields_no_characteristics = [
     'faction_id', 'unit_id', 'name', 'points', 'description', 'mount_id', 'image_path']
 
+company_unit_fields_no_characteristics = [
+    'unit_id', 'company_id', 'company_unit_name', 'company_unit_rank', 'experience', 'effective_points', 'can_promote', 'notes']
+
 session = db.session
-
-
-def createCompanyUnit():
-    db.create_all()
-
-    companyName = 'The Golden Robbers'
-    unitName = 'moria_goblin_warrior'
-    unitRank = 'warrior'
-    pseudoName = 'TestUnit10'
-    additionalEquipement = ['shield', 'spear']
-
-    unit_id = session.query(Unit.unit_id).filter(
-        Unit.name == unitName).one()[0]
-    company_id = session.query(Company.company_id).filter(
-        Company.name == companyName).one()[0]
-
-    unit_base_points = session.query(Unit.points).filter(
-        Unit.name == unitName).one()[0]
-
-    base_equipement_ids_points = session.query(UnitHasEquipement.equipement_id, UnitHasEquipement.points).filter(
-        UnitHasEquipement.unit_id == unit_id
-    ).filter(UnitHasEquipement.points == 0).all()
-
-    additional_equipement_ids_points = None
-    if(unitRank == 'warrior'):
-        additional_equipement_ids_points = session.query(Equipement.equipement_id, Equipement.low_cost).filter(
-            or_(Equipement.name == e for e in additionalEquipement)).all()
-    else:
-        additional_equipement_ids_points = session.query(Equipement.equipement_id, Equipement.high_cost).filter(
-            or_(Equipement.name == e for e in additionalEquipement)).all()
-
-    equipements = base_equipement_ids_points + additional_equipement_ids_points
-
-    equipement_cost = 0
-    for (_, points) in equipements:
-        equipement_cost += points
-
-    unit_total_cost = unit_base_points+equipement_cost
-    #  add new unit with total cost in points of equipement
-    newCompanyUnit = CompanyUnit(unit_id=unit_id, company_id=company_id, pseudo_name=pseudoName,
-                                 company_unit_rank=unitRank, effective_points=unit_total_cost)
-
-    db.session.add(newCompanyUnit)
-    db.session.commit()
-
-    # add equipements to has_equipements
-    company_unit_id = session.query(CompanyUnit.company_unit_id).filter(
-        CompanyUnit.pseudo_name == pseudoName).one()[0]
-
-    for (equipement_id, _) in equipements:
-        unit_has_new_equipement = CompanyUnitHasEquipement(
-            company_unit_id=company_unit_id, equipement_id=equipement_id)
-        db.session.add(unit_has_new_equipement)
-
-    db.session.commit()
-
-    # add special_rules to has_special_rules
-    special_rule_ids = session.query(UnitHasSpecialRule.special_rule_id).filter(
-        UnitHasSpecialRule.unit_id == unit_id
-    ).all()
-
-    for special_rule_id in special_rule_ids:
-        unit_has_new_special_rule = CompanyUnitHasSpecialRule(
-            company_unit_id=company_unit_id, special_rule_id=special_rule_id)
-        db.session.add(unit_has_new_special_rule)
-
-    db.session.commit()
-
-    # Update company
-    company = session.query(Company).filter(Company.name == companyName).one()
-    company.rating += unit_total_cost
-    company.effective_rating += unit_total_cost
-    db.session.commit()
-
-    return str(session.query(CompanyUnit).filter(CompanyUnit.pseudo_name == pseudoName).one())
 
 
 def getAllEquipements():
@@ -169,6 +97,121 @@ def getUnits(factionName):
     return whole_faction
 
 
+def getCompany(companyName):
+    company_id = session.query(Company.company_id).filter(
+        Company.name == companyName).one()
+    company_unit_names = session.query(CompanyUnit.company_unit_name).filter(
+        CompanyUnit.company_id == company_id).all()
+
+    company = {}
+    for company_unit_name in json.loads(AlchemyEncoder().encode(company_unit_names)):
+        company[company_unit_name[0]] = getCompanyUnit(company_unit_name[0])
+
+    return company
+
+
+def getCompanyUnit(companyUnitName):
+    company_unit = session.query(CompanyUnit).filter(
+        CompanyUnit.company_unit_name == companyUnitName).one()
+
+    company_unit = json.loads(AlchemyEncoder(
+        list=company_unit_fields_no_characteristics, ordered=True).encode(company_unit))
+
+    unit_id = company_unit['unit_id']
+    # session.query(CompanyUnit.unit_id).filter(
+    #     CompanyUnit.company_unit_name == companyUnitName).one()[0]
+    unit_name = session.query(Unit.name).filter(
+        Unit.unit_id == unit_id).one()[0]
+
+    company_unit['unit_id'] = unit_name
+    company_unit['unit_name'] = company_unit.pop('unit_id')
+
+    company_id = company_unit['company_id']
+    company_unit['company_id'] = session.query(Company.name).filter(
+        Company.company_id == company_id).one()[0]
+    company_unit['company_name'] = company_unit.pop('company_id')
+
+    company_unit['characteristics'] = getCharacteristics(
+        unit_name)
+
+    equipement_query = session.query(Equipement.name).select_from(
+        db.join(Equipement, CompanyUnitHasEquipement, isouter=True).join(CompanyUnit, isouter=True))
+
+    company_unit['wargear'] = getCompanyUnitEquipement(companyUnitName)
+    # company_unit['magical_powers'] = getMagicalPowers(companyUnitName, companyUnit=True)
+    company_unit['special_rules'] = getSpecialRules(
+        companyUnitName, companyUnit=True)
+    company_unit['promotions'] = getPromotions(companyUnitName)
+
+    return company_unit
+
+
+def getCompanyUnitEquipement(companyUnitName):
+    equipement_query = session.query(Equipement.name, CompanyUnitHasEquipement.points).select_from(
+        db.join(Equipement, CompanyUnitHasEquipement, isouter=True).join(CompanyUnit, isouter=True))
+
+    equipements = equipement_query.filter(
+        CompanyUnit.company_unit_name == companyUnitName).all()
+
+    equipement_list = []
+    for equipement in equipements:
+        equipement = json.loads(AlchemyEncoder(
+            list=["name", 'points'], ordered=True).encode(equipement))
+        equipement_object = {}
+        equipement_object["name"] = equipement[0]
+        equipement_object["points"] = equipement[1]
+        equipement_list.append(equipement_object)
+
+    return equipement_list
+
+
+def getAlteringEffect(alteringEffectId):
+    pass
+
+
+def getPromotions(companyUnitName):
+    promotion_query = session.query(Promotion).select_from(db.join(Promotion, CompanyUnitHasPromotion, isouter=True).join(
+        CompanyUnit, isouter=True)).filter(CompanyUnit.company_unit_name == companyUnitName).all()
+    promotions = AlchemyEncoder(
+        list=['name', 'description', 'special_rule_id', 'altering_effect_id'], ordered=True).encode(promotion_query)
+
+    company_unit_id = session.query(CompanyUnit.company_unit_id).filter(
+        CompanyUnit.company_unit_name == companyUnitName).one()[0]
+    promotions = json.loads(promotions)
+    # transforming ids to actual essential data
+
+    promotions_with_data = []
+    for promotion in promotions:
+        altering_effect_id = promotion['altering_effect_id']
+        special_rule_id = promotion['special_rule_id']
+        promotion['altering_effect'] = None
+        promotion['special_rule'] = None
+        promotion.pop('altering_effect_id')
+        promotion.pop('special_rule_id')
+        if(altering_effect_id != None):
+            altering_effect_query = session.query(AlteringEffect).filter(
+                AlteringEffect.altering_effect_id == altering_effect_id).one()
+            altering_effect = AlchemyEncoder(
+                list=['characteristic', 'value'], ordered=True).encode(altering_effect_query)
+            promotion['altering_effect'] = json.loads(altering_effect)
+
+        if(special_rule_id != None):
+            special_rule_query = session.query(SpecialRule.name).filter(
+                SpecialRule.special_rule_id == special_rule_id).one()
+            special_rule = AlchemyEncoder().encode(special_rule_query)
+            promotion['special_rule'] = json.loads(special_rule)[0]
+
+        promotion_id = session.query(Promotion.promotion_id).filter(
+            Promotion.name == promotion['name']).one()
+        number = session.query(CompanyUnitHasPromotion.number).filter(and_(
+            CompanyUnitHasPromotion.promotion_id == promotion_id, CompanyUnitHasPromotion.company_unit_id == company_unit_id)).one()
+        promotion['number'] = json.loads(AlchemyEncoder().encode(number))[0]
+
+        promotions_with_data.append(promotion)
+
+    return promotions_with_data
+
+
 def getCharacteristics(unitName):
     unit = session.query(Unit).filter(Unit.name == unitName).one()
 
@@ -212,7 +255,7 @@ def getKeywords(unitName):
     return keyword_list
 
 
-def getMagicalPowers(unitName):
+def getMagicalPowers(unitName, companyUnit=False):
     magicalPower_query = session.query(MagicalPower.name).select_from(
         db.join(MagicalPower, UnitHasMagicalPower, isouter=True).join(Unit, isouter=True))
 
@@ -224,11 +267,12 @@ def getMagicalPowers(unitName):
     return magicalPower_list
 
 
-def getSpecialRules(unitName):
-    specialRule_query = session.query(SpecialRule).select_from(
-        db.join(SpecialRule, UnitHasSpecialRule, isouter=True).join(Unit, isouter=True))
+def getSpecialRules(unitName, companyUnit=False):
+    specialRule_query = session.query(SpecialRule).select_from(db.join(SpecialRule, UnitHasSpecialRule, isouter=True).join(
+        Unit, isouter=True)) if not companyUnit else session.query(SpecialRule).select_from(db.join(SpecialRule, CompanyUnitHasSpecialRule, isouter=True).join(CompanyUnit, isouter=True))
 
-    specialRule_list = specialRule_query.filter(Unit.name == unitName).all()
+    specialRule_list = specialRule_query.filter(Unit.name == unitName).all(
+    ) if not companyUnit else specialRule_query.filter(CompanyUnit.company_unit_name == unitName).all()
     specialRule_list = AlchemyEncoder(
         list=['name', 'origin']).encode(specialRule_list)
     specialRule_list = json.loads(specialRule_list)

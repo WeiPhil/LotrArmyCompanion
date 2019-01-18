@@ -33,7 +33,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 1
+          "fate": 1
         },
         "injuries": ["old_battle_wound"],
         "wargear": ["teeth"],
@@ -49,7 +49,7 @@
         "unit_name": "moria_goblin_warrior",
         "faction_name": "moria",
         "unit_type": "infantry",
-        "troop_type": "lieutnant",
+        "troop_type": "lieutenant",
         "points": 31,
         "experience": 5,
         "canPromote": false,
@@ -64,7 +64,7 @@
           "courage": 0,
           "might": 1,
           "will": 1,
-          "faith": 1
+          "fate": 1
         },
         "injuries": ["old_battle_wound"],
         "wargear": ["armour", "sword", "shield", "throwing_weapon"],
@@ -97,7 +97,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 0
+          "fate": 0
         },
         "injuries": [],
         "wargear": ["armour", "sword", "spear"],
@@ -128,7 +128,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 1
+          "fate": 1
         },
         "injuries": ["old_battle_wound"],
         "wargear": ["teeth"],

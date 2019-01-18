@@ -1,0 +1,40 @@
+{
+  "unit_id": 1,
+  "characteristics": {
+    "move": 5,
+    "fight": 2,
+    "shoot": 5,
+    "strength": 3,
+    "defence": 4,
+    "attacks": 1,
+    "wounds": 1,
+    "courage": 2,
+    "might": 0,
+    "will": 0,
+    "fate": 0
+  },
+  "wargear": [
+    { "name": "sword", "points": 0 },
+    { "name": "armour", "points": 0 },
+    { "name": "throwing_daggers", "points": 0 },
+    { "name": "shield", "points": 0 }
+  ],
+  "special_rules": [{ "name": "cave_dweller", "origin": "basic" }],
+  "promotions": [
+    {
+      "name": "lieutenant_might",
+      "description": "Lieutenant's base Might characteristic.",
+      "altering_effect": { "characteristic": "might", "value": 1 },
+      "special_rule": null,
+      "number": 1
+    },
+    {
+      "name": "hero_fate",
+      "description": "Hero's base Fate characteristic.",
+      "altering_effect": { "characteristic": "fate", "value": 1 },
+      "special_rule": null,
+      "number": 1
+    },
+    { "name": "test_special_rule", "description": "Special RUle.", "altering_effect": null, "special_rule": "ancient_evil", "number": 1 }
+  ]
+}

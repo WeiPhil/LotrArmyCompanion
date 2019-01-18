@@ -28,7 +28,7 @@ export const WIKI = 4;
 //Database constants
 export const HERO = "hero";
 export const WARRIOR = "warrior";
-export const LIEUTNANT = "lieutnant";
+export const LIEUTENANT = "lieutenant";
 export const SERGEANT = "sergeant";
 
 export const CLAWS = "claws";

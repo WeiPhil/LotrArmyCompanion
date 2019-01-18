@@ -26,5 +26,12 @@
     "email": "antoine.eichelb",
     "username": "Juranic",
     "password": "$pbkdf2-sha256$29000$mXMu5RyjVOrdm7N2zrk3Rg$n1p5sUWZ4/LyuC5XhDFsiQZSVxj4LgV.CZENmtBJgk0"
+  },
+  {
+    "firstName": "Philippe",
+    "lastName": "Weier",
+    "email": "ph.weier@gmail.com",
+    "username": "Sulrin",
+    "password": "$pbkdf2-sha256$29000$SYlR6h0DYExp7f0fI6S0lg$QcoFsG1l9PCDIQV7E8WUqYeSxirN2q8bfAj22nuv57Q"
   }
 ]

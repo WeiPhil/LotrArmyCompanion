@@ -55,7 +55,7 @@ class UnitCharacteristics extends Component {
   }
 
   createDataUser(improvs, characs, wargear, baseWargear) {
-    var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defence: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, faith: 0 };
+    var bonus = { move: 0, fight: 0, shoot: 0, strength: 0, defence: 0, attacks: 0, wounds: 0, courage: 0, might: 0, will: 0, fate: 0 };
 
     wargear
       .filter(weapon => baseWargear.indexOf(weapon) === -1 && weapon in WEAPON_BONUSES)
@@ -80,7 +80,7 @@ class UnitCharacteristics extends Component {
       courage: this.getCharacteristicFor(characs.courage, improvs.courage + bonus.courage),
       might: this.getCharacteristicFor(characs.might, improvs.might + bonus.might),
       will: this.getCharacteristicFor(characs.will, improvs.will + bonus.will),
-      faith: this.getCharacteristicFor(characs.faith, improvs.faith + bonus.faith)
+      fate: this.getCharacteristicFor(characs.fate, improvs.fate + bonus.fate)
     };
   }
 
@@ -96,7 +96,7 @@ class UnitCharacteristics extends Component {
       courage: characs.courage,
       might: characs.might,
       will: characs.will,
-      faith: characs.faith
+      fate: characs.fate
     };
   }
 
@@ -136,7 +136,7 @@ class UnitCharacteristics extends Component {
               <CustomTableCell>{characteristics.wounds}</CustomTableCell>
               <CustomTableCell>{characteristics.courage}</CustomTableCell>
               <CustomTableCell>
-                {characteristics.might}/{characteristics.will}/{characteristics.faith}
+                {characteristics.might}/{characteristics.will}/{characteristics.fate}
               </CustomTableCell>
             </TableRow>
           </TableBody>

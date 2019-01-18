@@ -17,7 +17,7 @@
         "access_name": "roah",
         "unit_name": "wood_elf_warrior",
         "unit_type": "infantry",
-        "troop_type": "lieutnant",
+        "troop_type": "lieutenant",
         "points": 31,
         "experience": 4,
         "canPromote": false,
@@ -32,7 +32,7 @@
           "courage": 0,
           "might": 1,
           "will": 1,
-          "faith": 2
+          "fate": 2
         },
         "injuries": [],
         "wargear": ["heavy_armor", "shield", "elven_sword", "elven_cloak"],
@@ -62,7 +62,7 @@
           "courage": 0,
           "might": 0,
           "will": 1,
-          "faith": 1
+          "fate": 1
         },
         "injuries": [],
         "wargear": ["elf_bow", "elven_sword", "elven_cloak"],
@@ -92,7 +92,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 0
+          "fate": 0
         },
         "injuries": [],
         "wargear": ["elf_bow", "elven_sword", "elven_cloak"],
@@ -122,7 +122,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 1
+          "fate": 1
         },
         "injuries": ["old_battle_wound"],
         "wargear": ["armour", "throwing_daggers", "elven_sword", "elven_cloak"],
@@ -152,7 +152,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 0
+          "fate": 0
         },
         "injuries": [],
         "wargear": ["wood_elf_spear", "elven_sword", "elven_cloak"],
@@ -182,7 +182,7 @@
           "courage": 0,
           "might": 0,
           "will": 0,
-          "faith": 0
+          "fate": 0
         },
         "injuries": [],
         "wargear": ["wood_elf_spear", "elven_sword", "elven_cloak"],

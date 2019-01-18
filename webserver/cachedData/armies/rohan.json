@@ -1,0 +1,29 @@
+{
+  "grimbold_of_grimslade": {
+    "faction_id": 9,
+    "unit_id": 3,
+    "name": "grimbold_of_grimslade",
+    "points": 60,
+    "description": "If your army includes Grimbold, you may upgrade any numbers of Warriors of Rohan to Helmingas for a cost of +1 point per model. Helmingas are Strength4, rather than 3.",
+    "mount_id": null,
+    "image_path": "tempCardBackground2.jpg",
+    "characteristics": {
+      "move": 6,
+      "fight": 5,
+      "shoot": 4,
+      "strength": 4,
+      "defence": 5,
+      "attacks": 2,
+      "wounds": 2,
+      "courage": 4,
+      "might": 0,
+      "will": 0,
+      "fate": 0
+    },
+    "base_wargear": ["armour", "two-handed_axe"],
+    "optional_wargear": [],
+    "keywords": ["hero_of_fortitude", "man", "rohan"],
+    "magical_powers": [],
+    "special_rules": [{ "name": "mighty_blow", "origin": "basic" }]
+  }
+}

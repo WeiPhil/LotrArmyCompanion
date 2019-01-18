@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit` (
   `courage` INT UNSIGNED NOT NULL,
   `might` INT UNSIGNED NULL DEFAULT 0,
   `will` INT UNSIGNED NULL DEFAULT 0,
-  `faith` INT UNSIGNED NULL DEFAULT 0,
+  `fate` INT UNSIGNED NULL DEFAULT 0,
   `description` TEXT NULL,
   `image_path` VARCHAR(100) NOT NULL,
   `mount_id` INT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`altering_effect` (
   `altering_effect_id` INT NOT NULL AUTO_INCREMENT,
-  `characteristic` ENUM('move', 'fight', 'shoot', 'strength', 'defence', 'attacks', 'wounds', 'courage', 'might', 'will', 'faith') NOT NULL,
+  `characteristic` ENUM('move', 'fight', 'shoot', 'strength', 'defence', 'attacks', 'wounds', 'courage', 'might', 'will', 'fate') NOT NULL,
   `value` INT NOT NULL,
   PRIMARY KEY (`altering_effect_id`)
 );
@@ -121,11 +121,14 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_keyword` (
 CREATE TABLE IF NOT EXISTS `lotr`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(16) NOT NULL,
+  `firstname` VARCHAR(45) NOT NULL,
+  `lastname` VARCHAR(45) NOT NULL,
   `email` VARCHAR(255) NULL,
-  `password` VARCHAR(32) NOT NULL,
+  `password_hash` VARCHAR(100) NOT NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `username_UNIQUE` (`username`)
+  UNIQUE INDEX `username_UNIQUE` (`username`),
+  UNIQUE INDEX `email_UNIQUE` (`email`)
 );
 
 
@@ -208,15 +211,15 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_unit` (
   `company_unit_id` INT NOT NULL AUTO_INCREMENT,
   `unit_id` INT NOT NULL,
   `company_id` INT NOT NULL,
-  `pseudo_name` VARCHAR(255) NOT NULL,
-  `company_unit_rank` ENUM('warrior', 'sergeant', 'lieutnant') NOT NULL DEFAULT 'warrior',
+  `company_unit_name` VARCHAR(255) NOT NULL,
+  `company_unit_rank` ENUM('warrior', 'sergeant', 'lieutenant') NOT NULL DEFAULT 'warrior',
   `experience` INT UNSIGNED NOT NULL DEFAULT 0,
   `effective_points` INT UNSIGNED NOT NULL,
   `can_promote` ENUM('yes','no') NOT NULL DEFAULT 'no',
   `notes` TEXT NULL,
   PRIMARY KEY (`company_unit_id`, `unit_id`),
   INDEX `fk_company_unit_company1_idx` (`company_id`),
-  UNIQUE INDEX `name_UNIQUE` (`pseudo_name`),
+  UNIQUE INDEX `name_UNIQUE` (`company_unit_name`),
   INDEX `fk_company_unit_unit1_idx` (`unit_id`),
   CONSTRAINT `fk_company_unit_company1`
     FOREIGN KEY (`company_id`)
@@ -358,6 +361,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_equipement` (
 CREATE TABLE IF NOT EXISTS `lotr`.`company_unit_has_equipement` (
   `company_unit_id` INT NOT NULL,
   `equipement_id` INT NOT NULL,
+  `points` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`company_unit_id`, `equipement_id`),
   INDEX `fk_company_unit_has_equipement_equipement1_idx` (`equipement_id`),
   INDEX `fk_company_unit_has_equipement_company_unit1_idx` (`company_unit_id`),

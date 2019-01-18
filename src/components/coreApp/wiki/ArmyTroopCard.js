@@ -9,7 +9,7 @@ import UnitCharacteristics from "./../UnitCharacteristics";
 
 import { CARD_MAX_WIDTH } from "../../../utils/Constants";
 
-import { LieutnantIcon, WargearIcon } from "./../../icons/CardIcons";
+import { LieutenantIcon, WargearIcon } from "./../../icons/CardIcons";
 import { Grid, Avatar, IconButton, Tooltip, Chip, Divider } from "@material-ui/core";
 
 import Thumbnailer from "./../../customs/Thumbnailer";
@@ -89,7 +89,7 @@ const ArmyTroopCard = props => {
           <Grid item xs={2}>
             <Tooltip placement="top" title={heroRank}>
               <span>
-                <IconButton className={classes.icons}>{isHero ? <LieutnantIcon /> : <WargearIcon />}</IconButton>
+                <IconButton className={classes.icons}>{isHero ? <LieutenantIcon /> : <WargearIcon />}</IconButton>
               </span>
             </Tooltip>
           </Grid>
@@ -172,7 +172,7 @@ const ArmyTroopCard = props => {
 
   const thumbnailTroopType = (
     <Avatar className={classes.thumbnailTroopType}>
-      {isHero ? <LieutnantIcon style={{ fontSize: 10 }} /> : <WargearIcon style={{ fontSize: 10 }} />}
+      {isHero ? <LieutenantIcon style={{ fontSize: 10 }} /> : <WargearIcon style={{ fontSize: 10 }} />}
     </Avatar>
   );
   const minimalContent = (
