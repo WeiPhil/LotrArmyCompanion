@@ -2,27 +2,12 @@ import React, { Component } from "react";
 
 import PropTypes from "prop-types";
 
-import {
-  Paper,
-  withStyles,
-  Typography,
-  Grid,
-  Card,
-  CardActionArea,
-  CardMedia,
-  Dialog,
-  Chip,
-  Avatar,
-  DialogContent,
-  CardContent
-} from "@material-ui/core";
+import { Paper, withStyles, Typography, Grid, Card, CardActionArea, CardMedia, Dialog, Chip, Avatar, DialogContent, CardContent } from "@material-ui/core";
 
 import { MIN_HEIGHT_600, CARD_IMAGE_HEIGHT, CARD_MAX_WIDTH } from "../../utils/Constants";
 import { GoldSackIcon, VictoryIcon, DrawIcon, DeathIcon } from "../icons/OverviewIcons";
 
-import CompanyTroopCard from "./CompanyTroopCard";
-
-import { calculateRating } from "../../utils/ArmyCalculations";
+import CompanyUnitCard from "./CompanyUnitCard";
 
 const styles = theme => ({
   card: {
@@ -92,35 +77,27 @@ class CompanyCard extends Component {
   };
 
   renderInjuredCard(company) {
-    const injuredIndex = company.access_map[this.state.injured];
+    const company_unit = company.company_units[this.state.injured];
 
-    const company_unit = company.troops[injuredIndex];
-    const unit_name = company_unit.unit_name;
-
-    const unit = this.props.armies[company_unit["faction_name"]][unit_name];
-
-    return <CompanyTroopCard forPreview injured={company.injured} company_unit={company_unit} unit={unit} />;
+    return <CompanyUnitCard forPreview isDead={true} company_unit={company_unit} mobile={false} />;
   }
 
   render() {
     const { company, classes } = this.props;
 
-    const { rating, effective_rating } = calculateRating(company);
+    const rating = company.rating;
+    const effective_rating = company.effective_rating;
 
     return (
       <Card className={classes.card}>
         <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={require("./../../assets/images/" + company.image_path)}
-            title={company.company_access_name}
-          />
+          <CardMedia className={classes.media} image={require("./../../assets/images/" + company.image_path)} title={company.name} />
         </CardActionArea>
         <CardContent className={classes.cardContent}>
           <Grid container direction="column" alignItems="stretch" spacing={8}>
             <Grid item>
               <Typography variant="h4" className={classes.companyTitle}>
-                {company.company_name}
+                {company.name}
               </Typography>
             </Grid>
             <Grid item>
@@ -216,7 +193,7 @@ class CompanyCard extends Component {
                       clickable={window.matchMedia(MIN_HEIGHT_600).matches}
                       onClick={() => this.handleInjuredClick(injured)}
                       key={index}
-                      label={injured.replace(/_/g, " ")}
+                      label={injured}
                       className={classes.chip}
                     />
                   ))}
@@ -227,9 +204,7 @@ class CompanyCard extends Component {
                     keepMounted
                     onClose={this.handleInjuredClose}
                   >
-                    <DialogContent style={{ padding: 0 }}>
-                      {this.state.injured !== undefined && this.renderInjuredCard(company)}
-                    </DialogContent>
+                    <DialogContent style={{ padding: 0 }}>{this.state.injured !== undefined && this.renderInjuredCard(company)}</DialogContent>
                   </Dialog>
                 </Grid>
               </Grid>
@@ -243,7 +218,6 @@ class CompanyCard extends Component {
 
 CompanyCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  armies: PropTypes.object.isRequired,
   company: PropTypes.object.isRequired
 };
 

@@ -117,7 +117,7 @@ const ArmyTroopCard = props => {
         {/* </Grid> */}
 
         <Divider style={{ marginTop: 20 }} />
-        <UnitCharacteristics characs={unit.characteristics} />
+        <UnitCharacteristics characteristics={unit.characteristics} />
 
         {(unit.base_wargear.length !== 0 || unit.optional_wargear.length !== 0) && (
           <>
@@ -171,9 +171,7 @@ const ArmyTroopCard = props => {
   );
 
   const thumbnailTroopType = (
-    <Avatar className={classes.thumbnailTroopType}>
-      {isHero ? <LieutenantIcon style={{ fontSize: 10 }} /> : <WargearIcon style={{ fontSize: 10 }} />}
-    </Avatar>
+    <Avatar className={classes.thumbnailTroopType}>{isHero ? <LieutenantIcon style={{ fontSize: 10 }} /> : <WargearIcon style={{ fontSize: 10 }} />}</Avatar>
   );
   const minimalContent = (
     <Typography noWrap className={classes.troopTitleMinimal} variant="body2">

@@ -11,6 +11,7 @@ import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 import { getCommunityChat } from "./../redux/actions/chat";
 
+import { unprettify } from "./../utils/Functions";
 import { WIKI, MENU_WIDTH, REACTION_TIMEOUT, NEW_BATTLE } from "./../utils/Constants";
 import { NewBattleIcon, LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, SwordShieldIcon, TwoCoinsIcon } from "./icons/MenuIcons";
 
@@ -36,7 +37,7 @@ import {
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
-import CompaniesOverview from "./coreApp/CompaniesOverview";
+import CompanyUnitsOverview from "./coreApp/CompanyUnitsOverview";
 import MyCompanies from "./coreApp/MyCompanies";
 import Wiki from "./coreApp/wiki/Wiki";
 import ArmyOverview from "./coreApp/wiki/ArmyOverview";
@@ -144,11 +145,7 @@ class MainInterface extends React.Component {
     if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true && this.props.companiesNeedRefetch === true)
       this.props.getUserCompanies(this.props.username, this.props.accessToken);
 
-    if (
-      this.props.loggedIn === true &&
-      prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch &&
-      this.props.companiesNeedRefetch === true
-    )
+    if (this.props.loggedIn === true && prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch && this.props.companiesNeedRefetch === true)
       this.props.getUserCompanies(this.props.username, this.props.accessToken);
 
     if (prevProps.socketConnected !== this.props.socketConnected && this.props.socketConnected === true) this.props.getCommunityChat();
@@ -176,7 +173,7 @@ class MainInterface extends React.Component {
     const companyNames =
       this.props.isLoadingCompanies || this.props.companiesNeedRefetch
         ? []
-        : this.props.companies.map((company, idx) => [company.company_name, "/companiesOverview/" + company.company_access_name]);
+        : this.props.companies.map((company, idx) => [company.name, "/companiesOverview/" + unprettify(company.name)]);
 
     var menuItems = [
       ["New Battle", <NewBattleIcon fontSize="large" nativeColor={iconColor} />, "/battle", []],
@@ -353,11 +350,11 @@ class MainInterface extends React.Component {
                 companies.map((company, idx) => (
                   <Route
                     key={idx}
-                    path={"/companiesOverview/" + company.company_access_name}
-                    render={() => <CompaniesOverview armies={armies} companies={companies} companyIndex={idx} />}
+                    path={"/companiesOverview/" + unprettify(company.name)}
+                    render={() => <CompanyUnitsOverview armies={armies} companies={companies} companyIndex={idx} />}
                   />
                 )),
-                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies armies={armies} companies={companies} />} />
+                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} />} />
               ]}
             <Route exact path="/" component={Welcome} />
             <Route exact path="/wiki" component={Wiki} />

@@ -1,9 +1,119 @@
+
 import json
 from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy import and_, or_
 
 from server.run import db
 import os
 from collections import OrderedDict
+
+
+def checkAndUpdateCompanyUnitCost(companyUnit):
+    from .models import Unit, Equipement, CompanyUnit, CompanyUnitHasEquipement, Company
+    session = db.session
+
+    """ Finds altering effects in the promotions """
+    def findAlteringEffects(dict_obj):
+        occurences = []
+        numberInPromotion = 1
+        currentAlteringEffect = None
+        for key, value in dict_obj.items():
+            if key == 'number':
+                numberInPromotion = value
+            if key == 'altering_effect' and isinstance(value, dict):
+                occurences.append(value)
+                currentAlteringEffect = value
+            elif isinstance(value, dict):
+                occurences = occurences + \
+                    findAlteringEffects(value)
+            elif isinstance(value, list):
+                for v in value:
+                    if(key == 'promotions'):
+                        occurences = occurences + findAlteringEffects(v)
+        if (currentAlteringEffect != None):
+            for i in range(1, numberInPromotion):
+                occurences.append(currentAlteringEffect)
+        return occurences
+
+    altering_effects = findAlteringEffects(companyUnit)
+    totalAttackWounds = companyUnit['characteristics']['wounds'] + companyUnit['characteristics']['attacks'] + len(
+        list(filter(lambda x: x['characteristic'] == 'wounds' or x['characteristic'] == 'attacks', altering_effects)))
+
+    isHighCost = False if totalAttackWounds < 3 else True
+
+    optional_wargear = list(
+        filter(lambda x: x['points'] > 0, companyUnit['wargear']))
+
+    company_unit_id = session.query(CompanyUnit.company_unit_id).filter(
+        CompanyUnit.company_unit_name == companyUnit['company_unit_name']).one()[0]
+
+    for equipement in optional_wargear:
+
+        cost = None
+        if(isHighCost):
+            cost = session.query(Equipement.high_cost).filter(
+                Equipement.name == equipement['name']).one()
+        else:
+            cost = session.query(Equipement.low_cost).filter(
+                Equipement.name == equipement['name']).one()
+        cost = int(json.loads(AlchemyEncoder().encode(cost))[0])
+        if cost != equipement['points']:
+            equipement_id = session.query(Equipement.equipement_id).filter(
+                Equipement.name == equipement['name']).one()[0]
+            company_unit_has_equipement = session.query(CompanyUnitHasEquipement).filter(and_(
+                CompanyUnitHasEquipement.company_unit_id == company_unit_id,
+                CompanyUnitHasEquipement.equipement_id == equipement_id
+            )).one()
+            company_unit_has_equipement.points = cost
+            index = companyUnit['wargear'].index(equipement)
+            companyUnit['wargear'][index]['points'] = cost
+            session.commit()
+
+    wargearCost = 0
+    for equipement in companyUnit['wargear']:
+        wargearCost += equipement['points']
+
+    values = 0
+    for altering_effect in altering_effects:
+        char = altering_effect['characteristic']
+        if(char != 'shoot'):
+            values += altering_effect['value']
+            if(char in ['attacks', 'wounds']):
+                values += altering_effect['value']
+
+    increase_cost = values * 5
+
+    base_cost = session.query(Unit.points).filter(
+        Unit.name == companyUnit['unit_name']).one()
+    base_cost = int(json.loads(AlchemyEncoder().encode(base_cost))[0])
+
+    special_rules_num = len(
+        list(filter(lambda x: x['special_rule'] != None, companyUnit['promotions'])))
+    special_rules_cost = special_rules_num * 5
+
+    magical_powers_num = len(companyUnit['magical_powers'])
+    magical_powers_cost = magical_powers_num * 5
+
+    effective_cost = base_cost+wargearCost+increase_cost + \
+        special_rules_cost+magical_powers_cost
+
+    if(effective_cost != companyUnit['effective_points']):
+        company = session.query(Company).filter(
+            Company.name == companyUnit['company_name']).one()
+        company.effective_rating += effective_cost - \
+            companyUnit['effective_points']
+        company.rating += effective_cost-companyUnit['effective_points']
+        companyUnit['effective_points'] = effective_cost
+        company_unit = session.query(CompanyUnit).filter(
+            CompanyUnit.company_unit_name == companyUnit['company_unit_name']).one()
+        company_unit.effective_points = effective_cost
+        session.commit()
+
+    return companyUnit
+
+
+def checkAndUpdateCompanyCost(company_name):
+    print(company_name)
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -39,63 +149,3 @@ class AlchemyEncoder(json.JSONEncoder):
             return OrderedDict(sorted(fields.items(), key=lambda i: self.list.index(i[0]))) if self.ordered else fields
 
         return json.JSONEncoder.default(self, obj)
-
-
-def writeModelToJson(object, filename, isList=False, list=[], exclude=False):
-    id_key = None
-    id_name = None
-    if(not isList):
-        field = [x for x in dir(object) if x.endswith('_id')]
-        id_key = getattr(object, field[0])
-        id_name = field[0][:-3]
-        file_name = filename+'_'+str(id_key)+'.json'
-    else:
-        field = [x for x in dir(object[0]) if x.endswith('_id')]
-        id_name = field[0][:-3]
-        file_name = filename+'s'+'.json'
-
-    jsonString = AlchemyEncoder(list=list, exclude=exclude).encode(object)
-    with open(os.path.join("queriedData", file_name), 'w', encoding='utf8') as outfile:
-        outfile.write(jsonString)
-
-    return jsonString
-
-
-def calculateCompanyUnitCost():
-    pass
-#   companyUnit_type = company_unit.troop_type;
-
-#   totalAttackWounds = company_unit.improvements["attacks"] + company_unit.improvements["wounds"] + unit.characteristics["attacks"] + unit.characteristics["wounds"];
-
-#   costWargear = 0;
-
-#   companyUnitWargearState = totalAttackWounds < 3 ? "low" : "high";
-
-#   company_unit.wargear
-#     .filter(weapon => !(unit.base_wargear.indexOf(weapon) !== -1))
-#     .map(weapon => (costWargear += WEAPON_COSTS[weapon][troopWargearState]));
-
-#   var costImprovements = 0;
-
-#   if (troop_type !== WARRIOR) {
-#     for (var charac in company_unit.improvements) {
-#       // check if the property/key is defined in the object itself, not in parent
-#       if (company_unit.improvements.hasOwnProperty(charac)) {
-#         if (
-#           charac === "fight" ||
-#           charac === "strength" ||
-#           charac === "defence" ||
-#           charac === "courage" ||
-#           charac === "might" ||
-#           charac === "will" ||
-#           charac === "fate"
-#         ) {
-#           costImprovements += company_unit.improvements[charac] * 5;
-#         } else if (charac === "attacks" || charac === "wounds") {
-#           costImprovements += company_unit.improvements[charac] * 10;
-#         }
-#       }
-#     }
-#   }
-
-#   return unit.points + costImprovements + costWargear + company_unit.special_rules.length * 5;

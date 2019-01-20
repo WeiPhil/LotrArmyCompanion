@@ -6,3 +6,12 @@ export function prettify(str) {
     })
     .join(" ");
 }
+
+export function unprettify(str) {
+  return str
+    .split(" ")
+    .map(part => {
+      return part.charAt(0).toLowerCase() + part.slice(1);
+    })
+    .join("_");
+}

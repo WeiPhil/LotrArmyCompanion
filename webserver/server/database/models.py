@@ -29,6 +29,14 @@ class CompanyUnitHasEquipement(db.Model):
         return AlchemyEncoder().encode(self)
 
 
+class CompanyHasInjured(db.Model):
+    __table__ = db.Table('company_has_injured', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)
+
+
 class CompanyUnitHasHeroicAction(db.Model):
     __table__ = db.Table('company_unit_has_heroic_action', db.Model.metadata,
                          autoload=True, autoload_with=db.engine)

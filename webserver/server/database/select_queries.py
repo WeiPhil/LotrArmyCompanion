@@ -14,7 +14,7 @@ unit_fields_no_characteristics = [
     'faction_id', 'unit_id', 'name', 'points', 'description', 'mount_id', 'image_path']
 
 company_unit_fields_no_characteristics = [
-    'unit_id', 'company_id', 'company_unit_name', 'company_unit_rank', 'experience', 'effective_points', 'can_promote', 'notes']
+    'unit_id', 'company_id', 'company_unit_name', 'company_unit_rank', 'experience', 'effective_points', 'can_promote', 'notes', 'image_path']
 
 session = db.session
 
@@ -49,6 +49,7 @@ def getAllEquipements():
         specialRule_list = reduce(
             lambda x, y: x+y, specialRule_list) if specialRule_list != [] else []
         equipement['special_rules'] = specialRule_list
+        equipement.pop('altering_effect_id')
 
         equipements_obj[equipement_name] = equipement
 
@@ -97,7 +98,39 @@ def getUnits(factionName):
     return whole_faction
 
 
+def getUserCompanies(username):
+    user_id = session.query(User.user_id).filter(
+        User.username == username).one()
+    companies = session.query(Company.name).filter(
+        Company.user_id == user_id).all()
+    companies = json.loads(AlchemyEncoder().encode(companies))
+    user_obj = []
+    for company_name in companies:
+        company = getCompany(company_name)
+        company['company_units'] = getCompanyUnits(company_name)
+        company['injured'] = getCompanyInjured(company_name)
+        user_obj.append(company)
+    return user_obj
+
+
 def getCompany(companyName):
+    company_query = session.query(Company).filter(
+        Company.name == companyName).one()
+    company = AlchemyEncoder(list=['company_id', 'name', 'gold', 'victories', 'draws',
+                                   'losses', 'rating', 'effective_rating', 'image_path'], ordered=True).encode(company_query)
+
+    return json.loads(company)
+
+
+def getCompanyInjured(company_name):
+    injured_query = session.query(CompanyUnit.company_unit_name).select_from(
+        db.join(Company, CompanyHasInjured, isouter=True).join(CompanyUnit, isouter=True)).all()
+    injured = json.loads(AlchemyEncoder().encode(injured_query))
+    injured = reduce(lambda x, y: x+y, injured) if injured != [[None]] else []
+    return injured
+
+
+def getCompanyUnits(companyName):
     company_id = session.query(Company.company_id).filter(
         Company.name == companyName).one()
     company_unit_names = session.query(CompanyUnit.company_unit_name).filter(
@@ -118,8 +151,6 @@ def getCompanyUnit(companyUnitName):
         list=company_unit_fields_no_characteristics, ordered=True).encode(company_unit))
 
     unit_id = company_unit['unit_id']
-    # session.query(CompanyUnit.unit_id).filter(
-    #     CompanyUnit.company_unit_name == companyUnitName).one()[0]
     unit_name = session.query(Unit.name).filter(
         Unit.unit_id == unit_id).one()[0]
 
@@ -127,9 +158,8 @@ def getCompanyUnit(companyUnitName):
     company_unit['unit_name'] = company_unit.pop('unit_id')
 
     company_id = company_unit['company_id']
-    company_unit['company_id'] = session.query(Company.name).filter(
+    company_unit['company_name'] = session.query(Company.name).filter(
         Company.company_id == company_id).one()[0]
-    company_unit['company_name'] = company_unit.pop('company_id')
 
     company_unit['characteristics'] = getCharacteristics(
         unit_name)
@@ -138,7 +168,8 @@ def getCompanyUnit(companyUnitName):
         db.join(Equipement, CompanyUnitHasEquipement, isouter=True).join(CompanyUnit, isouter=True))
 
     company_unit['wargear'] = getCompanyUnitEquipement(companyUnitName)
-    # company_unit['magical_powers'] = getMagicalPowers(companyUnitName, companyUnit=True)
+    company_unit['magical_powers'] = getMagicalPowers(
+        companyUnitName, companyUnit=True)
     company_unit['special_rules'] = getSpecialRules(
         companyUnitName, companyUnit=True)
     company_unit['promotions'] = getPromotions(companyUnitName)
@@ -147,19 +178,30 @@ def getCompanyUnit(companyUnitName):
 
 
 def getCompanyUnitEquipement(companyUnitName):
-    equipement_query = session.query(Equipement.name, CompanyUnitHasEquipement.points).select_from(
+    has_equipements_query = session.query(Equipement.name, CompanyUnitHasEquipement.points).select_from(
         db.join(Equipement, CompanyUnitHasEquipement, isouter=True).join(CompanyUnit, isouter=True))
 
-    equipements = equipement_query.filter(
+    has_equipements = has_equipements_query.filter(
         CompanyUnit.company_unit_name == companyUnitName).all()
 
     equipement_list = []
-    for equipement in equipements:
-        equipement = json.loads(AlchemyEncoder(
-            list=["name", 'points'], ordered=True).encode(equipement))
+    for hasEquipement in has_equipements:
+        hasEquipement = json.loads(AlchemyEncoder(
+            list=["name", 'points'], ordered=True).encode(hasEquipement))
         equipement_object = {}
-        equipement_object["name"] = equipement[0]
-        equipement_object["points"] = equipement[1]
+        equipement_object["name"] = hasEquipement[0]
+        equipement_object["points"] = hasEquipement[1]
+
+        altering_effect_query = session.query(Equipement.altering_effect_id).filter(
+            Equipement.name == hasEquipement[0]).scalar()
+
+        if(altering_effect_query is not None):
+            altering_effect = session.query(AlteringEffect).filter(
+                AlteringEffect.altering_effect_id == altering_effect_query).one()
+            altering_effect_obj = json.loads(str(altering_effect))
+            altering_effect_obj.pop('altering_effect_id')
+            equipement_object['altering_effect'] = altering_effect_obj
+
         equipement_list.append(equipement_object)
 
     return equipement_list
@@ -256,10 +298,14 @@ def getKeywords(unitName):
 
 
 def getMagicalPowers(unitName, companyUnit=False):
-    magicalPower_query = session.query(MagicalPower.name).select_from(
-        db.join(MagicalPower, UnitHasMagicalPower, isouter=True).join(Unit, isouter=True))
+    if(companyUnit):
+        magicalPower_query = session.query(MagicalPower.name).select_from(
+            db.join(MagicalPower, CompanyUnitHasMagicalPower, isouter=True).join(CompanyUnit, isouter=True)).filter(CompanyUnit.company_unit_name == unitName).all()
+    else:
+        magicalPower_query = session.query(MagicalPower.name).select_from(
+            db.join(MagicalPower, UnitHasMagicalPower, isouter=True).join(Unit, isouter=True)).filter(Unit.name == unitName).all()
 
-    magicalPower_list = magicalPower_query.filter(Unit.name == unitName).all()
+    magicalPower_list = magicalPower_query
     magicalPower_list = AlchemyEncoder().encode(magicalPower_list)
     magicalPower_list = json.loads(magicalPower_list)
     magicalPower_list = reduce(

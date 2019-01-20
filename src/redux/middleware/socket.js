@@ -45,7 +45,6 @@ const createSocketMiddleware = socketUrl => {
         // respond to send events
         socket.on("message", data => {
           const { message, payload } = JSON.parse(data);
-          // console.log();
           // Dispatch the action to the reducer
           dispatch({
             type: message,

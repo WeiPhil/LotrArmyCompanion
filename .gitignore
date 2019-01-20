@@ -19,6 +19,7 @@
 
 # database data
 database/data
+database/lotr.mwb.bak
 
 # database helper gui production
 databaseHelperGui/build

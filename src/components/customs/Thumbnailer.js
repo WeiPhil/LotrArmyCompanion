@@ -42,10 +42,7 @@ class Thumbnailer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.mobile) {
-      if (
-        prevProps.thumbnailSwitch[this.props.switchID] !== this.props.thumbnailSwitch[this.props.switchID] &&
-        !this.state.collapserJustClicked
-      ) {
+      if (prevProps.thumbnailSwitch[this.props.switchID] !== this.props.thumbnailSwitch[this.props.switchID] && !this.state.collapserJustClicked) {
         if (this.state.detailsOpen === true) this.setState(() => ({ detailsOpen: false }));
       } else if (prevState.collapserJustClicked !== this.state.collapserJustClicked && this.state.collapserJustClicked === true) {
         this.setState(state => ({ collapserJustClicked: false, detailsOpen: !state.detailsOpen }));
@@ -69,6 +66,7 @@ class Thumbnailer extends Component {
       floatRightContent,
       classes,
       additionalCardStyle,
+      additionalCardActionAreaStyle,
       mobile
     } = this.props;
 
@@ -78,12 +76,8 @@ class Thumbnailer extends Component {
       <Grow in={true} timeout={this.props.timeout}>
         <div style={additionalCardStyle}>
           <Card style={{ ...additionalCardStyle, ...widthConstraint }} className={classes.card}>
-            <CardActionArea disabled={!this.props.mobile} onClick={this.handleExpandClick}>
-              <CardMedia
-                className={this.state.detailsOpen ? classes.mediaExpanded : classes.media}
-                image={cardMediaImagePath}
-                title={cardMediaImagePath}
-              />
+            <CardActionArea style={{ ...additionalCardActionAreaStyle }} disabled={!this.props.mobile} onClick={this.handleExpandClick}>
+              <CardMedia className={this.state.detailsOpen ? classes.mediaExpanded : classes.media} image={cardMediaImagePath} title={cardMediaImagePath} />
             </CardActionArea>
 
             {!this.state.detailsOpen && minimalContent}

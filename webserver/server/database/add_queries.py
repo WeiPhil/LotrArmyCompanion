@@ -29,17 +29,18 @@ def addPromotionToCompanyUnit(companyUnitName, promotionName):
         session.commit()
 
 
-def addCompany(companyName, username):
+def addCompany(companyName, username, image_path='tempCardBackground1.jpg'):
 
     user_id = session.query(User.user_id).filter(
         User.username == username).one()[0]
 
-    newCompany = Company(name=companyName, user_id=user_id)
+    newCompany = Company(name=companyName, user_id=user_id,
+                         image_path=image_path)
     session.add(newCompany)
     session.commit()
 
 
-def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalEquipement):
+def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalEquipement, image_path):
 
     unit_id = session.query(Unit.unit_id).filter(
         Unit.name == unitName).one()[0]
@@ -72,7 +73,7 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
         unit_total_cost += 5
     #  add new unit with total cost in points of equipement
     newCompanyUnit = CompanyUnit(unit_id=unit_id, company_id=company_id, company_unit_name=companyUnitName,
-                                 company_unit_rank=unitRank, effective_points=unit_total_cost)
+                                 company_unit_rank=unitRank, effective_points=unit_total_cost, image_path=image_path)
 
     session.add(newCompanyUnit)
     session.commit()

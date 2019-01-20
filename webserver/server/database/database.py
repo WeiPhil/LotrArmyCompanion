@@ -9,7 +9,7 @@ from functools import reduce
 
 from server.run import db
 from .models import *
-from .utility import writeModelToJson, AlchemyEncoder
+from .utility import *
 from .select_queries import *
 from .add_queries import *
 
@@ -34,10 +34,10 @@ def writeArmiesToJson():
                 json.dump(army, ensure_ascii=False, fp=outfile)
 
 
-def writeCompanyToJson(companyName):
-    company = getCompany(companyName)
-    with open(os.path.join("cachedData/user_companies", companyName.lower()+'.json'), 'w', encoding='utf8') as outfile:
-        json.dump(company, ensure_ascii=False, fp=outfile)
+def writeUserCompaniesToJson(username):
+    user_companies = getUserCompanies(username)
+    with open(os.path.join("cachedData/user_companies", username+'.json'), 'w', encoding='utf8') as outfile:
+        json.dump(user_companies, ensure_ascii=False, fp=outfile)
 
 
 def query():
@@ -48,21 +48,27 @@ def query():
     # writeArmiesToJson()
 
     # writeSpecialRulesToJson()
-    username = 'Sulrin'
+    username = 'admin'
     companyName = 'The Golden Robbers'
-    unitName = 'wild_warg'
-    unitRank = 'sergeant'
-    companyUnitName = 'Warg Faible'
-    additionalEquipement = ['throwing_daggers']
+    unitName = 'moria_goblin_warrior'
+    unitRank = 'lieutenant'
+    companyUnitName = 'Slurpus'
+    additionalEquipement = ['shield']
+    image_path = 'tempCardBackground1.jpg'
 
-    # # result = addCompany(companyName, username)
-    # result = addCompanyUnit(companyName, unitName,
-    #                         unitRank, companyUnitName, additionalEquipement)
+    # addCompany(companyName, username)
+    # addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalEquipement, image_path)
 
     # return str(session.query(CompanyUnit).filter(CompanyUnit.company_unit_name == companyUnitName).one())
-    # addPromotionToCompanyUnit(companyUnitName, 'test_special_rule')
+    # addPromotionToCompanyUnit('Gormungur', 'attacks_increase')
     # writeArmiesToJson()
     # writeSpecialRulesToJson()
     # writeEquipementsToJson()
-    writeCompanyToJson(companyName)
-    return getCompanyUnit(companyUnitName)
+    writeUserCompaniesToJson(username)
+
+    # for company_unit_name, company_unit in getCompanyUnits(companyName).items():
+    #    result = checkAndUpdateCompanyUnitCost(company_unit)
+
+    # checkAndUpdateCompanyUnitCost(getCompanyUnit('Gormungur'))
+
+    return getCompanyInjured(companyName)

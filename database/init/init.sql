@@ -145,6 +145,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company` (
   `rating` INT UNSIGNED NOT NULL DEFAULT 0,
   `effective_rating` INT UNSIGNED NOT NULL DEFAULT 0,
   `user_id` INT NOT NULL,
+  `image_path` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`company_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`),
   INDEX `fk_company_user1_idx` (`user_id`),
@@ -217,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_unit` (
   `effective_points` INT UNSIGNED NOT NULL,
   `can_promote` ENUM('yes','no') NOT NULL DEFAULT 'no',
   `notes` TEXT NULL,
+  `image_path` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`company_unit_id`, `unit_id`),
   INDEX `fk_company_unit_company1_idx` (`company_id`),
   UNIQUE INDEX `name_UNIQUE` (`company_unit_name`),
@@ -501,6 +503,27 @@ CREATE TABLE IF NOT EXISTS `lotr`.`equipement_has_special_rule` (
   CONSTRAINT `fk_equipement_has_special_rule_special_rule1`
     FOREIGN KEY (`special_rule_id`)
     REFERENCES `lotr`.`special_rule` (`special_rule_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Table `lotr`.`company_has_injured`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lotr`.`company_has_injured` (
+  `company_id` INT NOT NULL,
+  `company_unit_id` INT NOT NULL,
+  PRIMARY KEY (`company_id`, `company_unit_id`),
+  INDEX `fk_company_has_company_unit_company_unit1_idx` (`company_unit_id`),
+  INDEX `fk_company_has_company_unit_company1_idx` (`company_id`),
+  CONSTRAINT `fk_company_has_company_unit_company1`
+    FOREIGN KEY (`company_id`)
+    REFERENCES `lotr`.`company` (`company_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_company_has_company_unit_company_unit1`
+    FOREIGN KEY (`company_unit_id`)
+    REFERENCES `lotr`.`company_unit` (`company_unit_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );

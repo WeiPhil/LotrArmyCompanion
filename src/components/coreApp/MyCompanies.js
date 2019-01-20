@@ -17,7 +17,7 @@ const styles = theme => ({
 
 class MyCompanies extends Component {
   render() {
-    const { companies, armies, classes, theme } = this.props;
+    const { companies, classes, theme } = this.props;
 
     return (
       <>
@@ -31,7 +31,7 @@ class MyCompanies extends Component {
             </Grid>
             {companies.map((company, index) => (
               <Grid item key={index}>
-                <CompanyCard company={company} armies={armies} />
+                <CompanyCard company={company} />
               </Grid>
             ))}
           </Grid>
@@ -41,7 +41,7 @@ class MyCompanies extends Component {
           <Grid container direction="row" justify="center" alignItems="stretch" spacing={16}>
             {companies.map((company, index) => (
               <Grid item key={index}>
-                <CompanyCard company={company} armies={armies} />
+                <CompanyCard company={company} />
               </Grid>
             ))}
             <Grid item style={{ margin: "auto 0" }}>
@@ -57,8 +57,7 @@ class MyCompanies extends Component {
 }
 
 MyCompanies.propTypes = {
-  companies: PropTypes.array.isRequired,
-  armies: PropTypes.object.isRequired
+  companies: PropTypes.array.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(MyCompanies);
