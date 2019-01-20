@@ -115,3 +115,21 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
     company.rating += unit_total_cost
     company.effective_rating += unit_total_cost
     session.commit()
+
+
+def addUser(username, firstname, lastname, email, password_hash):
+
+    username_exists = session.query(User).filter(
+        User.username == username).scalar() is not None
+    if(username_exists):
+        return 101
+    email_exists = session.query(User).filter(
+        User.email == email).scalar() is not None
+    if(email_exists):
+        return 102
+
+    new_user = User(username=username, firstname=firstname,
+                    lastname=lastname, email=email, password_hash=password_hash)
+    session.add(new_user)
+    session.commit()
+    return 200

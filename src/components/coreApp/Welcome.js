@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Grid, Divider } from "@material-ui/core";
 import InlineLink from "./../customs/InlineLink";
 import { withStyles } from "@material-ui/core/styles";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   container: {
@@ -12,24 +13,31 @@ const styles = theme => ({
   }
 });
 
+const mapStateToProps = ({ data, auth }) => ({
+  hasNoCompanies: data.hasNoCompanies,
+  loggedIn: auth.loggedIn
+});
+
 const Welcome = props => {
+  const { hasNoCompanies, loggedIn, classes } = props;
+
   return (
-    <Grid className={props.classes.container} container direction={"column"}>
+    <Grid className={classes.container} container direction={"column"}>
       <Grid item>
-        <Typography align="center" variant="h6" gutterBottom>
+        <Typography align="center" variant="h4" gutterBottom>
           Welcome to the Lord of the Ring Companion app!
         </Typography>
-        <Divider className={props.classes.divider} />
-        <Typography variant="body2" gutterBottom>
-          Here you will be able to create your companies for Battle Companies or simply an army for the Table top game Lord of the Ring.
-        </Typography>
-        <Typography variant="body2" gutterBottom>
-          Before doing anything I would login!
-        </Typography>
-        <InlineLink align="center" path={"/register"} text={"Create an account here!"} />
+        <Divider className={classes.divider} />
+        {loggedIn && hasNoCompanies && <InlineLink key="newAccount" align="center" path={"/companyCreator"} text={"Create your first company here!"} />}
+        {!loggedIn && [
+          <Typography key="newAccountHeader" align="center" variant="body2" gutterBottom>
+            You don't have an account yet?
+          </Typography>,
+          <InlineLink key="newAccount" align="center" path={"/register"} text={" Create an account here!"} />
+        ]}
       </Grid>
     </Grid>
   );
 };
 
-export default withStyles(styles, { withTheme: true })(Welcome);
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(Welcome));

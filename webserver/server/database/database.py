@@ -64,11 +64,11 @@ def query():
     # writeArmiesToJson()
     # writeSpecialRulesToJson()
     # writeEquipementsToJson()
-    writeUserCompaniesToJson(username)
+#     writeUserCompaniesToJson(username)
 
     # for company_unit_name, company_unit in getCompanyUnits(companyName).items():
     #    result = checkAndUpdateCompanyUnitCost(company_unit)
 
     # checkAndUpdateCompanyUnitCost(getCompanyUnit('Gormungur'))
 
-    return getCompanyInjured(companyName)
+    return getUser(username)

@@ -1,22 +1,19 @@
-import { GET_USER_COMPANIES, GET_ARMIES, API_START, API_END, ON_GET_ERROR, API_ERROR, DISCONNECT } from "../actions/types";
+import { GET_USER_COMPANIES, GET_ARMIES, API_START, API_END, ON_GET_ERROR, DISCONNECT, LOGIN_SUCCESS } from "../actions/types";
 
 const serverAccessInitialState = {
   isLoadingCompanies: false,
   isLoadingArmies: false,
   armiesNeedRefetch: true,
-  companiesNeedRefetch: true,
-  getError: false,
-  apiError: false
+  companiesNeedRefetch: false,
+  getError: false
 };
 
 export default function databaseAccessReducer(state = serverAccessInitialState, action) {
-  //   console.log("ServerAccess action type => ", action.type);
+  // console.log("ServerAccess action type => ", action.type);
   switch (action.type) {
     // API Cases
-    case API_ERROR:
-      return { ...state, apiError: true };
-
     case API_START:
+      console.log("Api_start", action.payload);
       if (action.payload === GET_USER_COMPANIES) {
         return { ...state, isLoadingCompanies: true, getError: false };
       } else if (action.payload === GET_ARMIES) {
@@ -37,8 +34,11 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return state;
       }
 
+    case LOGIN_SUCCESS:
+      return { ...state, companiesNeedRefetch: true };
+
     case DISCONNECT:
-      return { ...state, companiesNeedRefetch: true, getError: false };
+      return { ...state, getError: false };
 
     default:
       return state;

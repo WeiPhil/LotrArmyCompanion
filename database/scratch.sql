@@ -1,7 +1,7 @@
 USE lotr;
 
 
--- DESC company;
+DESC user;
 
 -- INSERT INTO user (username,firstname,lastname,email,password)
 -- VALUES
@@ -37,7 +37,7 @@ USE lotr;
 --     'Slurpus','warrior',
 --     (SELECT unit.points FROM unit WHERE unit.name='moria_goblin_warrior'));
 
-SELECT * FROM company;
+/* SELECT * FROM company; */
 
 
 

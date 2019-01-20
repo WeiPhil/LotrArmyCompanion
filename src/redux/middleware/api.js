@@ -1,7 +1,7 @@
 // inspired by https://leanpub.com/redux-book
 import axios from "axios";
 import { API } from "../actions/types";
-import { conflict, accessDenied, apiError, apiStart, apiEnd } from "../actions/api";
+import { conflict, accessDenied, apiStart, apiEnd } from "../actions/api";
 
 const apiMiddleware = ({ dispatch }) => next => action => {
   next(action);
@@ -33,8 +33,8 @@ const apiMiddleware = ({ dispatch }) => next => action => {
       dispatch(onSuccess(data));
     })
     .catch(error => {
-      dispatch(apiError(error));
       dispatch(onFailure(error));
+      console.log(error);
 
       if (error.response && error.response.status === 403) {
         dispatch(accessDenied(window.location.pathname));

@@ -34,7 +34,6 @@ class CompanyUnitsOverview extends Component {
         {/* Mobile */}
         <MediaQuery query="(max-width: 960px)">
           <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
-            {/* {companies[companyIndex].company_units.map((troop, index) => this.renderCard(troop, index, companyIndex, true))} */}
             {Object.keys(company_units).map((company_unit_name, index) =>
               this.renderCompanyUnitCard(company_units[company_unit_name], index, companyIndex, true)
             )}
@@ -64,8 +63,7 @@ class CompanyUnitsOverview extends Component {
 }
 
 CompanyUnitsOverview.propTypes = {
-  companies: PropTypes.array.isRequired,
-  armies: PropTypes.object.isRequired
+  companies: PropTypes.array.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(CompanyUnitsOverview);

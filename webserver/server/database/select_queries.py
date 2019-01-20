@@ -1,6 +1,6 @@
 import json
 from functools import reduce
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, exc
 
 from server.run import db
 from .models import *
@@ -346,3 +346,14 @@ def getUnit(unitName):
     unit['special_rules'] = getSpecialRules(unitName)
 
     return unit
+
+
+def getUser(username):
+    user_query = None
+    try:
+        user_query = session.query(User).filter(
+            User.username == username).one()
+    except exc.SQLAlchemyError as error:
+        return 103, {}
+
+    return 200, json.loads(AlchemyEncoder(list=['user_id', 'username', 'firstname', 'lastname', 'email', 'password_hash'], ordered=True).encode(user_query))

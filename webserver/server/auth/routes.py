@@ -6,12 +6,13 @@ from flask import jsonify, request, send_from_directory
 from flask_jwt_extended import (create_access_token, get_jwt_identity,
                                 jwt_required)
 from passlib.hash import pbkdf2_sha256
+from sqlalchemy import exc
 
 from . import auth
 
+
 USERS_AUTH_PATH = os.path.join("data", "users")
 
-# /!\ Temporary authentication (not worst ever but database should be linked to the db
 
 # Provide a method to create access tokens. The create_access_token()
 # function is used to actually generate the token, and we can return
@@ -31,34 +32,28 @@ def writeJson(content, path):
 
 @auth.route('/login', methods=['POST'])
 def login():
+    from ..database.select_queries import getUser
+
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
     username = request.json.get('username', None)
     password = request.json.get('password', None)
 
-    # Make the user believe we do huge calculations on the server for his safety
-    time.sleep(1)
+    # query user
 
-    # open list of users
-    usersJson = loadJson(USERS_AUTH_PATH+"/users.json")
+    internalErrorCode, user_object = getUser(username)
 
-    userIdx = -1
-    for i, userData in enumerate(usersJson):
-        if username == userData["username"]:
-            userIdx = i
-
-    if userIdx == -1:
-        print("Bad index")
+    if(internalErrorCode == 103):
         response = jsonify({'internalErrorCode': 103})
         response.status_code = 409
         return response
 
     correctPassword = pbkdf2_sha256.verify(
-        password, usersJson[userIdx]["password"])
+        password, user_object["password_hash"])
 
     if not correctPassword:
-        print("Bad password")
+        print("Incorrect password")
         response = jsonify({'internalErrorCode': 104})
         response.status_code = 409
         return response
@@ -70,37 +65,25 @@ def login():
 
 @auth.route('/register', methods=['POST'])
 def register():
+    from ..database.add_queries import addUser
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
     # get submited data
     data = request.get_json()
-
-    # open list of users
-    usersJson = loadJson(USERS_AUTH_PATH+"/users.json")
-
-    # error 409 -> Conflict
-    # check if some user with that username or email already exists in db
-    # TODO check in db keys that are unique
-    for user in usersJson:
-        if(user["username"] == data["username"]):
-            response = jsonify({'internalErrorCode': 101})
-            response.status_code = 409
-            return response
-        if(user["email"] == data["email"]):
-            response = jsonify({'internalErrorCode': 102})
-            response.status_code = 409
-            return response
-
-    # Make the user believe we do huge calculations on the server for his safety
-    time.sleep(1)
-
-    # nice library that automatically stores the salt inside the hash
+    # create hashed password
     hashedPassword = pbkdf2_sha256.hash(data["password"])
 
-    data["password"] = hashedPassword
+    internalErrorCode = addUser(
+        data['username'], data['firstName'], data['lastName'], data['email'], hashedPassword)
 
-    usersJson.append(data)
+    if(internalErrorCode == 101):
+        response = jsonify({'internalErrorCode': 101})
+        response.status_code = 409
+        return response
+    if(internalErrorCode == 102):
+        response = jsonify({'internalErrorCode': 102})
+        response.status_code = 409
+        return response
 
-    writeJson(usersJson, USERS_AUTH_PATH+"/users.json")
     return "You have successfully been registered!", 200

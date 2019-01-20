@@ -1,4 +1,4 @@
-import { API, API_START, API_END, ACCESS_DENIED, API_ERROR, CONFLICT } from "../actions/types";
+import { API, API_START, API_END, ACCESS_DENIED, CONFLICT } from "../actions/types";
 
 export const apiStart = label => ({
   type: API_START,
@@ -22,11 +22,6 @@ export const conflict = response => ({
   payload: response
 });
 
-export const apiError = error => ({
-  type: API_ERROR,
-  error
-});
-
 /** API base action DO NOT TOUCH */
 export function apiAction({
   url = "",
@@ -34,7 +29,7 @@ export function apiAction({
   data = null,
   accessToken = null,
   onSuccess = () => {},
-  onFailure = apiError,
+  onFailure = () => {},
   label = "",
   headersOverride = null
 }) {

@@ -20,10 +20,10 @@ const styles = theme => ({
 
 class InlineLink extends Component {
   render() {
-    const { align, onClick, style, classes, text = "This is a custom link", path = this.props.location.pathname } = this.props;
+    const { align, onClick, style, classes, text = "This is a custom link", path = this.props.location.pathname, component = undefined } = this.props;
 
     return (
-      <Typography align={align} style={style}>
+      <Typography component={component} align={align} style={style}>
         <Link onClick={onClick} className={classes.linkStyle} to={path}>
           {text}
         </Link>

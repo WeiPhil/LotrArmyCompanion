@@ -55,8 +55,11 @@ def getCompany(user_id):
     company_path = os.path.join(USER_COMPANIES_PATH, user_id + ".json")
     if os.path.exists(company_path):
         # respond with data
-        response = jsonify(loadJson(os.path.join(
-            USER_COMPANIES_PATH, user_id + ".json")))
+        response = jsonify(companies=loadJson(os.path.join(
+            USER_COMPANIES_PATH, user_id + ".json")), hasNoCompanies=False)
+        return response
+    else:
+        response = jsonify(companies={}, hasNoCompanies=True)
         return response
 
     # company not found

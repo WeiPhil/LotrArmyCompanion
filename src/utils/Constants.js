@@ -30,28 +30,3 @@ export const HERO = "hero";
 export const WARRIOR = "warrior";
 export const LIEUTENANT = "lieutenant";
 export const SERGEANT = "sergeant";
-
-export const CLAWS = "claws";
-export const TEETH = "teeth";
-export const DAGGER = "dagger";
-
-export const SWORD = "sword";
-export const SPEAR = "spear";
-export const WOOD_ELF_SPEAR = "wood_elf_spear";
-
-export const PIKE = "pike";
-export const SHIELD = "shield";
-
-export const THROWING_WEAPON = "throwing_weapon";
-export const THROWING_DAGGERS = "throwing_daggers";
-export const TWO_HANDED_WEAPON = "two_handed_weapon";
-export const LANCE = "lance";
-export const ELVEN_BLADE = "elven_blade";
-export const ARMOUR = "armour";
-export const CROSSBOW = "crossbow";
-export const LONGBOW = "longbow";
-export const ELF_BOW = "elf_bow";
-export const HEAVY_ARMOR = "heavy_armor";
-export const WARG = "warg";
-export const HORSE = "horse";
-export const ARMOURED_HORSE = "horse";

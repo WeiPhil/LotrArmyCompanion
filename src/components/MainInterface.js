@@ -44,6 +44,7 @@ import ArmyOverview from "./coreApp/wiki/ArmyOverview";
 import WikiArmies from "./coreApp/wiki/WikiArmies";
 import Welcome from "./coreApp/Welcome";
 import Register from "./coreApp/Register";
+import CompanyCreator from "./coreApp/CompanyCreator";
 
 import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
@@ -112,6 +113,7 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   themeType: ui.themeType,
   companies: data.companies,
   armies: data.armies,
+  hasNoCompanies: data.hasNoCompanies,
   companiesNeedRefetch: databaseAccess.companiesNeedRefetch,
   isLoadingCompanies: databaseAccess.isLoadingCompanies,
   armiesNeedRefetch: databaseAccess.armiesNeedRefetch,
@@ -142,9 +144,7 @@ class MainInterface extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.armiesNeedRefetch !== this.props.armiesNeedRefetch && this.props.armiesNeedRefetch === true) this.props.getArmies();
 
-    if (prevProps.loggedIn !== this.props.loggedIn && this.props.loggedIn === true && this.props.companiesNeedRefetch === true)
-      this.props.getUserCompanies(this.props.username, this.props.accessToken);
-
+    // In case we are loggedin and we need to refetch the companies
     if (this.props.loggedIn === true && prevProps.companiesNeedRefetch !== this.props.companiesNeedRefetch && this.props.companiesNeedRefetch === true)
       this.props.getUserCompanies(this.props.username, this.props.accessToken);
 
@@ -171,7 +171,7 @@ class MainInterface extends React.Component {
     const iconColor = this.props.theme.palette.type === "dark" ? "#FFFFFF" : this.props.theme.palette.secondary.main;
 
     const companyNames =
-      this.props.isLoadingCompanies || this.props.companiesNeedRefetch
+      this.props.isLoadingCompanies || this.props.companiesNeedRefetch || this.props.hasNoCompanies || !this.props.loggedIn
         ? []
         : this.props.companies.map((company, idx) => [company.name, "/companiesOverview/" + unprettify(company.name)]);
 
@@ -183,7 +183,7 @@ class MainInterface extends React.Component {
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "/wiki", []]
     ];
 
-    if (!this.props.loggedIn) {
+    if (!this.props.loggedIn || this.props.hasNoCompanies) {
       delete menuItems[0];
       delete menuItems[1];
       delete menuItems[2];
@@ -208,7 +208,8 @@ class MainInterface extends React.Component {
       companiesNeedRefetch,
       isLoadingArmies,
       armiesNeedRefetch,
-      loggedIn
+      loggedIn,
+      hasNoCompanies
     } = this.props;
 
     const menuItems = this.createMenuItems();
@@ -340,21 +341,21 @@ class MainInterface extends React.Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-
           <Switch>
             {loggedIn &&
               !isLoadingArmies &&
               !armiesNeedRefetch &&
               !isLoadingCompanies &&
-              !companiesNeedRefetch && [
-                companies.map((company, idx) => (
+              !companiesNeedRefetch &&
+              !hasNoCompanies && [
+                (companies.map((company, idx) => (
                   <Route
                     key={idx}
                     path={"/companiesOverview/" + unprettify(company.name)}
-                    render={() => <CompanyUnitsOverview armies={armies} companies={companies} companyIndex={idx} />}
+                    render={() => <CompanyUnitsOverview companies={companies} companyIndex={idx} />}
                   />
                 )),
-                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} />} />
+                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} />} />)
               ]}
             <Route exact path="/" component={Welcome} />
             <Route exact path="/wiki" component={Wiki} />
@@ -365,12 +366,12 @@ class MainInterface extends React.Component {
                   <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview troops={armies[armyName]} />} />
                 ))
               ]}
-
+            {loggedIn && <Route exact path="/companyCreator" component={CompanyCreator} />}
             <Route path="/register" component={Register} />
             {/* From here if we are not logged in we get automatically rerouted */}
             <Redirect to="/" />
           </Switch>
-          {loggedIn && (isLoadingArmies || armiesNeedRefetch || isLoadingCompanies || companiesNeedRefetch) && (
+          {loggedIn && (isLoadingArmies || isLoadingCompanies) && (
             <Grid container justify="center">
               <CircularProgress color="secondary" />
             </Grid>

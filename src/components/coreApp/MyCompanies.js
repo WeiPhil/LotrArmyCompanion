@@ -17,7 +17,7 @@ const styles = theme => ({
 
 class MyCompanies extends Component {
   render() {
-    const { companies, classes, theme } = this.props;
+    const { companies, classes, theme, hasNoCompanies = false } = this.props;
 
     return (
       <>
@@ -29,21 +29,23 @@ class MyCompanies extends Component {
                 <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
               </Fab>
             </Grid>
-            {companies.map((company, index) => (
-              <Grid item key={index}>
-                <CompanyCard company={company} />
-              </Grid>
-            ))}
+            {!hasNoCompanies &&
+              companies.map((company, index) => (
+                <Grid item key={index}>
+                  <CompanyCard company={company} />
+                </Grid>
+              ))}
           </Grid>
         </MediaQuery>
         {/* Desktop */}
         <MediaQuery query="(min-width: 960px)">
           <Grid container direction="row" justify="center" alignItems="stretch" spacing={16}>
-            {companies.map((company, index) => (
-              <Grid item key={index}>
-                <CompanyCard company={company} />
-              </Grid>
-            ))}
+            {!hasNoCompanies &&
+              companies.map((company, index) => (
+                <Grid item key={index}>
+                  <CompanyCard company={company} />
+                </Grid>
+              ))}
             <Grid item style={{ margin: "auto 0" }}>
               <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
                 <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
