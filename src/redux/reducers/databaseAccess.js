@@ -13,7 +13,6 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
   switch (action.type) {
     // API Cases
     case API_START:
-      console.log("Api_start", action.payload);
       if (action.payload === GET_USER_COMPANIES) {
         return { ...state, isLoadingCompanies: true, getError: false };
       } else if (action.payload === GET_ARMIES) {

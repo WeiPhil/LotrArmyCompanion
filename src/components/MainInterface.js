@@ -135,7 +135,7 @@ class MainInterface extends React.Component {
 
   componentDidMount() {
     console.log("Main Interface loading");
-    if (this.props.loggedIn && this.props.companiesNeedRefetch) this.props.getUserCompanies(this.props.username, this.props.accessToken);
+    if (this.props.loggedIn) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
 
     if (this.props.socketConnected) this.props.getCommunityChat();
@@ -182,13 +182,16 @@ class MainInterface extends React.Component {
       ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "/wiki", []]
     ];
+    if (!this.props.loggedIn) {
+      delete menuItems[1];
+    }
 
     if (!this.props.loggedIn || this.props.hasNoCompanies) {
       delete menuItems[0];
-      delete menuItems[1];
       delete menuItems[2];
       delete menuItems[3];
     }
+
     return menuItems;
   };
 
@@ -348,15 +351,13 @@ class MainInterface extends React.Component {
               !isLoadingCompanies &&
               !companiesNeedRefetch &&
               !hasNoCompanies && [
-                (companies.map((company, idx) => (
-                  <Route
-                    key={idx}
-                    path={"/companiesOverview/" + unprettify(company.name)}
-                    render={() => <CompanyUnitsOverview companies={companies} companyIndex={idx} />}
-                  />
-                )),
-                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} />} />)
+                companies.map((company, idx) => (
+                  <Route key={idx} path={"/companiesOverview/" + unprettify(company.name)} render={() => <CompanyUnitsOverview company={company} />} />
+                ))
               ]}
+            {loggedIn && (
+              <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} hasNoCompanies={hasNoCompanies} />} />
+            )}
             <Route exact path="/" component={Welcome} />
             <Route exact path="/wiki" component={Wiki} />
             {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}

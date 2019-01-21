@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import PropTypes from "prop-types";
-
 import { Grid, withStyles, Fab } from "@material-ui/core";
 
 import CompanyCard from "./CompanyCard";
@@ -17,7 +15,7 @@ const styles = theme => ({
 
 class MyCompanies extends Component {
   render() {
-    const { companies, classes, theme, hasNoCompanies = false } = this.props;
+    const { companies, classes, theme, hasNoCompanies } = this.props;
 
     return (
       <>
@@ -57,9 +55,5 @@ class MyCompanies extends Component {
     );
   }
 }
-
-MyCompanies.propTypes = {
-  companies: PropTypes.array.isRequired
-};
 
 export default withStyles(styles, { withTheme: true })(MyCompanies);

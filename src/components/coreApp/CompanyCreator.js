@@ -8,7 +8,7 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import { TextField } from "@material-ui/core";
+import { TextField, Grid } from "@material-ui/core";
 
 import MediaQuery from "react-responsive";
 
@@ -100,6 +100,12 @@ class CompanyCreator extends Component {
 
     return (
       <>
+        {/* Mobile */}
+        <MediaQuery query="(max-width: 960px)">
+          <Grid container direction="column" spacing={16} justify="center" alignItems="stretch">
+            Test
+          </Grid>
+        </MediaQuery>
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((label, index) => (
             <Step key={label}>

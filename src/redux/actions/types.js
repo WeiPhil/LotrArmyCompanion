@@ -1,6 +1,10 @@
 // Local modification to database
 export const ADD_ATTACK_TO = "ADD_ATTACK_TO";
 
+// Redux Persist
+
+export const REHYDRATE = "persist/REHYDRATE";
+
 // UI related modification
 export const SET_THEME = "SET_THEME";
 export const THUMBNAIL_SWITCHER = "THUMBNAIL_SWITCHER";

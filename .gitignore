@@ -33,6 +33,9 @@ databaseHelperGui/dist
 .env.production.local
 .vscode
 
+# book_images
+src/assets/book_image
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
