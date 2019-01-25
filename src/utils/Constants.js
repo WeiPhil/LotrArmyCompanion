@@ -9,6 +9,7 @@ export const REACTION_TIMEOUT = 250;
 export const CARD_MAX_WIDTH = 360;
 
 export const CARD_IMAGE_HEIGHT = 100;
+export const UNIT_CARD_IMAGE_HEIGHT = 160;
 
 export const TUMBNAIL_CARD_SIZE = 100;
 

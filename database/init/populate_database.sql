@@ -145,3 +145,24 @@ VALUES
 -- ---------------------------------
 
 -- received3Units.sql
+
+-- ---------------------------------
+-- Populating Company Faction
+-- ---------------------------------
+
+/* INSERT INTO company_faction
+    (company_faction_id,name)
+VALUES 
+    (1,"Angmar"),
+    (2,"Misty Mountains"),
+    (3,"Mount Gundabad"),
+    (4,"Goblin Town"); */
+
+/* INSERT INTO company_faction_has_unit
+    (company_faction_id,unit_id)
+VALUES 
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='dead_marsh_spectre')),
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='angmar_orc_warrior')),
+    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
+    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='moria_goblin_warrior')); */

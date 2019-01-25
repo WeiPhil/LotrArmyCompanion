@@ -1,10 +1,12 @@
-import { GET_USER_COMPANIES, GET_ARMIES, API_START, API_END, ON_GET_ERROR, DISCONNECT, LOGIN_SUCCESS } from "../actions/types";
+import { GET_USER_COMPANIES, GET_ARMIES, GET_COMPANY_FACTIONS, API_START, API_END, ON_GET_ERROR, DISCONNECT, LOGIN_SUCCESS } from "../actions/types";
 
 const serverAccessInitialState = {
   isLoadingCompanies: false,
   isLoadingArmies: false,
+  isLoadingCompanyFactions: false,
   armiesNeedRefetch: true,
   companiesNeedRefetch: false,
+  companyFactionsNeedRefetch: true,
   getError: false
 };
 
@@ -17,6 +19,8 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingCompanies: true, getError: false };
       } else if (action.payload === GET_ARMIES) {
         return { ...state, isLoadingArmies: true, getError: false };
+      } else if (action.payload === GET_COMPANY_FACTIONS) {
+        return { ...state, isLoadingCompanyFactions: true, getError: false };
       } else {
         return state;
       }
@@ -29,6 +33,8 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingCompanies: false, companiesNeedRefetch: state.getError };
       } else if (action.payload === GET_ARMIES) {
         return { ...state, isLoadingArmies: false, armiesNeedRefetch: state.getError };
+      } else if (action.payload === GET_COMPANY_FACTIONS) {
+        return { ...state, isLoadingCompanyFactions: false, companyFactionsNeedRefetch: state.getError };
       } else {
         return state;
       }

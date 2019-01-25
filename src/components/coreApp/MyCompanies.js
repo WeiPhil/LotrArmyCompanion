@@ -7,6 +7,9 @@ import AddIcon from "@material-ui/icons/Add";
 
 import MediaQuery from "react-responsive";
 
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
+
 const styles = theme => ({
   addCompany: {
     margin: theme.spacing.unit
@@ -23,9 +26,11 @@ class MyCompanies extends Component {
         <MediaQuery query="(max-width: 960px)">
           <Grid container direction="column" spacing={16} justify="center" alignItems="stretch">
             <Grid item style={{ margin: "0 auto" }}>
-              <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
-                <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
-              </Fab>
+              <Link to="/companyCreator" style={{ textDecoration: "none" }}>
+                <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
+                  <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
+                </Fab>
+              </Link>
             </Grid>
             {!hasNoCompanies &&
               companies.map((company, index) => (
@@ -45,9 +50,11 @@ class MyCompanies extends Component {
                 </Grid>
               ))}
             <Grid item style={{ margin: "auto 0" }}>
-              <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
-                <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
-              </Fab>
+              <Link to="/companyCreator" style={{ textDecoration: "none" }}>
+                <Fab className={classes.addCompany} variant="extended" color="primary" aria-label="Add">
+                  <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Create a new Company
+                </Fab>
+              </Link>
             </Grid>
           </Grid>
         </MediaQuery>
@@ -56,4 +63,4 @@ class MyCompanies extends Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(MyCompanies);
+export default withRouter(withStyles(styles, { withTheme: true })(MyCompanies));

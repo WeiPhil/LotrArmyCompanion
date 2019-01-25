@@ -1,7 +1,7 @@
-import { GET_ARMIES, GET_USER_COMPANIES, ON_GET_ERROR } from "./types";
+import { GET_ARMIES, GET_USER_COMPANIES, ON_GET_ERROR, GET_COMPANY_FACTIONS } from "./types";
 
 import { apiAction } from "./api";
-import { setUserCompanies, setArmies } from "./data";
+import { setUserCompanies, setArmies, setCompanyFactions } from "./data";
 
 import { HOST_NAME, WEBSERVER_PORT } from "./../../utils/Constants";
 
@@ -23,5 +23,14 @@ export function getArmies() {
     onSuccess: setArmies,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_ARMIES
+  });
+}
+
+export function getCompanyFactions() {
+  return apiAction({
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/getCompanyFactions",
+    onSuccess: setCompanyFactions,
+    onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
+    label: GET_COMPANY_FACTIONS
   });
 }

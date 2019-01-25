@@ -16,13 +16,13 @@ from .add_queries import *
 
 def writeEquipementsToJson():
     equipements = getAllEquipements()
-    with open(os.path.join("cachedData/equipements", "equipements.json"), 'w', encoding='utf8') as outfile:
+    with open(os.path.join("cachedData/equipements.json"), 'w', encoding='utf8') as outfile:
         json.dump(equipements, ensure_ascii=False, fp=outfile)
 
 
 def writeSpecialRulesToJson():
     specialRules = getAllSpecialRules()
-    with open(os.path.join("cachedData/special_rules", "special_rules.json"), 'w', encoding='utf8') as outfile:
+    with open(os.path.join("cachedData/special_rules.json"), 'w', encoding='utf8') as outfile:
         json.dump(specialRules, ensure_ascii=False, fp=outfile)
 
 
@@ -37,6 +37,12 @@ def writeArmiesToJson():
 def writeUserCompaniesToJson(username):
     user_companies = getUserCompanies(username)
     with open(os.path.join("cachedData/user_companies", username+'.json'), 'w', encoding='utf8') as outfile:
+        json.dump(user_companies, ensure_ascii=False, fp=outfile)
+
+
+def writeCompanyFactionsToJson(username):
+    company_factions = getCompanyFactions()
+    with open(os.path.join("cachedData/company_factions.json"), 'w', encoding='utf8') as outfile:
         json.dump(user_companies, ensure_ascii=False, fp=outfile)
 
 
@@ -71,4 +77,4 @@ def query():
 
     # checkAndUpdateCompanyUnitCost(getCompanyUnit('Gormungur'))
 
-    return getUser(username)
+    return getCompanyFactions()

@@ -96,19 +96,24 @@ def getArmy(army_name):
 
 @main.route('/getArmies', methods=['GET'])
 def getArmies():
-    armies = os.listdir(USER_ARMIES_PATH)
+    from ..database.select_queries import getAllArmies
 
-    armies_json = [json.loads(getArmy(a[:-5]).data)
-                   for a in armies if a.endswith(".json")]
+    armies, code = getAllArmies()
 
-    formattedJson = [armies_json[0]]
-    for i, army in enumerate(armies_json):
-        if i != 0:
-            formattedJson[0][armies[i][:-5]] = army[armies[i][:-5]]
+    return jsonify(armies), code
 
-    response = jsonify(formattedJson[0])
 
-    return response
+@main.route('/getCompanyFactions', methods=['GET'])
+def getCompanyFactions():
+    from ..database.select_queries import getCompanyFactions
+
+    # query user
+
+    companyFactions, code = getCompanyFactions()
+
+    print(companyFactions, code)
+
+    return jsonify(companyFactions), code
 
 
 @main.route('/databaseTest', methods=['GET'])

@@ -72,14 +72,25 @@ def getAllSpecialRules():
 
 
 def getAllArmies():
-    faction_names_query = session.query(Faction.name).all()
+    faction_names_query = None
+    try:
+        faction_names_query = session.query(Faction.name).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
 
     faction_names = [u for u, in faction_names_query]
-    armies = []
-    for faction_name in faction_names:
-        armies.append((faction_name, getUnits(faction_name)))
+    armies = {}
+    try:
+        for faction_name in faction_names:
+            units = getUnits(faction_name)
+            if(units != {}):
+                armies[faction_name] = units
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
 
-    return armies
+    return armies, 200
 
 
 def getUnits(factionName):
@@ -93,7 +104,7 @@ def getUnits(factionName):
     # untuple the result
     units_name = [u for u, in units_name_query]
     for unit_name in units_name:
-        whole_faction[unit_name] = getUnit(unit_name)
+        whole_faction[unit_name] = getUnit(unit_name, factionName)
 
     return whole_faction
 
@@ -327,7 +338,7 @@ def getSpecialRules(unitName, companyUnit=False):
     return specialRule_list
 
 
-def getUnit(unitName):
+def getUnit(unitName, factionName):
 
     unit = session.query(Unit).filter(Unit.name == unitName).one()
 
@@ -345,6 +356,9 @@ def getUnit(unitName):
     unit['magical_powers'] = getMagicalPowers(unitName)
     unit['special_rules'] = getSpecialRules(unitName)
 
+    # we set the correct image_path here should be done database side
+    unit['image_path'] = factionName+"/"+unit['name'] + ".png"
+
     return unit
 
 
@@ -354,6 +368,22 @@ def getUser(username):
         user_query = session.query(User).filter(
             User.username == username).one()
     except exc.SQLAlchemyError as error:
-        return 103, {}
+        print(error)
+        return {}, 103
 
-    return 200, json.loads(AlchemyEncoder(list=['user_id', 'username', 'firstname', 'lastname', 'email', 'password_hash'], ordered=True).encode(user_query))
+    return json.loads(AlchemyEncoder(list=['user_id', 'username', 'firstname', 'lastname', 'email', 'password_hash'], ordered=True).encode(user_query)), 200
+
+
+def getCompanyFactions():
+    company_faction_query = None
+    try:
+        company_faction_query = session.query(CompanyFaction.name).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    company_faction_list = json.loads(
+        AlchemyEncoder().encode(company_faction_query))
+    company_faction_list = reduce(
+        lambda x, y: x+y, company_faction_list) if company_faction_list != [] else []
+    return company_faction_list, 200

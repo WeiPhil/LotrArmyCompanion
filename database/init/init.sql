@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`user` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `lotr`.`company` (
   `company_id` INT NOT NULL AUTO_INCREMENT,
+  `company_faction_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `gold` INT UNSIGNED NOT NULL DEFAULT 60,
   `victories` INT UNSIGNED NOT NULL DEFAULT 0,
@@ -152,6 +153,11 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company` (
   CONSTRAINT `fk_company_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `lotr`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_company_company_faction1`
+    FOREIGN KEY (`company_faction_id`)
+    REFERENCES `lotr`.`company_faction` (`company_faction_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );
@@ -524,6 +530,37 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_has_injured` (
   CONSTRAINT `fk_company_has_company_unit_company_unit1`
     FOREIGN KEY (`company_unit_id`)
     REFERENCES `lotr`.`company_unit` (`company_unit_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+-- -----------------------------------------------------
+-- Table `lotr`.`company_faction`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lotr`.`company_faction` (
+  `company_faction_id` INT NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`company_faction_id`)
+);
+
+
+-- -----------------------------------------------------
+-- Table `lotr`.`company_faction_has_unit`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lotr`.`company_faction_has_unit` (
+  `company_faction_id` INT NOT NULL AUTO_INCREMENT,
+  `unit_id` INT NOT NULL,
+  PRIMARY KEY (`company_faction_id`, `unit_id`),
+  INDEX `fk_company_faction_has_unit_unit1_idx` (`unit_id`),
+  INDEX `fk_company_faction_has_unit_company_faction1_idx` (`company_faction_id`),
+  CONSTRAINT `fk_company_faction_has_unit_company_faction1`
+    FOREIGN KEY (`company_faction_id`)
+    REFERENCES `lotr`.`company_faction` (`company_faction_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_company_faction_has_unit_unit1`
+    FOREIGN KEY (`unit_id`)
+    REFERENCES `lotr`.`unit` (`unit_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 );

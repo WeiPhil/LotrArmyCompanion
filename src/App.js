@@ -38,9 +38,9 @@ const themes = {
     palette: {
       type: "dark",
       primary: {
-        light: "#428e92",
-        main: "#006064",
-        dark: "#00363a",
+        light: "#90A4AE",
+        main: "#455A64",
+        dark: "#37474F",
         contrastText: "#ffffff"
       },
       secondary: {

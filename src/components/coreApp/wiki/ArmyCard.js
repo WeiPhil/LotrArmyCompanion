@@ -31,8 +31,8 @@ const styles = theme => ({
   media: {
     marginLeft: 0,
     display: "flex",
-    height: CARD_IMAGE_HEIGHT * 0.5,
-    width: CARD_IMAGE_HEIGHT * 0.5
+    height: CARD_IMAGE_HEIGHT * 0.8,
+    width: CARD_IMAGE_HEIGHT * 1.5
   }
 });
 
@@ -44,7 +44,7 @@ const ArmyCard = props => {
       <Link to={"/wiki/armies/" + armyName} style={{ textDecoration: "none", color: "inherit" }}>
         <CardActionArea>
           <div className={classes.cardActionArea}>
-            <CardMedia image={require("./../../../assets/images/" + armyName + ".jpg")} className={classes.media} />
+            <CardMedia image={require("./../../../assets/images/" + armyName + "/" + armyName + ".png")} className={classes.media} />
 
             <Typography variant="h6" className={classes.armyName}>
               {prettify(armyName)}

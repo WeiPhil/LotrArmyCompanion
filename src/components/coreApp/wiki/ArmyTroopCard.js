@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 
 import UnitCharacteristics from "./../UnitCharacteristics";
 
-import { CARD_MAX_WIDTH } from "../../../utils/Constants";
+import { CARD_MAX_WIDTH, UNIT_CARD_IMAGE_HEIGHT } from "../../../utils/Constants";
 
 import { LieutenantIcon, WargearIcon } from "./../../icons/CardIcons";
 import { Grid, Avatar, IconButton, Tooltip, Chip, Divider } from "@material-ui/core";
@@ -179,8 +179,11 @@ const ArmyTroopCard = props => {
     </Typography>
   );
 
+  const mediaHeight = { height: UNIT_CARD_IMAGE_HEIGHT };
+
   return (
     <Thumbnailer
+      additionalCardMediaStyle={mediaHeight}
       additionalCardStyle={heightStyle}
       cardMediaImagePath={require("./../../../assets/images/" + unit.image_path)}
       minimalContent={minimalContent}

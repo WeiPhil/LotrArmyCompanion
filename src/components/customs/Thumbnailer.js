@@ -20,7 +20,8 @@ const styles = theme => ({
     }
   },
   mediaExpanded: {
-    height: CARD_IMAGE_HEIGHT
+    height: CARD_IMAGE_HEIGHT,
+    backgroundPosition: "50% 35%"
   },
   media: {
     minWidth: TUMBNAIL_CARD_SIZE,
@@ -67,6 +68,7 @@ class Thumbnailer extends Component {
       classes,
       additionalCardStyle,
       additionalCardActionAreaStyle,
+      additionalCardMediaStyle,
       mobile
     } = this.props;
 
@@ -77,7 +79,12 @@ class Thumbnailer extends Component {
         <div style={additionalCardStyle}>
           <Card style={{ ...additionalCardStyle, ...widthConstraint }} className={classes.card}>
             <CardActionArea style={{ ...additionalCardActionAreaStyle }} disabled={!this.props.mobile} onClick={this.handleExpandClick}>
-              <CardMedia className={this.state.detailsOpen ? classes.mediaExpanded : classes.media} image={cardMediaImagePath} title={cardMediaImagePath} />
+              <CardMedia
+                style={this.state.detailsOpen ? additionalCardMediaStyle : undefined}
+                className={this.state.detailsOpen ? classes.mediaExpanded : classes.media}
+                image={cardMediaImagePath}
+                title={cardMediaImagePath}
+              />
             </CardActionArea>
 
             {!this.state.detailsOpen && minimalContent}

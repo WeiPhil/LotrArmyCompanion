@@ -42,7 +42,7 @@ def login():
 
     # query user
 
-    internalErrorCode, user_object = getUser(username)
+    user_object, internalErrorCode = getUser(username)
 
     if(internalErrorCode == 103):
         response = jsonify({'internalErrorCode': 103})

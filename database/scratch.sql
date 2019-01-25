@@ -1,7 +1,7 @@
 USE lotr;
 
 
-DESC user;
+/* DESC company_faction; */
 
 -- INSERT INTO user (username,firstname,lastname,email,password)
 -- VALUES
@@ -19,11 +19,23 @@ DESC user;
 --     ('test_special_rule','Special RUle.',NULL,(SELECT special_rule_id FROM special_rule WHERE  (special_rule_id) = (1)));
 
 
--- INSERT INTO user
---     (username,email,password)
--- VALUES 
---     ('admin','lotr.armycompanion@gmail.com','admin');
+/* INSERT INTO company_faction
+    (company_faction_id,name)
+VALUES 
+    (1,"Angmar"),
+    (2,"Misty Mountains"),
+    (3,"Mount Gundabad"),
+    (4,"Goblin Town"); */
 
+/* INSERT INTO company_faction_has_unit
+    (company_faction_id,unit_id)
+VALUES 
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='dead_marsh_spectre')),
+    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='angmar_orc_warrior')),
+    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
+    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='moria_goblin_warrior')); */
+   
 -- INSERT INTO company
 --     (name,gold,user_id)
 -- VALUES 
@@ -55,3 +67,5 @@ WHERE unit.name='moria_goblin_warrior' */
 -- LEFT JOIN company_unit ON company_unit.company_unit_id = company_unit_has_equipement.company_unit_id
 -- LEFT JOIN equipement ON equipement.equipement_id = company_unit_has_equipement.equipement_id
 -- WHERE company_unit.company_unit_name='Gormungur'
+
+

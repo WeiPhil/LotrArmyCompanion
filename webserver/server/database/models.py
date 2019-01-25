@@ -211,3 +211,19 @@ class User(db.Model):
 
     def __repr__(self):
         return AlchemyEncoder().encode(self)
+
+
+class CompanyFaction(db.Model):
+    __table__ = db.Table('company_faction', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)
+
+
+class CompanyFactionHasUnit(db.Model):
+    __table__ = db.Table('company_faction_has_unit', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)

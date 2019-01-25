@@ -1,39 +1,70 @@
-import React from "react";
+import React, { Component } from "react";
 
 import ArmyTroopCard from "./ArmyTroopCard";
 import { Grid } from "@material-ui/core/";
 
 import MediaQuery from "react-responsive";
+import UtilsBar from "../UtilsBar";
 
-function renderCard(troopName, index, troops, mobile) {
-  return (
-    <Grid item key={index}>
-      <ArmyTroopCard unit={troops[troopName]} mobile={mobile} timeout={index * 1000} />
-    </Grid>
-  );
-}
+class ArmyOverview extends Component {
+  state = {
+    initialUnitsNames: [],
+    unitsNames: []
+  };
 
-const ArmyOverview = props => {
-  const { troops } = props;
+  renderCard(unitName, index, mobile) {
+    return (
+      <Grid item key={index}>
+        <ArmyTroopCard unit={this.props.units[unitName]} mobile={mobile} timeout={index * 250} />
+      </Grid>
+    );
+  }
 
-  return (
+  componentWillMount() {
+    const unitsName = Object.keys(this.props.units).map(unitName => unitName);
+    this.setState({ unitsNames: unitsName });
+    this.setState({ initialUnitsNames: unitsName });
+  }
+
+  handleSearchChange = searchQuery => {
+    var updatedUnitsNames = this.state.initialUnitsNames;
+    updatedUnitsNames = updatedUnitsNames.filter(unitName => {
+      return (
+        unitName
+          .toLowerCase()
+          .split("_")
+          .join(" ")
+          .includes(searchQuery.toLowerCase()) || searchQuery === ""
+      );
+    });
+    this.setState({ unitsNames: updatedUnitsNames });
+  };
+
+  render() {
     // Small gap for the chat in the bottom
-    <div style={{ marginBottom: 20 }}>
-      {/* Mobile */}
-      <MediaQuery query="(max-width: 960px)">
-        <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
-          {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, true))}
-        </Grid>
-      </MediaQuery>
-      {/* Desktop */}
-      <MediaQuery query="(min-width: 960px)">
-        <Grid container direction="row" alignItems="stretch" justify="center" spacing={16}>
-          {Object.keys(troops).map((troopName, index) => renderCard(troopName, index, troops, false))}
-        </Grid>
-      </MediaQuery>
-      {/* <TumbnailTroop /> */}
-    </div>
-  );
-};
+    return (
+      <>
+        <UtilsBar onSearch={this.handleSearchChange} />
+        {/* Mobile */}
+        <MediaQuery query="(max-width: 960px)">
+          <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
+            {this.state.unitsNames.map((unitName, index) => {
+              return this.renderCard(unitName, index, true);
+            })}
+          </Grid>
+        </MediaQuery>
+        {/* Desktop */}
+        <MediaQuery query="(min-width: 960px)">
+          <Grid container direction="row" alignItems="stretch" justify="center" spacing={16}>
+            {this.state.unitsNames.map((unitName, index) => {
+              return this.renderCard(unitName, index, false);
+            })}
+          </Grid>
+        </MediaQuery>
+        {/* <TumbnailTroop /> */}
+      </>
+    );
+  }
+}
 
 export default ArmyOverview;

@@ -22,6 +22,8 @@ import {
   CircularProgress,
   Button,
   Collapse,
+  Avatar,
+  Menu,
   MenuList,
   MenuItem,
   AppBar,
@@ -45,6 +47,7 @@ import WikiArmies from "./coreApp/wiki/WikiArmies";
 import Welcome from "./coreApp/Welcome";
 import Register from "./coreApp/Register";
 import CompanyCreator from "./coreApp/CompanyCreator";
+import TroopCreator from "./coreApp/TroopCreator";
 
 import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
@@ -81,6 +84,7 @@ const styles = theme => ({
     flexGrow: 1
   },
   content: {
+    marginBottom: 35,
     flexGrow: 1,
     [theme.breakpoints.up("sm")]: {
       padding: theme.spacing.unit * 3
@@ -106,6 +110,13 @@ const styles = theme => ({
   },
   submenuText: {
     paddingLeft: 0
+  },
+  avatar: {
+    color: "#fff",
+    backgroundColor: "#00838F"
+  },
+  avatarButton: {
+    padding: theme.spacing.unit * 0.5
   }
 });
 
@@ -130,7 +141,9 @@ class MainInterface extends React.Component {
     mobileOpen: false,
     isOpen: [false, false, false, false],
     selectedCompanyIndex: 0,
-    loginOpen: false
+    loginOpen: false,
+    isHovered: false,
+    anchorEl: null
   };
 
   componentDidMount() {
@@ -179,7 +192,7 @@ class MainInterface extends React.Component {
       ["New Battle", <NewBattleIcon fontSize="large" nativeColor={iconColor} />, "/battle", []],
       ["My Companies", <SwordShieldIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
       ["Companies Overview", <RallyTheTroopsIcon fontSize="large" nativeColor={iconColor} />, "/companiesOverview", companyNames],
-      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/myCompanies", []],
+      ["Buy troops", <TwoCoinsIcon fontSize="large" nativeColor={iconColor} />, "/troopCreator", []],
       ["Wiki", <ScrollIcon fontSize="large" nativeColor={iconColor} />, "/wiki", []]
     ];
     if (!this.props.loggedIn) {
@@ -199,6 +212,18 @@ class MainInterface extends React.Component {
     this.setState(state => ({ loginOpen: !state.loginOpen }));
   };
 
+  handleAvatarClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleAvatarClose = () => {
+    this.setState({ anchorEl: null });
+  };
+  handleDisconnect = () => {
+    this.setState({ anchorEl: null });
+    this.props.disconnect();
+  };
+
   render() {
     const {
       classes,
@@ -212,7 +237,8 @@ class MainInterface extends React.Component {
       isLoadingArmies,
       armiesNeedRefetch,
       loggedIn,
-      hasNoCompanies
+      hasNoCompanies,
+      username
     } = this.props;
 
     const menuItems = this.createMenuItems();
@@ -304,18 +330,28 @@ class MainInterface extends React.Component {
                 Login
               </Button>
             ) : (
-              <Button onClick={() => this.props.disconnect()} color="inherit">
-                Disconnect
-              </Button>
+              <>
+                <IconButton onClick={this.handleAvatarClick} className={classes.avatarButton}>
+                  <Avatar alt="User Avatar" src={require("../assets/images/baseAvatar.jpg")} className={classes.avatar} />
+                </IconButton>
+                <Menu id="simple-menu" anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} onClose={this.handleAvatarClose}>
+                  <MenuItem disabled>
+                    Signed in as &nbsp;<b>{username}</b>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem onClick={this.handleAvatarClose}>Settings</MenuItem>
+                  <MenuItem onClick={this.handleAvatarClose}>My account</MenuItem>
+                  <MenuItem onClick={this.handleDisconnect}>Disconnect</MenuItem>
+                </Menu>
+              </>
             )}
             <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
+            {/* Avatar and user options  */}
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
-          {/* The implementation can be swap with js to avoid SEO duplication of links. */}
           <Hidden smUp implementation="css">
             <Drawer
-              // container={this.props.container}
               variant="temporary"
               anchor={theme.direction === "rtl" ? "right" : "left"}
               open={this.state.mobileOpen}
@@ -353,7 +389,8 @@ class MainInterface extends React.Component {
               !hasNoCompanies && [
                 companies.map((company, idx) => (
                   <Route key={idx} path={"/companiesOverview/" + unprettify(company.name)} render={() => <CompanyUnitsOverview company={company} />} />
-                ))
+                )),
+                <Route exact key={"troop-creator"} path="/troopCreator" component={TroopCreator} />
               ]}
             {loggedIn && (
               <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} hasNoCompanies={hasNoCompanies} />} />
@@ -364,7 +401,7 @@ class MainInterface extends React.Component {
             {!isLoadingArmies &&
               !armiesNeedRefetch && [
                 Object.keys(armies).map((armyName, index) => (
-                  <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview troops={armies[armyName]} />} />
+                  <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview units={armies[armyName]} />} />
                 ))
               ]}
             {loggedIn && <Route exact path="/companyCreator" component={CompanyCreator} />}
