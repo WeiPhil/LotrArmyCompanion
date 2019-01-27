@@ -42,28 +42,23 @@ def postJsonHandler():
     return 'JSON posted'
 
 
-@main.route('/getCompany/<user_id>', methods=['GET'])
+@main.route('/getCompany/<username>', methods=['GET'])
 @jwt_required
-def getCompany(user_id):
+def getCompany(username):
+    from ..database.select_queries import getUserCompanies
 
     jwt_identity = get_jwt_identity()
 
-    if(jwt_identity != user_id):
+    if(jwt_identity != username):
         return "Unauthorized Content", 401
 
-    # check if company of given user exists
-    company_path = os.path.join(USER_COMPANIES_PATH, user_id + ".json")
-    if os.path.exists(company_path):
-        # respond with data
-        response = jsonify(companies=loadJson(os.path.join(
-            USER_COMPANIES_PATH, user_id + ".json")), hasNoCompanies=False)
-        return response
+    companies, code = getUserCompanies(username)
+    if(companies == {} and code == 200):
+        return jsonify(companies=companies, hasNoCompanies=True), code
+    elif(code == 404):
+        return jsonify(companies=companies, hasNoCompanies=True), code
     else:
-        response = jsonify(companies={}, hasNoCompanies=True)
-        return response
-
-    # company not found
-    abort(404)
+        return jsonify(companies=companies, hasNoCompanies=False), code
 
 
 @main.route('/postCompany/<user_id>', methods=['POST'])
@@ -96,9 +91,9 @@ def getArmy(army_name):
 
 @main.route('/getArmies', methods=['GET'])
 def getArmies():
-    from ..database.select_queries import getAllArmies
+    from ..database.select_queries import getArmies
 
-    armies, code = getAllArmies()
+    armies, code = getArmies()
 
     return jsonify(armies), code
 
@@ -111,9 +106,20 @@ def getCompanyFactions():
 
     companyFactions, code = getCompanyFactions()
 
-    print(companyFactions, code)
+    print(companyFactions)
 
     return jsonify(companyFactions), code
+
+
+@main.route('/addCompany', methods=['POST'])
+def register():
+    from ..database.add_queries import addCompany
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+    print(data)
 
 
 @main.route('/databaseTest', methods=['GET'])

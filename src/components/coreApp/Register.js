@@ -6,6 +6,9 @@ import { register, closeRegisterSuccessDialog, internalErrorHandled } from "./..
 import { VisibilityOff, Visibility } from "@material-ui/icons";
 import PropTypes from "prop-types";
 
+import { withRouter } from "react-router";
+import { Redirect } from "react-router-dom";
+
 import { withStyles } from "@material-ui/core/styles";
 import {
   Dialog,
@@ -72,7 +75,8 @@ class Register extends Component {
       password: false,
       confirmPassword: false
     },
-    showSuccessDialog: false
+    showSuccessDialog: false,
+    redirectToWelcomePage: false
   };
 
   handleChange = prop => event => {
@@ -96,6 +100,11 @@ class Register extends Component {
 
   handleClickShowPassword = () => {
     this.setState(state => ({ showPassword: !state.showPassword }));
+  };
+
+  handleRegisterClose = () => {
+    this.props.closeRegisterSuccessDialog();
+    this.setState({ redirectToWelcomePage: true });
   };
 
   handleSubmit = event => {
@@ -139,168 +148,160 @@ class Register extends Component {
     const fieldStyle = { maxWidth: FORM_FIELD_WIDTH };
     const fieldStylePassword = { maxWidth: FORM_FIELD_WIDTH * 0.7 };
 
-    return (
-      <form className={classes.container}>
-        <Grid container direction={"column"}>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["firstName"]}
-              id="first-name"
-              label="First Name"
-              value={this.state.form.firstName}
-              onChange={this.handleChange("firstName")}
-              margin="normal"
-              style={fieldStyle}
-              fullWidth
-            />
-            {this.state.error["firstName"] && <FormHelperText error>This is a requied field</FormHelperText>}
-          </Grid>
+    if (this.state.redirectToWelcomePage === true) return <Redirect to="/" />;
+    else
+      return (
+        <form className={classes.container}>
+          <Grid container direction={"column"}>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["firstName"]}
+                id="first-name"
+                label="First Name"
+                value={this.state.form.firstName}
+                onChange={this.handleChange("firstName")}
+                margin="normal"
+                style={fieldStyle}
+                fullWidth
+              />
+              {this.state.error["firstName"] && <FormHelperText error>This is a requied field</FormHelperText>}
+            </Grid>
 
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["lastName"]}
-              id="last-name"
-              label="Last Name"
-              value={this.state.form.lastName}
-              onChange={this.handleChange("lastName")}
-              margin="normal"
-              style={fieldStyle}
-              fullWidth
-            />
-            {this.state.error["lastName"] && <FormHelperText error>This is a requied field</FormHelperText>}
-          </Grid>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["lastName"]}
+                id="last-name"
+                label="Last Name"
+                value={this.state.form.lastName}
+                onChange={this.handleChange("lastName")}
+                margin="normal"
+                style={fieldStyle}
+                fullWidth
+              />
+              {this.state.error["lastName"] && <FormHelperText error>This is a requied field</FormHelperText>}
+            </Grid>
 
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["email"]}
-              id="email"
-              label="Email"
-              value={this.state.form.email}
-              onChange={this.handleChange("email")}
-              margin="normal"
-              style={fieldStyle}
-              fullWidth
-            />
-            {this.state.error["email"] && <FormHelperText error>Enter a valid email address </FormHelperText>}
-            {this.props.internalErrorCode === 102 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
-          </Grid>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["username"]}
-              id="username"
-              label="Username"
-              value={this.state.form.username}
-              onChange={this.handleChange("username")}
-              margin="normal"
-              style={fieldStyle}
-              fullWidth
-            />
-            {this.state.error["username"] && <FormHelperText error>This is a requied field</FormHelperText>}
-            {this.props.internalErrorCode === 101 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
-          </Grid>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["email"]}
+                id="email"
+                label="Email"
+                value={this.state.form.email}
+                onChange={this.handleChange("email")}
+                margin="normal"
+                style={fieldStyle}
+                fullWidth
+              />
+              {this.state.error["email"] && <FormHelperText error>Enter a valid email address </FormHelperText>}
+              {this.props.internalErrorCode === 102 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
+            </Grid>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["username"]}
+                id="username"
+                label="Username"
+                value={this.state.form.username}
+                onChange={this.handleChange("username")}
+                margin="normal"
+                style={fieldStyle}
+                fullWidth
+              />
+              {this.state.error["username"] && <FormHelperText error>This is a requied field</FormHelperText>}
+              {this.props.internalErrorCode === 101 && <FormHelperText error>{this.props.authMessage}</FormHelperText>}
+            </Grid>
 
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["password"]}
-              id="password"
-              label="Password"
-              value={this.state.form.password}
-              onChange={this.handleChange("password")}
-              margin="normal"
-              type={this.state.showPassword ? "text" : "password"}
-              style={fieldStylePassword}
-              fullWidth
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                      {this.state.showPassword ? <VisibilityOff fontSize={"small"} /> : <Visibility fontSize={"small"} />}
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              required
-              error={this.state.error["confirmPassword"]}
-              id="password-confirm"
-              label="Confirm Password"
-              value={this.state.form.confirmPassword}
-              onChange={this.handleChange("confirmPassword")}
-              margin="normal"
-              type="password"
-              style={fieldStylePassword}
-              fullWidth
-            />
-            {(this.state.error["password"] || this.state.error["confirmPassword"]) && (
-              <FormHelperText error>Enter twice the same password</FormHelperText>
-            )}
-          </Grid>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["password"]}
+                id="password"
+                label="Password"
+                value={this.state.form.password}
+                onChange={this.handleChange("password")}
+                margin="normal"
+                type={this.state.showPassword ? "text" : "password"}
+                style={fieldStylePassword}
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
+                        {this.state.showPassword ? <VisibilityOff fontSize={"small"} /> : <Visibility fontSize={"small"} />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                variant="outlined"
+                required
+                error={this.state.error["confirmPassword"]}
+                id="password-confirm"
+                label="Confirm Password"
+                value={this.state.form.confirmPassword}
+                onChange={this.handleChange("confirmPassword")}
+                margin="normal"
+                type="password"
+                style={fieldStylePassword}
+                fullWidth
+              />
+              {(this.state.error["password"] || this.state.error["confirmPassword"]) && <FormHelperText error>Enter twice the same password</FormHelperText>}
+            </Grid>
 
-          <Grid item>
-            <FormControlLabel
-              control={
-                <Checkbox checked={this.state.termsOfService} onChange={this.handleChange("termsOfService")} value="termsOfService" />
+            <Grid item>
+              <FormControlLabel
+                control={<Checkbox checked={this.state.termsOfService} onChange={this.handleChange("termsOfService")} value="termsOfService" />}
+                label="I have read and I accept the Terms of Service *"
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                disabled={!this.state.termsOfService || this.props.registering}
+                variant="contained"
+                color="secondary"
+                onClick={this.handleSubmit}
+                type="submit"
+              >
+                Register
+              </Button>
+            </Grid>
+          </Grid>
+          <Dialog onClose={this.handleRegisterClose} open={this.props.registerSuccess}>
+            <DialogTitle align="center">{"Register Complete"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>{this.props.authMessage}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button className={classes.button} onClick={this.handleRegisterClose} variant="contained" color="secondary" autoFocus>
+                Ok
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={this.props.registering}
+            PaperProps={{
+              style: {
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                overflow: "hidden"
               }
-              label="I have read and I accept the Terms of Service *"
-            />
-          </Grid>
-          <Grid item>
-            <Button
-              disabled={!this.state.termsOfService || this.props.registering}
-              variant="contained"
-              color="secondary"
-              onClick={this.handleSubmit}
-              type="submit"
-            >
-              Register
-            </Button>
-          </Grid>
-        </Grid>
-        <Dialog onClose={this.props.closeRegisterSuccessDialog} open={this.props.registerSuccess}>
-          <DialogTitle align="center">{"Register Complete"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{this.props.authMessage}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              className={classes.button}
-              onClick={this.props.closeRegisterSuccessDialog}
-              variant="contained"
-              color="secondary"
-              autoFocus
-            >
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={this.props.registering}
-          PaperProps={{
-            style: {
-              backgroundColor: "transparent",
-              boxShadow: "none",
-              overflow: "hidden"
-            }
-          }}
-        >
-          <CircularProgress />
-        </Dialog>
-      </form>
-    );
+            }}
+          >
+            <CircularProgress />
+          </Dialog>
+        </form>
+      );
   }
 }
 
@@ -308,7 +309,9 @@ Register.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default connect(
-  mapStateToProps,
-  { register, closeRegisterSuccessDialog, internalErrorHandled }
-)(withStyles(styles)(Register));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { register, closeRegisterSuccessDialog, internalErrorHandled }
+  )(withStyles(styles)(Register))
+);

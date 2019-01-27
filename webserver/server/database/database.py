@@ -27,7 +27,7 @@ def writeSpecialRulesToJson():
 
 
 def writeArmiesToJson():
-    armies = getAllArmies()
+    armies = getArmies()
     for (army_name, army) in armies:
         if army:
             with open(os.path.join("cachedData/armies", army_name+'.json'), 'w', encoding='utf8') as outfile:

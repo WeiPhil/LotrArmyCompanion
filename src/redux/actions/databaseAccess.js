@@ -1,4 +1,4 @@
-import { GET_ARMIES, GET_USER_COMPANIES, ON_GET_ERROR, GET_COMPANY_FACTIONS } from "./types";
+import { GET_ARMIES, GET_USER_COMPANIES, ON_GET_ERROR, GET_COMPANY_FACTIONS, ADD_COMPANY, ADD_COMPANY_SUCCESS, ADD_COMPANY_FAILURE } from "./types";
 
 import { apiAction } from "./api";
 import { setUserCompanies, setArmies, setCompanyFactions } from "./data";
@@ -32,5 +32,16 @@ export function getCompanyFactions() {
     onSuccess: setCompanyFactions,
     onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
     label: GET_COMPANY_FACTIONS
+  });
+}
+
+export function addCompany(companyData) {
+  return apiAction({
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/addCompany",
+    method: "POST",
+    data: companyData,
+    onSuccess: data => ({ type: ADD_COMPANY_SUCCESS, payload: data }),
+    onFailure: error => ({ type: ADD_COMPANY_FAILURE, payload: error }),
+    label: ADD_COMPANY
   });
 }

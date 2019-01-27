@@ -17,6 +17,10 @@ export const SET_ARMIES = "SET_ARMIES";
 export const GET_COMPANY_FACTIONS = "GET_COMPANY_FACTIONS";
 export const SET_COMPANY_FACTIONS = "SET_COMPANY_FACTIONS";
 
+export const ADD_COMPANY = "ADD_COMPANY";
+export const ADD_COMPANY_SUCCESS = "ADD_COMPANY_SUCCESS";
+export const ADD_COMPANY_FAILURE = "ADD_COMPANY_FAILURE";
+
 export const ON_GET_ERROR = "ON_GET_ERROR";
 
 // Middleware API actions

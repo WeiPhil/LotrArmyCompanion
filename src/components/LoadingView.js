@@ -3,10 +3,12 @@ import { Typography, Grid, CircularProgress } from "@material-ui/core";
 
 const LoadingView = props => {
   return (
-    <Grid container justify="center">
+    <Grid direction="column" container alignItems="center" justify="center">
       <Grid item>
         <CircularProgress color="secondary" />
-        <Typography variant="h5">Loading</Typography>;
+      </Grid>
+      <Grid item>
+        <Typography variant="h5">Loading</Typography>
       </Grid>
     </Grid>
   );

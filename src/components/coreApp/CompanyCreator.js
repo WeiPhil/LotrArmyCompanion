@@ -8,7 +8,7 @@ import StepContent from "@material-ui/core/StepContent";
 import MediaQuery from "react-responsive";
 
 import Typography from "@material-ui/core/Typography";
-import { Button, TextField, Grid, List, ListSubheader, ListItem, ListItemText } from "@material-ui/core";
+import { Button, TextField, Grid, List, ListSubheader, ListItem, ListItemText, Icon } from "@material-ui/core";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Redirect } from "react-router-dom";
@@ -21,8 +21,19 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     position: "relative",
     overflow: "auto",
-    maxHeight: 500,
+    maxHeight: 400,
     marginTop: theme.spacing.unit * 5
+  },
+  companyListMobile: {
+    backgroundColor: theme.palette.background.paper,
+    position: "relative",
+    overflow: "auto",
+    maxHeight: 300,
+    marginTop: theme.spacing.unit * 3
+  },
+  companyResume: {
+    padding: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
   },
   notesField: {
     maxWidth: 400
@@ -33,6 +44,10 @@ const styles = theme => ({
   ul: {
     backgroundColor: "inherit",
     padding: 0
+  },
+  listIcons: {
+    color: theme.palette.type === "dark" ? "#FFFFFF" : theme.palette.secondary.main,
+    marginLeft: theme.spacing.unit
   },
   button: {
     marginTop: theme.spacing.unit,
@@ -46,48 +61,67 @@ function getSteps() {
 
 const mapStateToProps = ({ data, databaseAccess }) => ({
   companyFactions: data.companyFactions,
-  companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch
+  companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch,
+  isLoadingCompanyFactions: databaseAccess.isLoadingCompanyFactions
 });
 
 class CompanyCreator extends Component {
   state = {
     activeStep: 0,
     companyName: "",
+    companyFactionName: "",
+    companyNotes: "",
+    groupedCompanyFactions: {},
     redirectToTroopCreator: false
   };
 
   componentDidMount() {
-    if (this.props.companyFactionsNeedRefetch) this.props.getCompanyFactions();
+    const companyFactions = this.props.companyFactions;
+    var peoples = {};
+    for (var companyFactionName in companyFactions) {
+      var list = peoples[companyFactions[companyFactionName].people];
+
+      if (list) {
+        peoples[companyFactions[companyFactionName].people].push(companyFactionName);
+      } else {
+        peoples[companyFactions[companyFactionName].people] = [companyFactionName];
+      }
+    }
+    this.setState({ groupedCompanyFactions: peoples });
   }
 
   handleChange = prop => event => {
     this.setState({ [prop]: event.target.value });
   };
 
-  chooseCompanyFaction = () => {
-    const { companyFactions } = this.props;
+  companyFactionClicked = companyFactionName => {
+    this.setState({ companyFactionName: companyFactionName });
+    this.handleNext();
+  };
+
+  chooseCompanyFaction = mobile => {
+    const { groupedCompanyFactions } = this.state;
+
+    // console.log(groupedCompanyFactions);
+
     return (
       <>
         <Typography gutterBottom variant="h6">
           Choose your company faction
         </Typography>
-        <List className={this.props.classes.companyList} subheader={<li />}>
-          {["Good", "Evil"].map(companyAlignment => (
-            <li key={`section-${companyAlignment}`} className={this.props.classes.listSection}>
+        <List className={mobile ? this.props.classes.companyListMobile : this.props.classes.companyList} subheader={<li />}>
+          {Object.keys(groupedCompanyFactions).map(people => (
+            <li key={`section-${people}`} className={this.props.classes.listSection}>
               <ul className={this.props.classes.ul}>
-                <ListSubheader>{companyAlignment}</ListSubheader>
-                {companyAlignment === "Good" &&
-                  ["Rohan"].map(item => (
-                    <ListItem button key={`item-${companyAlignment}-${item}`} onClick={this.handleNext}>
-                      <ListItemText primary={item} />
-                    </ListItem>
-                  ))}
-                {companyAlignment === "Evil" &&
-                  Object.keys(companyFactions).map(item => (
-                    <ListItem button key={`item-${companyAlignment}-${item}`} onClick={this.handleNext}>
-                      <ListItemText primary={item} />
-                    </ListItem>
-                  ))}
+                <ListSubheader>{people}</ListSubheader>
+                {groupedCompanyFactions[people].map(companyFactionName => (
+                  <ListItem button key={companyFactionName} onClick={() => this.companyFactionClicked(companyFactionName)}>
+                    <Icon fontSize="small" className={this.props.classes.listIcons}>
+                      bookmark
+                    </Icon>
+                    <ListItemText primary={companyFactionName} />
+                  </ListItem>
+                ))}
               </ul>
             </li>
           ))}
@@ -102,7 +136,18 @@ class CompanyCreator extends Component {
         <Typography variant="h6" gutterBottom>
           Choose your company name
         </Typography>
-        <TextField onChange={this.handleChange("companyName")} variant="standard" label="Company Name" value={this.state.companyName} margin="normal" />
+        <TextField
+          onKeyPress={e => {
+            if (e.key === "Enter") {
+              this.handleNext();
+            }
+          }}
+          onChange={this.handleChange("companyName")}
+          variant="standard"
+          label="Company Name"
+          value={this.state.companyName}
+          margin="normal"
+        />
       </>
     );
   };
@@ -115,8 +160,10 @@ class CompanyCreator extends Component {
         <TextField
           className={this.props.classes.notesField}
           fullWidth
+          onChange={this.handleChange("companyNotes")}
+          value={this.state.companyNotes}
           id="multiline-notes"
-          label="MultilineNotes"
+          label="Company Notes"
           multiline
           rows="5"
           margin="normal"
@@ -126,12 +173,12 @@ class CompanyCreator extends Component {
     );
   };
 
-  getStepContent = step => {
+  getStepContent = (step, mobile) => {
     switch (step) {
       case 0:
         return this.chooseCompanyName();
       case 1:
-        return this.chooseCompanyFaction();
+        return this.chooseCompanyFaction(mobile);
       case 2:
         return this.personalNotes();
       default:
@@ -152,6 +199,7 @@ class CompanyCreator extends Component {
   };
 
   validateNewCompany = () => {
+    console.log(this.state);
     this.setState({ redirectToTroopCreator: true });
   };
 
@@ -166,12 +214,47 @@ class CompanyCreator extends Component {
         <>
           {/* Mobile */}
           <MediaQuery query="(max-width: 960px)">
-            <Grid container direction="column" spacing={16} justify="center" alignItems="stretch">
-              Test
-            </Grid>
+            <Stepper activeStep={activeStep} orientation="vertical">
+              {steps.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                  <StepContent>
+                    {this.getStepContent(index, true)}
+                    {/* <div className={classes.actionsContainer}> */}
+                    <div>
+                      <Button disabled={activeStep === 0} variant="contained" color="primary" onClick={this.handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                      {activeStep !== steps.length - 1 && activeStep !== 1 && (
+                        <Button onClick={this.handleNext} variant="contained" color="primary" className={classes.button}>
+                          Next
+                        </Button>
+                      )}
+                      {activeStep === steps.length - 1 && (
+                        <Button onClick={this.validateNewCompany} variant="contained" color="primary" className={classes.button}>
+                          Buy troops
+                        </Button>
+                      )}
+                      {/* <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
+                          Back
+                        </Button>
+                        <Button variant="contained" color="primary" onClick={this.handleNext} className={classes.button}>
+                          {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                        </Button> */}
+                    </div>
+                    {/* </div> */}
+                  </StepContent>
+                </Step>
+              ))}
+            </Stepper>
           </MediaQuery>
           {/* Desktop */}
           <MediaQuery query="(min-width: 960px)">
+            {/* <Paper className={classes.companyResume}>
+              <Typography variant="h4">Company Name: {companyName}</Typography>
+              <Typography variant="h5">Company Faction: {companyFactionName}</Typography>
+              <Typography variant="body2">Notes : {companyNotes}</Typography>
+            </Paper> */}
             <Stepper activeStep={activeStep}>
               {steps.map(label => {
                 const props = {};
@@ -193,7 +276,7 @@ class CompanyCreator extends Component {
               </Grid>
 
               <>
-                <Grid item>{this.getStepContent(activeStep)}</Grid>
+                <Grid item>{this.getStepContent(activeStep, false)}</Grid>
                 <Grid item>
                   {activeStep !== steps.length - 1 && activeStep !== 1 && (
                     <Button onClick={this.handleNext} variant="contained" color="primary" className={classes.button}>

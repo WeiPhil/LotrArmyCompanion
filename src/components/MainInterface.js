@@ -7,7 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { disconnect } from "../redux/actions/auth";
-import { getUserCompanies, getArmies } from "../redux/actions/databaseAccess";
+import { getUserCompanies, getArmies, getCompanyFactions } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 import { getCommunityChat } from "./../redux/actions/chat";
 
@@ -18,8 +18,6 @@ import { NewBattleIcon, LightIcon, RallyTheTroopsIcon, ScrollIcon, SpearsIcon, S
 import { withRouter, Redirect } from "react-router";
 
 import {
-  Grid,
-  CircularProgress,
   Button,
   Collapse,
   Avatar,
@@ -52,6 +50,7 @@ import TroopCreator from "./coreApp/TroopCreator";
 import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
 import ChatAppBar from "./coreApp/chat/ChatAppBar";
+import LoadingView from "./LoadingView";
 
 const styles = theme => ({
   root: {
@@ -129,6 +128,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   isLoadingCompanies: databaseAccess.isLoadingCompanies,
   armiesNeedRefetch: databaseAccess.armiesNeedRefetch,
   isLoadingArmies: databaseAccess.isLoadingArmies,
+  isLoadingCompanyFactions: databaseAccess.isLoadingCompanyFactions,
+  companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch,
   username: auth.username,
   loggedIn: auth.loggedIn,
   accessToken: auth.accessToken,
@@ -150,6 +151,7 @@ class MainInterface extends React.Component {
     console.log("Main Interface loading");
     if (this.props.loggedIn) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
+    if (this.props.companyFactionsNeedRefetch) this.props.getCompanyFactions();
 
     if (this.props.socketConnected) this.props.getCommunityChat();
   }
@@ -235,6 +237,8 @@ class MainInterface extends React.Component {
       isLoadingCompanies,
       companiesNeedRefetch,
       isLoadingArmies,
+      isLoadingCompanyFactions,
+      companyFactionsNeedRefetch,
       armiesNeedRefetch,
       loggedIn,
       hasNoCompanies,
@@ -300,123 +304,122 @@ class MainInterface extends React.Component {
         </MenuList>
       </div>
     );
-
+    const loadingContent = isLoadingArmies || isLoadingCompanies || isLoadingCompanyFactions;
+    const loadingStyle = loadingContent ? { opacity: 0.2 } : undefined;
     return (
-      <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <span className={classes.menuButton}>
-              <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle}>
-                <MenuIcon />
-              </IconButton>
-            </span>
-            <Hidden xsDown>
-              <Typography variant="h6" color="inherit" noWrap className={classes.menuTitle}>
-                Lotr Company Creator
-              </Typography>
-            </Hidden>
-            {themeType === "dark" ? (
-              <IconButton color="inherit" onClick={() => setTheme("light")}>
-                <LightIcon />
-              </IconButton>
-            ) : (
-              <IconButton color="inherit" onClick={() => setTheme("dark")}>
-                <LightIcon />
-              </IconButton>
-            )}
-            {/* Login/Disconnect panel */}
-            {!loggedIn ? (
-              <Button onClick={() => this.setState(state => ({ loginOpen: !state.loginOpen }))} color="inherit">
-                Login
-              </Button>
-            ) : (
-              <>
-                <IconButton onClick={this.handleAvatarClick} className={classes.avatarButton}>
-                  <Avatar alt="User Avatar" src={require("../assets/images/baseAvatar.jpg")} className={classes.avatar} />
+      <>
+        <div className={classes.root}>
+          <AppBar position="fixed" className={classes.appBar} style={loadingStyle}>
+            <Toolbar>
+              <span className={classes.menuButton}>
+                <IconButton color="inherit" aria-label="Open drawer" onClick={this.handleDrawerToggle}>
+                  <MenuIcon />
                 </IconButton>
-                <Menu id="simple-menu" anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} onClose={this.handleAvatarClose}>
-                  <MenuItem disabled>
-                    Signed in as &nbsp;<b>{username}</b>
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={this.handleAvatarClose}>Settings</MenuItem>
-                  <MenuItem onClick={this.handleAvatarClose}>My account</MenuItem>
-                  <MenuItem onClick={this.handleDisconnect}>Disconnect</MenuItem>
-                </Menu>
-              </>
-            )}
-            <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
-            {/* Avatar and user options  */}
-          </Toolbar>
-        </AppBar>
-        <nav className={classes.drawer}>
-          <Hidden smUp implementation="css">
-            <Drawer
-              variant="temporary"
-              anchor={theme.direction === "rtl" ? "right" : "left"}
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              ModalProps={{
-                keepMounted: true // Better open performance on mobile.
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.drawerPaper
-              }}
-              variant="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-        </nav>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <Switch>
-            {loggedIn &&
-              !isLoadingArmies &&
-              !armiesNeedRefetch &&
-              !isLoadingCompanies &&
-              !companiesNeedRefetch &&
-              !hasNoCompanies && [
-                companies.map((company, idx) => (
-                  <Route key={idx} path={"/companiesOverview/" + unprettify(company.name)} render={() => <CompanyUnitsOverview company={company} />} />
-                )),
-                <Route exact key={"troop-creator"} path="/troopCreator" component={TroopCreator} />
-              ]}
-            {loggedIn && (
-              <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} hasNoCompanies={hasNoCompanies} />} />
-            )}
-            <Route exact path="/" component={Welcome} />
-            <Route exact path="/wiki" component={Wiki} />
-            {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}
-            {!isLoadingArmies &&
-              !armiesNeedRefetch && [
-                Object.keys(armies).map((armyName, index) => (
-                  <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview units={armies[armyName]} />} />
-                ))
-              ]}
-            {loggedIn && <Route exact path="/companyCreator" component={CompanyCreator} />}
-            <Route path="/register" component={Register} />
-            {/* From here if we are not logged in we get automatically rerouted */}
-            <Redirect to="/" />
-          </Switch>
-          {loggedIn && (isLoadingArmies || isLoadingCompanies) && (
-            <Grid container justify="center">
-              <CircularProgress color="secondary" />
-            </Grid>
-          )}
-          <ChatAppBar />
-        </main>
-      </div>
+              </span>
+              <Hidden xsDown>
+                <Typography variant="h6" color="inherit" noWrap className={classes.menuTitle}>
+                  Lotr Company Creator
+                </Typography>
+              </Hidden>
+              {themeType === "dark" ? (
+                <IconButton color="inherit" onClick={() => setTheme("light")}>
+                  <LightIcon />
+                </IconButton>
+              ) : (
+                <IconButton color="inherit" onClick={() => setTheme("dark")}>
+                  <LightIcon />
+                </IconButton>
+              )}
+              {/* Login/Disconnect panel */}
+              {!loggedIn ? (
+                <Button onClick={() => this.setState(state => ({ loginOpen: !state.loginOpen }))} color="inherit">
+                  Login
+                </Button>
+              ) : (
+                <>
+                  <IconButton onClick={this.handleAvatarClick} className={classes.avatarButton}>
+                    <Avatar alt="User Avatar" src={require("../assets/images/baseAvatar.jpg")} className={classes.avatar} />
+                  </IconButton>
+                  <Menu id="simple-menu" anchorEl={this.state.anchorEl} open={Boolean(this.state.anchorEl)} onClose={this.handleAvatarClose}>
+                    <MenuItem disabled>
+                      Signed in as &nbsp;<b>{username}</b>
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={this.handleAvatarClose}>Settings</MenuItem>
+                    <MenuItem onClick={this.handleAvatarClose}>My account</MenuItem>
+                    <MenuItem onClick={this.handleDisconnect}>Disconnect</MenuItem>
+                  </Menu>
+                </>
+              )}
+              <LoginPanel handleLoginClose={this.handleLoginClose} loginOpen={this.state.loginOpen} />
+              {/* Avatar and user options  */}
+            </Toolbar>
+          </AppBar>
+          <nav className={classes.drawer} style={loadingStyle}>
+            <Hidden smUp implementation="css">
+              <Drawer
+                variant="temporary"
+                anchor={theme.direction === "rtl" ? "right" : "left"}
+                open={this.state.mobileOpen}
+                onClose={this.handleDrawerToggle}
+                classes={{
+                  paper: classes.drawerPaper
+                }}
+                ModalProps={{
+                  keepMounted: true // Better open performance on mobile.
+                }}
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+            <Hidden xsDown implementation="css">
+              <Drawer
+                classes={{
+                  paper: classes.drawerPaper
+                }}
+                variant="permanent"
+                open
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+          </nav>
+          <main className={classes.content} style={loadingStyle}>
+            <div className={classes.toolbar} />
+            <Switch>
+              {loggedIn &&
+                !loadingContent &&
+                !armiesNeedRefetch &&
+                !companiesNeedRefetch &&
+                !hasNoCompanies && [
+                  companies.map((company, idx) => (
+                    <Route key={idx} path={"/companiesOverview/" + unprettify(company.name)} render={() => <CompanyUnitsOverview company={company} />} />
+                  )),
+                  <Route exact key={"troop-creator"} path="/troopCreator" component={TroopCreator} />
+                ]}
+              {loggedIn && (
+                <Route key={companies.length} path="/myCompanies" render={() => <MyCompanies companies={companies} hasNoCompanies={hasNoCompanies} />} />
+              )}
+              {!loadingContent && <Route exact path="/" component={Welcome} />}
+              <Route exact path="/wiki" component={Wiki} />
+              {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}
+              {!isLoadingArmies &&
+                !armiesNeedRefetch && [
+                  Object.keys(armies).map((armyName, index) => (
+                    <Route key={index} path={"/wiki/armies/" + armyName} render={() => <ArmyOverview units={armies[armyName]} />} />
+                  ))
+                ]}
+              {loggedIn && !companyFactionsNeedRefetch && !isLoadingCompanyFactions && <Route exact path="/companyCreator" component={CompanyCreator} />}
+              <Route path="/register" component={Register} />
+              {/* From here if we are not logged in we get automatically rerouted */}
+              {!loadingContent && <Route render={() => <Redirect to="/" />} />}
+            </Switch>
+
+            <ChatAppBar />
+          </main>
+        </div>
+        {loggedIn && loadingContent && <LoadingView />}
+      </>
     );
   }
 }
@@ -430,6 +433,6 @@ MainInterface.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, getUserCompanies, getArmies, disconnect, getCommunityChat }
+    { setTheme, getUserCompanies, getArmies, getCompanyFactions, disconnect, getCommunityChat }
   )(withStyles(styles, { withTheme: true })(MainInterface))
 );

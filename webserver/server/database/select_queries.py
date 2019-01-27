@@ -18,6 +18,98 @@ company_unit_fields_no_characteristics = [
 
 session = db.session
 
+# ------------------------------------
+# Main queries
+# ------------------------------------
+
+
+def getUserCompanies(username):
+    companies = None
+    try:
+        user_id = session.query(User.user_id).filter(
+            User.username == username).one()
+        hasCompanies = session.query(Company.name).filter(
+            Company.user_id == user_id).scalar() is not None
+        if(not hasCompanies):
+            return {}, 200
+        companies = session.query(Company.name).filter(
+            Company.user_id == user_id).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    companies = json.loads(AlchemyEncoder().encode(companies))
+    user_obj = []
+    for company_name in companies:
+        company = getCompany(company_name)
+        company['company_units'] = getCompanyUnits(company_name)
+        company['injured'] = getCompanyInjured(company_name)
+        user_obj.append(company)
+    return user_obj, 200
+
+
+def getArmies():
+    faction_names_query = None
+    try:
+        faction_names_query = session.query(Faction.name).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    faction_names = [u for u, in faction_names_query]
+    armies = {}
+    try:
+        for faction_name in faction_names:
+            units = getUnits(faction_name)
+            if(units != {}):
+                armies[faction_name] = units
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    return armies, 200
+
+
+def getUser(username):
+    user_query = None
+    try:
+        user_query = session.query(User).filter(
+            User.username == username).one()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 103
+
+    return json.loads(AlchemyEncoder(list=['user_id', 'username', 'firstname', 'lastname', 'email', 'password_hash'], ordered=True).encode(user_query)), 200
+
+
+def getCompanyFactions():
+    company_factions_query = None
+    try:
+        company_factions_query = session.query(CompanyFaction).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    company_factions = {}
+    for company_faction in company_factions_query:
+        company_faction_obj = json.loads(AlchemyEncoder(
+            list=["people", "name", "note"], ordered=True).encode(company_faction))
+        companyFactionName = company_faction_obj["name"]
+
+        company_faction_obj["reinforcements"] = getReinforcements(
+            companyFactionName)
+        company_faction_obj["special_rules"] = getCompanyFactionSpecialRules(
+            companyFactionName)
+        company_faction_obj["unit_promotions"] = getUnitPromotions(
+            companyFactionName)
+        company_factions[companyFactionName] = company_faction_obj
+
+    return company_factions, 200
+
+
+# ------------------------------------
+# Helper queries
+# ------------------------------------
 
 def getAllEquipements():
     equipements = session.query(Equipement).all()
@@ -71,28 +163,6 @@ def getAllSpecialRules():
     return specialRules_obj
 
 
-def getAllArmies():
-    faction_names_query = None
-    try:
-        faction_names_query = session.query(Faction.name).all()
-    except exc.SQLAlchemyError as error:
-        print(error)
-        return {}, 404
-
-    faction_names = [u for u, in faction_names_query]
-    armies = {}
-    try:
-        for faction_name in faction_names:
-            units = getUnits(faction_name)
-            if(units != {}):
-                armies[faction_name] = units
-    except exc.SQLAlchemyError as error:
-        print(error)
-        return {}, 404
-
-    return armies, 200
-
-
 def getUnits(factionName):
     faction_id = session.query(Faction.faction_id).filter(
         Faction.name == factionName)
@@ -107,21 +177,6 @@ def getUnits(factionName):
         whole_faction[unit_name] = getUnit(unit_name, factionName)
 
     return whole_faction
-
-
-def getUserCompanies(username):
-    user_id = session.query(User.user_id).filter(
-        User.username == username).one()
-    companies = session.query(Company.name).filter(
-        Company.user_id == user_id).all()
-    companies = json.loads(AlchemyEncoder().encode(companies))
-    user_obj = []
-    for company_name in companies:
-        company = getCompany(company_name)
-        company['company_units'] = getCompanyUnits(company_name)
-        company['injured'] = getCompanyInjured(company_name)
-        user_obj.append(company)
-    return user_obj
 
 
 def getCompany(companyName):
@@ -216,10 +271,6 @@ def getCompanyUnitEquipement(companyUnitName):
         equipement_list.append(equipement_object)
 
     return equipement_list
-
-
-def getAlteringEffect(alteringEffectId):
-    pass
 
 
 def getPromotions(companyUnitName):
@@ -360,43 +411,6 @@ def getUnit(unitName, factionName):
     unit['image_path'] = factionName+"/"+unit['name'] + ".png"
 
     return unit
-
-
-def getUser(username):
-    user_query = None
-    try:
-        user_query = session.query(User).filter(
-            User.username == username).one()
-    except exc.SQLAlchemyError as error:
-        print(error)
-        return {}, 103
-
-    return json.loads(AlchemyEncoder(list=['user_id', 'username', 'firstname', 'lastname', 'email', 'password_hash'], ordered=True).encode(user_query)), 200
-
-
-def getCompanyFactions():
-    company_factions_query = None
-    try:
-        company_factions_query = session.query(CompanyFaction).all()
-    except exc.SQLAlchemyError as error:
-        print(error)
-        return {}, 404
-
-    company_factions = {}
-    for company_faction in company_factions_query:
-        company_faction_obj = json.loads(AlchemyEncoder(
-            list=["people", "name", "note"], ordered=True).encode(company_faction))
-        companyFactionName = company_faction_obj["name"]
-
-        company_faction_obj["reinforcements"] = getReinforcements(
-            companyFactionName)
-        company_faction_obj["special_rules"] = getCompanyFactionSpecialRules(
-            companyFactionName)
-        company_faction_obj["unit_promotions"] = getUnitPromotions(
-            companyFactionName)
-        company_factions[companyFactionName] = company_faction_obj
-
-    return company_factions, 200
 
 
 def getReinforcements(companyFactionName):

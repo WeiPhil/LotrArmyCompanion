@@ -26,7 +26,7 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
       }
 
     case ON_GET_ERROR:
-      return { ...state, getError: true, companiesNeedRefetch: true, armiesNeedRefetch: true };
+      return { ...state, getError: true, companiesNeedRefetch: true, armiesNeedRefetch: true, companyFactionsNeedRefetch: true };
 
     case API_END:
       if (action.payload === GET_USER_COMPANIES) {

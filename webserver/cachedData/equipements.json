@@ -1,1 +1,210 @@
-{"sword": {"equipement_id": 1, "name": "sword", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "armour": {"equipement_id": 2, "name": "armour", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "altering_effect": {"characteristic": "defence", "value": 1}, "special_rules": []}, "heavy_armour": {"equipement_id": 3, "name": "heavy_armour", "description": null, "low_cost": 2, "high_cost": 5, "is_extra": "no", "altering_effect": {"characteristic": "defence", "value": 2}, "special_rules": []}, "orc_bow": {"equipement_id": 4, "name": "orc_bow", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "throwing_daggers": {"equipement_id": 5, "name": "throwing_daggers", "description": null, "low_cost": 2, "high_cost": 5, "is_extra": "no", "special_rules": []}, "spear": {"equipement_id": 6, "name": "spear", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "pike": {"equipement_id": 7, "name": "pike", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "shield": {"equipement_id": 8, "name": "shield", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "altering_effect": {"characteristic": "defence", "value": 1}, "special_rules": []}, "clubs": {"equipement_id": 9, "name": "clubs", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": []}, "drum": {"equipement_id": 10, "name": "drum", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": []}, "claws": {"equipement_id": 11, "name": "claws", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": []}, "teeth": {"equipement_id": 12, "name": "teeth", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": []}, "two-handed_axe": {"equipement_id": 13, "name": "two-handed_axe", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "elven-made_sword": {"equipement_id": 14, "name": "elven-made_sword", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "elven-made_hand-and-a-half_sword": {"equipement_id": 15, "name": "elven-made_hand-and-a-half_sword", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "elven_cloak": {"equipement_id": 16, "name": "elven_cloak", "description": null, "low_cost": 5, "high_cost": 10, "is_extra": "no", "special_rules": []}, "staff": {"equipement_id": 17, "name": "staff", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "horse": {"equipement_id": 18, "name": "horse", "description": null, "low_cost": 6, "high_cost": 10, "is_extra": "no", "special_rules": []}, "warg": {"equipement_id": 19, "name": "warg", "description": null, "low_cost": 6, "high_cost": 10, "is_extra": "no", "special_rules": []}, "armoured_horse": {"equipement_id": 20, "name": "armoured_horse", "description": null, "low_cost": 9, "high_cost": 15, "is_extra": "no", "special_rules": []}, "bow": {"equipement_id": 21, "name": "bow", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "giant_flaming_sword": {"equipement_id": 22, "name": "giant_flaming_sword", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": []}, "fiery_lash": {"equipement_id": 23, "name": "fiery_lash", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["fiery_lash"]}, "mithril_crown": {"equipement_id": 24, "name": "mithril_crown", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["mithril_crown"]}, "dagger": {"equipement_id": 25, "name": "dagger", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "nenya": {"equipement_id": 26, "name": "nenya", "description": "This unobtrusive ring is one of the three Elven Rings of power.", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["nenya"]}, "mirror_of_galadriel": {"equipement_id": 27, "name": "mirror_of_galadriel", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["mirror_of_galadriel"]}, "fell_beast": {"equipement_id": 28, "name": "fell_beast", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["terror", "fly", "monstrous_charge", "feral"]}, "armoured_fell_beast": {"equipement_id": 29, "name": "armoured_fell_beast", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["terror", "fly", "monstrous_charge", "feral"]}, "two-handed_sword": {"equipement_id": 30, "name": "two-handed_sword", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "pick": {"equipement_id": 31, "name": "pick", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "twisted_mass_of_undead": {"equipement_id": 32, "name": "twisted_mass_of_undead", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": []}, "banner": {"equipement_id": 33, "name": "banner", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["banners"]}, "two-handed_weapon": {"equipement_id": 34, "name": "two-handed_weapon", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "throwing_spears": {"equipement_id": 35, "name": "throwing_spears", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": []}, "troll_chain": {"equipement_id": 36, "name": "troll_chain", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["troll_chain"]}, "hand-and-a-half_hammer": {"equipement_id": 37, "name": "hand-and-a-half_hammer", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": []}}
+{
+  "sword": { "equipement_id": 1, "name": "sword", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "armour": {
+    "equipement_id": 2,
+    "name": "armour",
+    "description": null,
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "altering_effect": { "characteristic": "defence", "value": 1 },
+    "special_rules": []
+  },
+  "heavy_armour": {
+    "equipement_id": 3,
+    "name": "heavy_armour",
+    "description": null,
+    "low_cost": 2,
+    "high_cost": 5,
+    "is_extra": "no",
+    "altering_effect": { "characteristic": "defence", "value": 2 },
+    "special_rules": []
+  },
+  "orc_bow": { "equipement_id": 4, "name": "orc_bow", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "throwing_daggers": {
+    "equipement_id": 5,
+    "name": "throwing_daggers",
+    "description": null,
+    "low_cost": 2,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "spear": { "equipement_id": 6, "name": "spear", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "pike": { "equipement_id": 7, "name": "pike", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "shield": {
+    "equipement_id": 8,
+    "name": "shield",
+    "description": null,
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "altering_effect": { "characteristic": "defence", "value": 1 },
+    "special_rules": []
+  },
+  "clubs": { "equipement_id": 9, "name": "clubs", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": [] },
+  "drum": { "equipement_id": 10, "name": "drum", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": [] },
+  "claws": { "equipement_id": 11, "name": "claws", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": [] },
+  "teeth": { "equipement_id": 12, "name": "teeth", "description": null, "low_cost": null, "high_cost": null, "is_extra": "no", "special_rules": [] },
+  "two-handed_axe": {
+    "equipement_id": 13,
+    "name": "two-handed_axe",
+    "description": null,
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "elven-made_sword": {
+    "equipement_id": 14,
+    "name": "elven-made_sword",
+    "description": null,
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "elven-made_hand-and-a-half_sword": {
+    "equipement_id": 15,
+    "name": "elven-made_hand-and-a-half_sword",
+    "description": null,
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "elven_cloak": { "equipement_id": 16, "name": "elven_cloak", "description": null, "low_cost": 5, "high_cost": 10, "is_extra": "no", "special_rules": [] },
+  "staff": { "equipement_id": 17, "name": "staff", "description": null, "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "horse": { "equipement_id": 18, "name": "horse", "description": null, "low_cost": 6, "high_cost": 10, "is_extra": "no", "special_rules": [] },
+  "warg": { "equipement_id": 19, "name": "warg", "description": null, "low_cost": 6, "high_cost": 10, "is_extra": "no", "special_rules": [] },
+  "armoured_horse": {
+    "equipement_id": 20,
+    "name": "armoured_horse",
+    "description": null,
+    "low_cost": 9,
+    "high_cost": 15,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "bow": { "equipement_id": 21, "name": "bow", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "giant_flaming_sword": {
+    "equipement_id": 22,
+    "name": "giant_flaming_sword",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "fiery_lash": {
+    "equipement_id": 23,
+    "name": "fiery_lash",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["fiery_lash"]
+  },
+  "mithril_crown": {
+    "equipement_id": 24,
+    "name": "mithril_crown",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["mithril_crown"]
+  },
+  "dagger": { "equipement_id": 25, "name": "dagger", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "nenya": {
+    "equipement_id": 26,
+    "name": "nenya",
+    "description": "This unobtrusive ring is one of the three Elven Rings of power.",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["nenya"]
+  },
+  "mirror_of_galadriel": {
+    "equipement_id": 27,
+    "name": "mirror_of_galadriel",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["mirror_of_galadriel"]
+  },
+  "fell_beast": {
+    "equipement_id": 28,
+    "name": "fell_beast",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["terror", "fly", "monstrous_charge", "feral"]
+  },
+  "armoured_fell_beast": {
+    "equipement_id": 29,
+    "name": "armoured_fell_beast",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["terror", "fly", "monstrous_charge", "feral"]
+  },
+  "two-handed_sword": {
+    "equipement_id": 30,
+    "name": "two-handed_sword",
+    "description": "",
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "pick": { "equipement_id": 31, "name": "pick", "description": "", "low_cost": 1, "high_cost": 5, "is_extra": "no", "special_rules": [] },
+  "twisted_mass_of_undead": {
+    "equipement_id": 32,
+    "name": "twisted_mass_of_undead",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "banner": { "equipement_id": 33, "name": "banner", "description": "", "low_cost": 0, "high_cost": 0, "is_extra": "no", "special_rules": ["banners"] },
+  "two-handed_weapon": {
+    "equipement_id": 34,
+    "name": "two-handed_weapon",
+    "description": "",
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "throwing_spears": {
+    "equipement_id": 35,
+    "name": "throwing_spears",
+    "description": "",
+    "low_cost": 1,
+    "high_cost": 5,
+    "is_extra": "no",
+    "special_rules": []
+  },
+  "troll_chain": {
+    "equipement_id": 36,
+    "name": "troll_chain",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": ["troll_chain"]
+  },
+  "hand-and-a-half_hammer": {
+    "equipement_id": 37,
+    "name": "hand-and-a-half_hammer",
+    "description": "",
+    "low_cost": 0,
+    "high_cost": 0,
+    "is_extra": "no",
+    "special_rules": []
+  }
+}
