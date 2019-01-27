@@ -221,8 +221,32 @@ class CompanyFaction(db.Model):
         return AlchemyEncoder().encode(self)
 
 
-class CompanyFactionHasUnit(db.Model):
-    __table__ = db.Table('company_faction_has_unit', db.Model.metadata,
+class CompanyFactionHasReinforcement(db.Model):
+    __table__ = db.Table('company_faction_has_reinforcement', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)
+
+
+class CompanyFactionHasSpecialRule(db.Model):
+    __table__ = db.Table('company_faction_has_special_rule', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)
+
+
+class CompanyFactionHasHeroEquipement(db.Model):
+    __table__ = db.Table('company_faction_has_hero_equipement', db.Model.metadata,
+                         autoload=True, autoload_with=db.engine)
+
+    def __repr__(self):
+        return AlchemyEncoder().encode(self)
+
+
+class CompanyFactionHasUnitPromotions(db.Model):
+    __table__ = db.Table('company_faction_has_unit_promotions', db.Model.metadata,
                          autoload=True, autoload_with=db.engine)
 
     def __repr__(self):

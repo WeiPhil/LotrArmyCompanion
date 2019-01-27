@@ -40,10 +40,10 @@ def writeUserCompaniesToJson(username):
         json.dump(user_companies, ensure_ascii=False, fp=outfile)
 
 
-def writeCompanyFactionsToJson(username):
+def writeCompanyFactionsToJson():
     company_factions = getCompanyFactions()
     with open(os.path.join("cachedData/company_factions.json"), 'w', encoding='utf8') as outfile:
-        json.dump(user_companies, ensure_ascii=False, fp=outfile)
+        json.dump(company_factions[0], ensure_ascii=False, fp=outfile)
 
 
 def query():
@@ -68,8 +68,9 @@ def query():
     # return str(session.query(CompanyUnit).filter(CompanyUnit.company_unit_name == companyUnitName).one())
     # addPromotionToCompanyUnit('Gormungur', 'attacks_increase')
     # writeArmiesToJson()
-    # writeSpecialRulesToJson()
-    # writeEquipementsToJson()
+#     writeSpecialRulesToJson()
+#     writeEquipementsToJson()
+    writeCompanyFactionsToJson()
 #     writeUserCompaniesToJson(username)
 
     # for company_unit_name, company_unit in getCompanyUnits(companyName).items():

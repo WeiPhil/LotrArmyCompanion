@@ -60,32 +60,6 @@ VALUES
     ('will',1),('will',-1),('will',2),('will',-2),
     ('fate',1),('fate',-1),('fate',2),('fate',-2);
 
--- ---------------------------------
--- Populating Equipements
--- ---------------------------------
-
-INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
-VALUES 
-    ('sword',NULL,1,5,'no',NULL),
-    ('armour',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
-    ('heavy_armour',NULL,2,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',2))),
-    ('orc_bow',NULL,1,5,'no',NULL),
-    ('throwing_daggers',NULL,2,5,'no',NULL),
-    ('spear',NULL,1,5,'no',NULL),
-    ('pike',NULL,1,5,'no',NULL),
-    ('shield',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
-    ('clubs',NULL,NULL,NULL,'no',NULL),
-    ('drum',NULL,NULL,NULL,'no',NULL), 
-    ('claws',NULL,NULL,NULL,'no',NULL),
-    ('teeth',NULL,NULL,NULL,'no',NULL), 
-    ('two-handed_axe',NULL,1,5,'no',NULL),
-    ('elven-made_sword',NULL,1,5,'no',NULL),
-    ('elven-made_hand-and-a-half_sword',NULL,1,5,'no',NULL),
-    ('elven_cloak',NULL,5,10,'no',NULL), 
-    ('staff',NULL,1,5,'no',NULL), 
-    ('horse',NULL,6,10,'no',NULL), 
-    ('warg',NULL,6,10,'no',NULL), 
-    ('armoured_horse',NULL,9,15,'no',NULL);
 
 -- ---------------------------------
 -- Populating Promotions
@@ -105,13 +79,6 @@ VALUES
     ('lieutenant_might','Lieutenant''s base Might characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
     ('hero_fate','Hero''s base Fate characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fate',1)),NULL);
     
-
-
--- ---------------------------------
--- Populating Special Rule
--- ---------------------------------
-
--- receivedSpecialRules.sql
 
 -- ---------------------------------
 -- Populating Heroic Actions
@@ -141,28 +108,35 @@ VALUES
 
 
 -- ---------------------------------
+-- Populating Special Rule
+-- ---------------------------------
+
+SOURCE /sql_scripts/specialRules.sql;
+
+
+-- ---------------------------------
+-- Populating Magical Powers
+-- ---------------------------------
+
+SOURCE /sql_scripts/magicalPowers.sql;
+
+-- ---------------------------------
+-- Populating Equipements
+-- ---------------------------------
+
+-- receivedSpecialRules.sql
+SOURCE /sql_scripts/equipements.sql;
+
+
+-- ---------------------------------
 -- Populating Unit
 -- ---------------------------------
 
--- received3Units.sql
+SOURCE /sql_scripts/units.sql;
+
 
 -- ---------------------------------
 -- Populating Company Faction
 -- ---------------------------------
 
-/* INSERT INTO company_faction
-    (company_faction_id,name)
-VALUES 
-    (1,"Angmar"),
-    (2,"Misty Mountains"),
-    (3,"Mount Gundabad"),
-    (4,"Goblin Town"); */
-
-/* INSERT INTO company_faction_has_unit
-    (company_faction_id,unit_id)
-VALUES 
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='dead_marsh_spectre')),
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='angmar_orc_warrior')),
-    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
-    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='moria_goblin_warrior')); */
+SOURCE /sql_scripts/companyFactions.sql;

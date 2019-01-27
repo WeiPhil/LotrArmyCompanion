@@ -375,15 +375,80 @@ def getUser(username):
 
 
 def getCompanyFactions():
-    company_faction_query = None
+    company_factions_query = None
     try:
-        company_faction_query = session.query(CompanyFaction.name).all()
+        company_factions_query = session.query(CompanyFaction).all()
     except exc.SQLAlchemyError as error:
         print(error)
         return {}, 404
 
-    company_faction_list = json.loads(
-        AlchemyEncoder().encode(company_faction_query))
-    company_faction_list = reduce(
-        lambda x, y: x+y, company_faction_list) if company_faction_list != [] else []
-    return company_faction_list, 200
+    company_factions = {}
+    for company_faction in company_factions_query:
+        company_faction_obj = json.loads(AlchemyEncoder(
+            list=["people", "name", "note"], ordered=True).encode(company_faction))
+        companyFactionName = company_faction_obj["name"]
+
+        company_faction_obj["reinforcements"] = getReinforcements(
+            companyFactionName)
+        company_faction_obj["special_rules"] = getCompanyFactionSpecialRules(
+            companyFactionName)
+        company_faction_obj["unit_promotions"] = getUnitPromotions(
+            companyFactionName)
+        company_factions[companyFactionName] = company_faction_obj
+
+    return company_factions, 200
+
+
+def getReinforcements(companyFactionName):
+    reinforcement_query = session.query(Unit.name).select_from(
+        db.join(Unit, CompanyFactionHasReinforcement, isouter=True).join(CompanyFaction, isouter=True))
+    reinforcement = reinforcement_query.filter(
+        CompanyFaction.name == companyFactionName).all()
+
+    reinforcement_list = AlchemyEncoder().encode(reinforcement)
+    reinforcement_list = json.loads(reinforcement_list)
+    reinforcement_list = reduce(
+        lambda x, y: x+y, reinforcement_list) if reinforcement_list != [] else []
+
+    return reinforcement_list
+
+
+def getCompanyFactionSpecialRules(companyFactionName):
+    special_rule_query = session.query(SpecialRule.name).select_from(
+        db.join(SpecialRule, CompanyFactionHasSpecialRule, isouter=True).join(CompanyFaction, isouter=True))
+    special_rule = special_rule_query.filter(
+        CompanyFaction.name == companyFactionName).all()
+
+    special_rule_list = AlchemyEncoder().encode(special_rule)
+    special_rule_list = json.loads(special_rule_list)
+    special_rule_list = reduce(
+        lambda x, y: x+y, special_rule_list) if special_rule_list != [] else []
+    return special_rule_list
+
+
+def getUnitPromotions(companyFactionName):
+    company_faction_id = session.query(CompanyFaction.company_faction_id).filter(
+        CompanyFaction.name == companyFactionName).one()
+    old_unit_ids = session.query(CompanyFactionHasUnitPromotions.old_unit_id).filter(
+        CompanyFactionHasUnitPromotions.company_faction_id == company_faction_id).distinct(CompanyFactionHasUnitPromotions.old_unit_id)
+    unit_promotions = {}
+    for old_unit_id in old_unit_ids:
+        old_unit_name = json.loads(AlchemyEncoder().encode(
+            session.query(Unit.name).filter(Unit.unit_id == old_unit_id).one()[0]))
+        new_unit_ids = session.query(CompanyFactionHasUnitPromotions.new_unit_id).filter(
+            and_(CompanyFaction.name == companyFactionName, CompanyFactionHasUnitPromotions.old_unit_id == old_unit_id)).all()
+
+        new_units = {}
+        for new_unit_id in new_unit_ids:
+            new_unit_name = json.loads(AlchemyEncoder().encode(
+                session.query(Unit.name).filter(Unit.unit_id == new_unit_id).one()[0]))
+            required_equipement_id = session.query(CompanyFactionHasUnitPromotions.required_equipement_id).filter(and_(
+                CompanyFactionHasUnitPromotions.old_unit_id == old_unit_id, CompanyFactionHasUnitPromotions.new_unit_id == new_unit_id)).one()
+            required_equipement = json.loads(AlchemyEncoder().encode(session.query(
+                Equipement.name).filter(Equipement.equipement_id == required_equipement_id).scalar()))
+            new_unit_obj = {}
+            new_unit_obj["required_equipement"] = required_equipement
+            new_units[new_unit_name] = new_unit_obj
+        unit_promotions[old_unit_name] = new_units
+
+    return unit_promotions

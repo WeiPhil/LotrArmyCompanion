@@ -1,3 +1,27 @@
+-- New Equipements
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+VALUES 
+    ('sword',NULL,1,5,'no',NULL),
+    ('armour',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
+    ('heavy_armour',NULL,2,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',2))),
+    ('orc_bow',NULL,1,5,'no',NULL),
+    ('throwing_daggers',NULL,2,5,'no',NULL),
+    ('spear',NULL,1,5,'no',NULL),
+    ('pike',NULL,1,5,'no',NULL),
+    ('shield',NULL,1,5,'no',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('defence',1))),
+    ('clubs',NULL,NULL,NULL,'no',NULL),
+    ('drum',NULL,NULL,NULL,'no',NULL), 
+    ('claws',NULL,NULL,NULL,'no',NULL),
+    ('teeth',NULL,NULL,NULL,'no',NULL), 
+    ('two-handed_axe',NULL,1,5,'no',NULL),
+    ('elven-made_sword',NULL,1,5,'no',NULL),
+    ('elven-made_hand-and-a-half_sword',NULL,1,5,'no',NULL),
+    ('elven_cloak',NULL,5,10,'no',NULL), 
+    ('staff',NULL,1,5,'no',NULL), 
+    ('horse',NULL,6,10,'no',NULL), 
+    ('warg',NULL,6,10,'no',NULL), 
+    ('armoured_horse',NULL,9,15,'no',NULL);
+
 -- New Equipement: bow
 INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
     VALUES

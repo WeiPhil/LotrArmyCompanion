@@ -1,57 +1,26 @@
 USE lotr;
 
 
-/* DESC company_faction; */
+DESC company_faction_has_unit_promotions;
 
--- INSERT INTO user (username,firstname,lastname,email,password)
+-- SELECT * FROM company_faction_has_reinforcement;
+
+-- -- INSERT INTO user (username,firstname,lastname,email,password)
+-- -- VALUES
+-- --     ('admin','Philippe','Weier','lotr.armycompanion@gmail.com','$pbkdf2-sha256$29000$6L0XgnCude79P6dUSsn5Hw$rz//QBn/OQxvkvusipwseZLBQVFkdBTq6z3ygGFe7l0'),
+-- --     ('Sulrin','Philippe','Weier','ph.weier@gmail.com','$pbkdf2-sha256$29000$SYlR6h0DYExp7f0fI6S0lg$QcoFsG1l9PCDIQV7E8WUqYeSxirN2q8bfAj22nuv57Q'),
+
+-- -- DESC user;
+-- /* SHOW TABLES; */
+
+-- INSERT INTO company_faction_has_unit_promotions
+--     (company_faction_id,old_unit_id,new_unit_id,needed_equipement_id,bonus_equipement_id)
 -- VALUES
---     ('admin','Philippe','Weier','lotr.armycompanion@gmail.com','$pbkdf2-sha256$29000$6L0XgnCude79P6dUSsn5Hw$rz//QBn/OQxvkvusipwseZLBQVFkdBTq6z3ygGFe7l0'),
---     ('Sulrin','Philippe','Weier','ph.weier@gmail.com','$pbkdf2-sha256$29000$SYlR6h0DYExp7f0fI6S0lg$QcoFsG1l9PCDIQV7E8WUqYeSxirN2q8bfAj22nuv57Q'),
-
--- DESC user;
-/* SHOW TABLES; */
- 
---  UPDATE faction
---    SET name = 'Numenor'
--- --  WHERE name = 'Barad-Dur';
--- INSERT INTO promotion (name,description,altering_effect_id,special_rule_id)
--- VALUES 
---     ('test_special_rule','Special RUle.',NULL,(SELECT special_rule_id FROM special_rule WHERE  (special_rule_id) = (1)));
-
-
-/* INSERT INTO company_faction
-    (company_faction_id,name)
-VALUES 
-    (1,"Angmar"),
-    (2,"Misty Mountains"),
-    (3,"Mount Gundabad"),
-    (4,"Goblin Town"); */
-
-/* INSERT INTO company_faction_has_unit
-    (company_faction_id,unit_id)
-VALUES 
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='dead_marsh_spectre')),
-    (1,(SELECT unit.unit_id FROM unit WHERE unit.name='angmar_orc_warrior')),
-    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='wild_warg')),
-    (2,(SELECT unit.unit_id FROM unit WHERE unit.name='moria_goblin_warrior')); */
-   
--- INSERT INTO company
---     (name,gold,user_id)
--- VALUES 
---     ('The Golden Robbers','24',1);
-
--- INSERT INTO company_unit
---     (unit_id,company_id,company_unit_name,company_unit_rank,effective_points)
--- VALUES 
---     ((SELECT unit.unit_id FROM unit WHERE unit.name='moria_goblin_warrior'),
---     (SELECT company.company_id FROM company WHERE company.name='The Golden Robbers'),
---     'Slurpus','warrior',
---     (SELECT unit.points FROM unit WHERE unit.name='moria_goblin_warrior'));
-
-/* SELECT * FROM company; */
-
-
+--     ((SELECT company_faction.company_faction_id FROM company_faction WHERE company_faction.name='Angmar'),
+--     (SELECT unit.unit_id FROM unit WHERE unit.name='angmar_orc_warrior'),
+--     (SELECT unit.unit_id FROM unit WHERE unit.name='warg_rider'),
+--     (SELECT equipement.equipement_id FROM equipement WHERE equipement.name='orc_bow'),
+--     (SELECT equipement.equipement_id FROM equipement WHERE equipement.name='orc_bow'));
 
 /* Usefull */
 
@@ -67,5 +36,3 @@ WHERE unit.name='moria_goblin_warrior' */
 -- LEFT JOIN company_unit ON company_unit.company_unit_id = company_unit_has_equipement.company_unit_id
 -- LEFT JOIN equipement ON equipement.equipement_id = company_unit_has_equipement.equipement_id
 -- WHERE company_unit.company_unit_name='Gormungur'
-
-

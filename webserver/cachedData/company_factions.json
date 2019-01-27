@@ -1,0 +1,199 @@
+{
+  "Barad-dûr": { "people": "Mordor", "name": "Barad-dûr", "note": null, "reinforcements": [], "special_rules": [], "unit_promotions": {} },
+  "Dol Guldur": {
+    "people": "Mordor",
+    "name": "Dol Guldur",
+    "note": "Though cunning creatures, Wargs & Spiders have no grasp of tactics or leadership. As such, only creatures of their own species may benefit from their Stand Fast! rolls or benefit from their heroic actions. Wild Wargs may receive two increases to their Strength instead of one.\n    Castellans of Dol Guldur are magical constructs bound to the will of Sauron alone and with no care for the living. Although Castellans are treated as Heroes during a scenario, they are not considered Heroes within the Battle Company. They may not be promoted or receive increases to their profiles. In addition, friendly warriors may not benefit from their Stand Fast! ability.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Minas Morgul": {
+    "people": "Mordor",
+    "name": "Minas Morgul",
+    "note": "Though they are not above using them to enact their dark purposes, the Black Númenóreans despise the Orcish soldiers of Sauron's hordes. It is unconscionable that they would ever take orders from an Orc, therefore only Black Númenóreans may become Heroes in a Minas Morgul Battle Company.\n    Anytime a Venomblade Knight tries to wound an enemy but rolls a 1, he must reroll the dice. This upgrade costs +1 point.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Mirkwood": {
+    "people": "Mordor",
+    "name": "Mirkwood",
+    "note": "Though cunning creatures, Wargs & Spiders have little grasp of tactics or leadership. As such, only creatures of their own species may benefit from their Stand Fast! rolls or benefit from their heroic actions.\n    Wild Wargs and Spiders may receive two increases to their Strength instead of one.\n    Hardened Carapace and Tough Hide are considered Armor in all respects for Spiders and Wargs respectively. Similarly, Chitinous Plating and Iron Hide are considered Heavy Armor in all respects for Spiders and Wargs respectively.\n    Giant Spiders and Mirkwood Spiders with the Venom-back upgrade must re-roll failed To Wound rolls. This upgrade costs +2 points.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Rohan": {
+    "people": "Kingdoms of Men",
+    "name": "Rohan",
+    "note": "Sons of Eorl are held in high esteem, yet they remain aloof from other warriors, choosing instead to hone their blades and minds in preparation for the next battle. Because of this devotion to their craft, they eschew positions of command to commit themselves more fully to the art of cavalry warfare. Sons of Eorl may not be promoted to Heroes.\n    All Heroes in a Rohan Battle Company have the Expert Rider Special Rule.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Minas Tirith": {
+    "people": "Kingdoms of Men",
+    "name": "Minas Tirith",
+    "note": "With regards to promotions, Ithilien Guard and Rangers of Ithilien are treated as Warriors of Minas Tirith and Rangers of Gondor respectively.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Fiefdoms of Gondor": {
+    "people": "Kingdoms of Men",
+    "name": "Fiefdoms of Gondor",
+    "note": "Though Dol Amroth holds no rule over the other fiefdoms, such is the nobility of their bloodline and reputation for martial prowess that the other fiefs often look to their warriors for counsel in times of war. A Fiefdom of Gondor Battle company may choose a single Knight of Dol Amroth as their Lieutenant model during the initial creation of their company instead of using the basic recruitment list, although it is not required to do so. If chosen, the Knight of Dol Amroth costs 9 Gold.\n    Knights of Dol Amroth may not purchase mounts for themselves until they are deemed worthy through a promotion.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Arnor": {
+    "people": "Kingdoms of Men",
+    "name": "Arnor",
+    "note": "Arnor Battle Companies may have up to 50% of their warriors armed with bows.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "The Last Alliance": {
+    "people": "Kingdoms of Men",
+    "name": "The Last Alliance",
+    "note": null,
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Laketown": {
+    "people": "Kingdoms of Men",
+    "name": "Laketown",
+    "note": "More of a constabulary than a standing army, the Warriors of Lake-town rely on intimidation and strength of numbers to carry the day. Lake-town Battle Companies may have up to 20 members, of which 6 may be Heroes, rather than the usual limit of 15.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Isengard": {
+    "people": "The Fallen Realms",
+    "name": "Isengard",
+    "note": "Though awesome combatants, Feral Urukhai and Uruk-hai Berserkers are so consumed with bloodlust that they do not possess the presence of mind to lead their fellow warriors. As such, Feral Uruk-hai and Uruk-hai Berserkers can never be promoted to heroes.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Shadow of Saruman": {
+    "people": "The Fallen Realms",
+    "name": "Shadow of Saruman",
+    "note": "An unorganized rabble, Shadow of Saruman Battle Companies rely on strength of numbers, rather than discipline or skill at arms. To represent this, Saruman's Influence Battle Companies may have up to 20 members, of which 6 may be promoted to Heroes. \n    Some players, with a desire to play a certain themed company, may desire to only take Ruffians for a \"Scouring of the Shire\" themed company. If this is the case, feel free to ignore the options of \"Dunlending Warrior\" or \"Wildman of Dunland\" in all respects. However, you may also feel free to keep the units and treat them as different kinds of Ruffians with the same unit entries, such as Dunland \"Thug\" or Wildman \"Brute\" or even half-orcs.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Rhûn": { "people": "The Fallen Realms", "name": "Rhûn", "note": null, "reinforcements": [], "special_rules": [], "unit_promotions": {} },
+  "Khand": { "people": "The Fallen Realms", "name": "Khand", "note": null, "reinforcements": [], "special_rules": [], "unit_promotions": {} },
+  "Harad": {
+    "people": "The Fallen Realms",
+    "name": "Harad",
+    "note": "The Watchers of Kârna are not an unknown sight in the armies of Harad, however, they tend to have their own agendas for marching to war. As such, the Watchers will never assume a role of leadership in a Harad Battle Company, so they may not be promoted to Heroes. \n    Harad Battle Companies may have up to 50% of their warriors armed with bows.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Far Harad": {
+    "people": "The Fallen Realms",
+    "name": "Far Harad",
+    "note": "The Half Trolls of Far Harad are rightfully feared for their combat prowess. However, their only interest lies in crushing their enemies, rather than tactics or strategy. Because of this blind violence, Half Trolls never rise to leadership positions in a Far Harad battle company, and may not be promoted to Heroes.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Umbar": {
+    "people": "The Fallen Realms",
+    "name": "Umbar",
+    "note": "Mad with bloodlust, Corsair Reavers can never rise to positions of leadership with a Corsair battle company. They may not be promoted to Heroes. \n    Umbar was a Númenórean outpost that stayed loyal to Sauron after the fall of their island home. Warriors of Umbar are simply Warriors of Númenor that are aligned with Evil. They can be easily represented by using Warriors of Númenor with the White Tree of Gondor removed.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Rivendell": {
+    "people": "The Free Peoples",
+    "name": "Rivendell",
+    "note": "Thanks to their incredibly long lives, Elves have a long time to hone their skills in battle. Elven heroes may increase their Fight value to 7, instead of 6 like other races.\n    A King's Guard and King's Knight are upgrades of the High Elf Warrior and Knight of Rivendell profiles respectively. They have a Fight value of 6/3+ for +1 Point.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Lothlórien": {
+    "people": "The Free Peoples",
+    "name": "Lothlórien",
+    "note": "Thanks to their incredibly long lives, Elves have a long time to hone their skills in battle. Elven heroes may increase their Fight value to 7, instead of 6 like other races.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Thranduil's Halls": {
+    "people": "The Free Peoples",
+    "name": "Thranduil's Halls",
+    "note": "Thanks to their incredibly long lives, Elves have a long time to hone their skills in battle. Elven heroes may increase their Fight value to 7, instead of 6 like other races.\n    As Wood Elf Sentinels are already veteran warriors completely devoted to their craft, they cannot be promoted to Heroes.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Durins Folk": {
+    "people": "The Free Peoples",
+    "name": "Durins Folk",
+    "note": "As Iron Guard are already veteran warriors devoted to their itinerant lifestyle and craft, they cannot be promoted to Heroes.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Erebor & Dale": { "people": "The Free Peoples", "name": "Erebor & Dale", "note": null, "reinforcements": [], "special_rules": [], "unit_promotions": {} },
+  "The Shire": {
+    "people": "The Free Peoples",
+    "name": "The Shire",
+    "note": "Given their small stature, the Hobbits rely on the old adage that there is safety in numbers. A Shire Battle Company may have up to 25 members, of which, 8 may be Heroes.\n    Whenever a Hobbit would roll on the Warrior Advancement Chart, add 1 to the result. Hobbits are made of sterner stuff than it appears!\n    Each Shire Battle Company, whether aware of it or not, is protected by the might of the Dúnedain. Shire Battle Companies may have 0-3 Rangers of Arnor as part of their Company at any given time. If included, one of these should be designated as the Lieutenant or one of the Sergeants at the beginning of the campaign.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Angmar": {
+    "people": "Moria & Angmar",
+    "name": "Angmar",
+    "note": "Though cunning creatures, Wargs have no grasp of tactics or leadership. As such, only creatures of their own species may benefit from their Stand Fast! rolls or benefit from their heroic actions. Wild Wargs may receive two increases to their Strength instead of one. Stalkers are too distrusted, even by their own kind, to ever amass any sort of following so they may not be promoted to Heroes. Being undead creatures, Spectres may not receive promotions and, therefore, can never become heroes.",
+    "reinforcements": ["angmar_orc_warrior", "dead_marsh_spectre", "wild_warg"],
+    "special_rules": [],
+    "unit_promotions": {
+      "angmar_orc_warrior": {
+        "angmar_warg_riders": { "required_equipement": null }
+      }
+    }
+  },
+  "Misty Mountains": {
+    "people": "Moria & Angmar",
+    "name": "Misty Mountains",
+    "note": "Because of the swarming nature of goblins and their allies, the maximum number of warriors/creatures in a Misty Mountains Battle Company is 25 rather than the usual 15.\n    Though cunning creatures, Wargs and Spiders have no grasp of tactics or leadership. As such, only creatures of their own species may benefit from their Stand Fast! rolls or benefit from their heroic actions. Wild Wargs may receive two increases to their Strength instead of one. Warg Marauders may not be promoted in any way and therefore may not become Heroes. In addition, Warg Marauders take up three roster spots towards the Company's maximum number, although they still only count as one model for game purposes.",
+    "reinforcements": ["moria_goblin_warrior", "wild_warg"],
+    "special_rules": [],
+    "unit_promotions": {
+      "moria_goblin_warrior": {
+        "moria_blackshield": { "required_equipement": null },
+        "moria_goblin_prowler": { "required_equipement": null }
+      }
+    }
+  },
+  "Mount Gundabad": {
+    "people": "Moria & Angmar",
+    "name": "Mount Gundabad",
+    "note": "Hunter Orcs may not purchase Fell Wargs as mounts until they have rolled a 4+ for a promotion. \n    Fell Wargs that have become heroes cannot be given riders, and only other Wargs may benefit from their Stand Fast! rule. Fell Wargs can, however, receive two increases to their Strength instead of one.\n    Additionally, though awesome combatants, Gundabad Brawlers are so consumed with bloodlust that they do not possess the presence of mind to lead their fellow warriors. As such, they can never be promoted to Heroes.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  },
+  "Goblin Town": {
+    "people": "Moria & Angmar",
+    "name": "Goblin Town",
+    "note": "Because of the swarming nature of goblins and their allies, the maximum number of warriors/creatures in a Misty Mountains Battle Company is 25 rather than the usual 15.\n    A Thrasher Team should be modeled with 2 Goblins on a single 40mm base. Because this represents two Goblins rather than one Heroic individual, Thrasher Teams may not become Heroes.\n    Though cunning creatures, Wargs have no grasp of tactics or leadership. As such, only creatures of their own species may benefit from their Stand Fast! rolls or benefit from their heroic actions. Wargs and Fell Wargs may receive two increases to their Strength instead of one.",
+    "reinforcements": [],
+    "special_rules": [],
+    "unit_promotions": {}
+  }
+}

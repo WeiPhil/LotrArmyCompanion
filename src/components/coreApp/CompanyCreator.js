@@ -65,6 +65,7 @@ class CompanyCreator extends Component {
   };
 
   chooseCompanyFaction = () => {
+    const { companyFactions } = this.props;
     return (
       <>
         <Typography gutterBottom variant="h6">
@@ -82,7 +83,7 @@ class CompanyCreator extends Component {
                     </ListItem>
                   ))}
                 {companyAlignment === "Evil" &&
-                  this.props.companyFactions.map(item => (
+                  Object.keys(companyFactions).map(item => (
                     <ListItem button key={`item-${companyAlignment}-${item}`} onClick={this.handleNext}>
                       <ListItemText primary={item} />
                     </ListItem>
