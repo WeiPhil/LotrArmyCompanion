@@ -19,7 +19,7 @@ const CustomTableCell = withStyles(theme => ({
     paddingLeft: theme.spacing.unit * 1.4,
     paddingRight: 0,
     fontSize: 14,
-    color: theme.palette.type === "dark" ? theme.palette.button : "black"
+    color: theme.palette.type === "dark" ? theme.palette.text.secondary : theme.palette.text.secondary
   }
 }))(TableCell);
 
@@ -49,7 +49,9 @@ class UnitCharacteristics extends Component {
         {charac + improv}
       </Typography>
     ) : (
-      <Typography style={{ display: "inline-block" }}>{charac + improv + add}</Typography>
+      <Typography color="textSecondary" style={{ display: "inline-block" }}>
+        {charac + improv + add}
+      </Typography>
     );
   }
 

@@ -28,23 +28,26 @@ def getUserCompanies(username):
     try:
         user_id = session.query(User.user_id).filter(
             User.username == username).one()
-        hasCompanies = session.query(Company.name).filter(
-            Company.user_id == user_id).scalar() is not None
+        hasCompanies = session.query(session.query(
+            Company).filter_by(user_id=user_id).exists()).scalar()
+
         if(not hasCompanies):
             return {}, 200
         companies = session.query(Company.name).filter(
             Company.user_id == user_id).all()
     except exc.SQLAlchemyError as error:
         print(error)
+        print("here")
         return {}, 404
 
     companies = json.loads(AlchemyEncoder().encode(companies))
     user_obj = []
-    for company_name in companies:
-        company = getCompany(company_name)
-        company['company_units'] = getCompanyUnits(company_name)
-        company['injured'] = getCompanyInjured(company_name)
+    for companyName in companies:
+        company = getCompany(companyName)
+        company['company_units'] = getCompanyUnits(companyName)
+        company['injured'] = getCompanyInjured(companyName)
         user_obj.append(company)
+
     return user_obj, 200
 
 
@@ -182,17 +185,27 @@ def getUnits(factionName):
 def getCompany(companyName):
     company_query = session.query(Company).filter(
         Company.name == companyName).one()
-    company = AlchemyEncoder(list=['company_id', 'name', 'gold', 'victories', 'draws',
+    company = AlchemyEncoder(list=['company_id', 'company_faction_id', 'name', 'gold', 'victories', 'draws',
                                    'losses', 'rating', 'effective_rating', 'image_path'], ordered=True).encode(company_query)
+    company = json.loads(company)
+    company['company_faction_name'] = session.query(CompanyFaction.name).filter(
+        CompanyFaction.company_faction_id == company["company_faction_id"]).one()[0]
+    company.pop("company_faction_id")
 
-    return json.loads(company)
+    return company
 
 
-def getCompanyInjured(company_name):
+def getCompanyInjured(companyName):
+    company_id = session.query(Company.company_id).filter(
+        Company.name == companyName).one()
+    hasInjured = session.query(session.query(
+        CompanyHasInjured).filter_by(company_id=company_id).exists()).scalar()
+    if(not hasInjured):
+        return []
     injured_query = session.query(CompanyUnit.company_unit_name).select_from(
         db.join(Company, CompanyHasInjured, isouter=True).join(CompanyUnit, isouter=True)).all()
     injured = json.loads(AlchemyEncoder().encode(injured_query))
-    injured = reduce(lambda x, y: x+y, injured) if injured != [[None]] else []
+    injured = reduce(lambda x, y: x+y, injured)
     return injured
 
 
@@ -384,8 +397,6 @@ def getSpecialRules(unitName, companyUnit=False):
     specialRule_list = AlchemyEncoder(
         list=['name', 'origin']).encode(specialRule_list)
     specialRule_list = json.loads(specialRule_list)
-    # specialRule_list = reduce(
-    #     lambda x, y: x+y, specialRule_list) if specialRule_list != [] else []
     return specialRule_list
 
 
@@ -416,15 +427,26 @@ def getUnit(unitName, factionName):
 def getReinforcements(companyFactionName):
     reinforcement_query = session.query(Unit.name).select_from(
         db.join(Unit, CompanyFactionHasReinforcement, isouter=True).join(CompanyFaction, isouter=True))
-    reinforcement = reinforcement_query.filter(
+    reinforcements = reinforcement_query.filter(
         CompanyFaction.name == companyFactionName).all()
 
-    reinforcement_list = AlchemyEncoder().encode(reinforcement)
+    reinforcements_obj = {}
+    for reinforcement_name in json.loads(AlchemyEncoder().encode(reinforcements)):
+        reinforcement_name = reinforcement_name[0]
+        reinforcement_obj = {}
+        faction_id = session.query(Unit.faction_id).filter(
+            Unit.name == reinforcement_name).one()
+        reinforcement_obj["faction_name"] = json.loads(AlchemyEncoder().encode(
+            session.query(Faction.name).filter(Faction.faction_id == faction_id).one()))[0]
+
+        reinforcements_obj[reinforcement_name] = reinforcement_obj
+
+    reinforcement_list = AlchemyEncoder().encode(reinforcements)
     reinforcement_list = json.loads(reinforcement_list)
     reinforcement_list = reduce(
         lambda x, y: x+y, reinforcement_list) if reinforcement_list != [] else []
 
-    return reinforcement_list
+    return reinforcements_obj
 
 
 def getCompanyFactionSpecialRules(companyFactionName):

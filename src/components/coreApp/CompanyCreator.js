@@ -8,12 +8,27 @@ import StepContent from "@material-ui/core/StepContent";
 import MediaQuery from "react-responsive";
 
 import Typography from "@material-ui/core/Typography";
-import { Button, TextField, Grid, List, ListSubheader, ListItem, ListItemText, Icon } from "@material-ui/core";
+import {
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  TextField,
+  Grid,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+  Icon,
+  Dialog,
+  CircularProgress
+} from "@material-ui/core";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Redirect } from "react-router-dom";
 
-import { getCompanyFactions } from "../../redux/actions/databaseAccess";
+import { getCompanyFactions, addCompany, postStatusReset } from "../../redux/actions/databaseAccess";
 
 const styles = theme => ({
   companyList: {
@@ -52,6 +67,9 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing.unit,
     marginRight: theme.spacing.unit
+  },
+  confirmButton: {
+    marginTop: theme.spacing.unit
   }
 });
 
@@ -59,10 +77,14 @@ function getSteps() {
   return ["Company Name", "Company Faction", "Additional Notes"];
 }
 
-const mapStateToProps = ({ data, databaseAccess }) => ({
+const mapStateToProps = ({ auth, data, databaseAccess }) => ({
+  username: auth.username,
   companyFactions: data.companyFactions,
   companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch,
-  isLoadingCompanyFactions: databaseAccess.isLoadingCompanyFactions
+  isLoadingCompanyFactions: databaseAccess.isLoadingCompanyFactions,
+  postingToDatabase: databaseAccess.postingToDatabase,
+  postingSuccess: databaseAccess.postingSuccess,
+  postResponse: databaseAccess.postResponse
 });
 
 class CompanyCreator extends Component {
@@ -72,7 +94,7 @@ class CompanyCreator extends Component {
     companyFactionName: "",
     companyNotes: "",
     groupedCompanyFactions: {},
-    redirectToTroopCreator: false
+    redirectToHome: false
   };
 
   componentDidMount() {
@@ -101,8 +123,6 @@ class CompanyCreator extends Component {
 
   chooseCompanyFaction = mobile => {
     const { groupedCompanyFactions } = this.state;
-
-    // console.log(groupedCompanyFactions);
 
     return (
       <>
@@ -199,8 +219,18 @@ class CompanyCreator extends Component {
   };
 
   validateNewCompany = () => {
-    console.log(this.state);
-    this.setState({ redirectToTroopCreator: true });
+    let companyData = {};
+    companyData["username"] = this.props.username;
+    companyData["companyName"] = this.state.companyName;
+    companyData["companyFactionName"] = this.state.companyFactionName;
+    companyData["companyNotes"] = this.state.companyNotes;
+    this.props.addCompany(companyData);
+  };
+
+  handleInfoClose = () => {
+    this.props.postStatusReset();
+    window.location.reload();
+    this.setState({ redirectToHome: true });
   };
 
   render() {
@@ -208,7 +238,7 @@ class CompanyCreator extends Component {
     const steps = getSteps();
     const { activeStep } = this.state;
 
-    if (this.state.redirectToTroopCreator === true) return <Redirect to="/troopCreator" />;
+    if (this.state.redirectToHome === true) return <Redirect to="/" />;
     else
       return (
         <>
@@ -232,7 +262,7 @@ class CompanyCreator extends Component {
                       )}
                       {activeStep === steps.length - 1 && (
                         <Button onClick={this.validateNewCompany} variant="contained" color="primary" className={classes.button}>
-                          Buy troops
+                          Confirm and Save
                         </Button>
                       )}
                       {/* <Button disabled={activeStep === 0} onClick={this.handleBack} className={classes.button}>
@@ -285,12 +315,35 @@ class CompanyCreator extends Component {
                   )}
                   {activeStep === steps.length - 1 && (
                     <Button onClick={this.validateNewCompany} variant="contained" color="primary" className={classes.button}>
-                      Buy troops
+                      Confirm and Save
                     </Button>
                   )}
                 </Grid>
               </>
             </Grid>
+            <Dialog onClose={this.handleInfoClose} open={this.props.postingSuccess}>
+              <DialogTitle align="center">{"Company Creation"}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>{this.props.postResponse}</DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button className={classes.confirmButton} onClick={this.handleInfoClose} variant="contained" color="secondary" autoFocus>
+                  Ok
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Dialog
+              open={this.props.postingToDatabase}
+              PaperProps={{
+                style: {
+                  backgroundColor: "transparent",
+                  boxShadow: "none",
+                  overflow: "hidden"
+                }
+              }}
+            >
+              <CircularProgress />
+            </Dialog>
           </MediaQuery>
         </>
       );
@@ -304,6 +357,6 @@ CompanyCreator.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { getCompanyFactions }
+    { getCompanyFactions, addCompany, postStatusReset }
   )(withStyles(styles, { withTheme: true })(CompanyCreator))
 );

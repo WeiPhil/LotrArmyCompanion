@@ -153,7 +153,7 @@ const ArmyTroopCard = props => {
         {unit.description.length !== 0 && (
           <>
             <Typography color="textPrimary" variant="button">
-              Description
+              Notes
             </Typography>
             <Typography color="textSecondary" variant="body2">
               {unit.description}

@@ -52,7 +52,7 @@ const styles = theme => ({
     margin: theme.spacing.unit * 0.5,
     fontSize: 10
   },
-  troopTitleMinimal: {
+  companyUnitTitleMinimal: {
     margin: theme.spacing.unit * 0.5,
     textAlign: "center",
     fontSize: 12,
@@ -108,7 +108,7 @@ function CompanyUnitCard(props) {
   );
 
   const minimalContent = (
-    <Typography noWrap className={classes.troopTitleMinimal} variant="body2">
+    <Typography noWrap className={classes.companyUnitTitleMinimal} variant="body2">
       {company_unit.company_unit_name}
     </Typography>
   );

@@ -1,4 +1,17 @@
-import { GET_USER_COMPANIES, GET_ARMIES, GET_COMPANY_FACTIONS, API_START, API_END, ON_GET_ERROR, DISCONNECT, LOGIN_SUCCESS } from "../actions/types";
+import {
+  GET_USER_COMPANIES,
+  GET_ARMIES,
+  GET_COMPANY_FACTIONS,
+  API_START,
+  API_END,
+  ON_GET_ERROR,
+  DISCONNECT,
+  LOGIN_SUCCESS,
+  ADD_COMPANY,
+  POSTING_FAILURE,
+  POSTING_SUCCESS,
+  POST_STATUS_RESET
+} from "../actions/types";
 
 const serverAccessInitialState = {
   isLoadingCompanies: false,
@@ -7,7 +20,10 @@ const serverAccessInitialState = {
   armiesNeedRefetch: true,
   companiesNeedRefetch: false,
   companyFactionsNeedRefetch: true,
-  getError: false
+  getError: false,
+  postingSuccess: false,
+  postingToDatabase: false,
+  postResponse: ""
 };
 
 export default function databaseAccessReducer(state = serverAccessInitialState, action) {
@@ -21,6 +37,8 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingArmies: true, getError: false };
       } else if (action.payload === GET_COMPANY_FACTIONS) {
         return { ...state, isLoadingCompanyFactions: true, getError: false };
+      } else if (action.payload === ADD_COMPANY) {
+        return { ...state, postingToDatabase: true };
       } else {
         return state;
       }
@@ -35,6 +53,8 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingArmies: false, armiesNeedRefetch: state.getError };
       } else if (action.payload === GET_COMPANY_FACTIONS) {
         return { ...state, isLoadingCompanyFactions: false, companyFactionsNeedRefetch: state.getError };
+      } else if (action.payload === ADD_COMPANY) {
+        return { ...state, postingToDatabase: false };
       } else {
         return state;
       }
@@ -44,6 +64,15 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
 
     case DISCONNECT:
       return { ...state, getError: false };
+
+    case POSTING_SUCCESS:
+      return { ...state, postingSuccess: true, postResponse: action.payload };
+
+    case POSTING_FAILURE:
+      return { ...state, postingSuccess: false, postResponse: action.payload };
+
+    case POST_STATUS_RESET:
+      return { ...state, postingToDatabase: false, postingSuccess: false, postResponse: "" };
 
     default:
       return state;

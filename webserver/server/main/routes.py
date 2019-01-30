@@ -42,9 +42,9 @@ def postJsonHandler():
     return 'JSON posted'
 
 
-@main.route('/getCompany/<username>', methods=['GET'])
+@main.route('/getCompanies/<username>', methods=['GET'])
 @jwt_required
-def getCompany(username):
+def getCompanies(username):
     from ..database.select_queries import getUserCompanies
 
     jwt_identity = get_jwt_identity()
@@ -106,20 +106,25 @@ def getCompanyFactions():
 
     companyFactions, code = getCompanyFactions()
 
-    print(companyFactions)
-
     return jsonify(companyFactions), code
 
 
 @main.route('/addCompany', methods=['POST'])
-def register():
+def addCompany():
     from ..database.add_queries import addCompany
+
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
     # get submited data
     data = request.get_json()
-    print(data)
+
+    code = addCompany(username=data["username"], companyName=data["companyName"],
+                      companyFactionName=data["companyFactionName"], companyNotes=data["companyNotes"])
+    if(code == 404):
+        return "An error occured retry please.", 404
+
+    return "You have successfully added your new company!", code
 
 
 @main.route('/databaseTest', methods=['GET'])

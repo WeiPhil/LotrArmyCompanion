@@ -11,7 +11,10 @@ import CompanyUnitCard from "./CompanyUnitCard";
 
 const styles = theme => ({
   card: {
-    maxWidth: CARD_MAX_WIDTH * 1.5
+    maxWidth: CARD_MAX_WIDTH * 1.5,
+    [theme.breakpoints.up("sm")]: {
+      minWidth: CARD_MAX_WIDTH
+    }
   },
   cardContent: {
     padding: theme.spacing.unit * 2
@@ -83,16 +86,15 @@ class CompanyCard extends Component {
   }
 
   render() {
-    const { company, classes } = this.props;
+    const { company, classes, onSelection, forSelection = false } = this.props;
 
     const rating = company.rating;
     const effective_rating = company.effective_rating;
 
-    return (
-      <Card className={classes.card}>
-        <CardActionArea>
-          <CardMedia className={classes.media} image={require("./../../assets/images/" + company.image_path)} title={company.name} />
-        </CardActionArea>
+    const companyCard = (
+      <>
+        <CardMedia className={classes.media} image={require("./../../assets/images/" + company.image_path)} title={company.name} />
+
         <CardContent className={classes.cardContent}>
           <Grid container direction="column" alignItems="stretch" spacing={8}>
             <Grid item>
@@ -133,40 +135,42 @@ class CompanyCard extends Component {
               </Grid>
             </Grid>
             <Grid item>
-              <Paper className={classes.victoryPaper}>
-                <Grid container direction="row" justify="space-evenly" spacing={8}>
-                  <Grid item>
-                    <Grid container direction="column" alignItems="center" spacing={8}>
-                      <Grid item>
-                        <VictoryIcon className={classes.victoryPanelIcons} />
+              {!forSelection && (
+                <Paper className={classes.victoryPaper}>
+                  <Grid container direction="row" justify="space-evenly" spacing={8}>
+                    <Grid item>
+                      <Grid container direction="column" alignItems="center" spacing={8}>
+                        <Grid item>
+                          <VictoryIcon className={classes.victoryPanelIcons} />
+                        </Grid>
+                        <Grid item>
+                          <Chip avatar={<Avatar className={classes.victoryAvatar}>V</Avatar>} label={company.victories} />
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <Chip avatar={<Avatar className={classes.victoryAvatar}>V</Avatar>} label={company.victories} />
+                    </Grid>
+                    <Grid item>
+                      <Grid container direction="column" alignItems="center" spacing={8}>
+                        <Grid item>
+                          <DrawIcon className={classes.victoryPanelIcons} />
+                        </Grid>
+                        <Grid item>
+                          <Chip avatar={<Avatar className={classes.drawAvatar}>D</Avatar>} label={company.draws} />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Grid container direction="column" alignItems="center" spacing={8}>
+                        <Grid item>
+                          <DeathIcon className={classes.victoryPanelIcons} />
+                        </Grid>
+                        <Grid item>
+                          <Chip avatar={<Avatar className={classes.lossAvatar}>L</Avatar>} label={company.losses} />
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item>
-                    <Grid container direction="column" alignItems="center" spacing={8}>
-                      <Grid item>
-                        <DrawIcon className={classes.victoryPanelIcons} />
-                      </Grid>
-                      <Grid item>
-                        <Chip avatar={<Avatar className={classes.drawAvatar}>D</Avatar>} label={company.draws} />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid container direction="column" alignItems="center" spacing={8}>
-                      <Grid item>
-                        <DeathIcon className={classes.victoryPanelIcons} />
-                      </Grid>
-                      <Grid item>
-                        <Chip avatar={<Avatar className={classes.lossAvatar}>L</Avatar>} label={company.losses} />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Paper>
+                </Paper>
+              )}
             </Grid>
             <Grid item>
               <Grid container direction="row">
@@ -184,35 +188,51 @@ class CompanyCard extends Component {
             </Grid>
             <Grid item>
               <Grid container direction="column">
-                <Grid item>
-                  <Typography variant="button">Injured</Typography>
-                </Grid>
-                <Grid item>
-                  {company.injured.map((injured, index) => (
-                    <Chip
-                      clickable={window.matchMedia(MIN_HEIGHT_600).matches}
-                      onClick={() => this.handleInjuredClick(injured)}
-                      key={index}
-                      label={injured}
-                      className={classes.chip}
-                    />
-                  ))}
-                  <Dialog
-                    style={{ margin: "0 auto", maxWidth: CARD_MAX_WIDTH }}
-                    scroll={"body"}
-                    open={this.state.injuredOpen}
-                    keepMounted
-                    onClose={this.handleInjuredClose}
-                  >
-                    <DialogContent style={{ padding: 0 }}>{this.state.injured !== undefined && this.renderInjuredCard(company)}</DialogContent>
-                  </Dialog>
-                </Grid>
+                {company.injured.length !== 0 && (
+                  <>
+                    <Grid item>
+                      <Typography variant="button">Injured</Typography>
+                    </Grid>
+
+                    <Grid item>
+                      {company.injured.map((injured, index) => (
+                        <Chip
+                          clickable={window.matchMedia(MIN_HEIGHT_600).matches}
+                          onClick={() => this.handleInjuredClick(injured)}
+                          key={index}
+                          label={injured}
+                          className={classes.chip}
+                        />
+                      ))}
+
+                      <Dialog
+                        style={{ margin: "0 auto", maxWidth: CARD_MAX_WIDTH }}
+                        scroll={"body"}
+                        open={this.state.injuredOpen}
+                        keepMounted
+                        onClose={this.handleInjuredClose}
+                      >
+                        <DialogContent style={{ padding: 0 }}>{this.state.injured !== undefined && this.renderInjuredCard(company)}</DialogContent>
+                      </Dialog>
+                    </Grid>
+                  </>
+                )}
               </Grid>
             </Grid>
           </Grid>
         </CardContent>
-      </Card>
+      </>
     );
+
+    if (forSelection) {
+      return (
+        <Card className={classes.card}>
+          <CardActionArea onClick={() => onSelection(company.name)}>{companyCard}</CardActionArea>
+        </Card>
+      );
+    }
+
+    return <Card className={classes.card}>{companyCard}</Card>;
   }
 }
 

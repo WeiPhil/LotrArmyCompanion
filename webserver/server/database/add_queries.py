@@ -1,6 +1,6 @@
 import json
 from functools import reduce
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, exc
 
 from server.run import db
 from .models import *
@@ -29,15 +29,21 @@ def addPromotionToCompanyUnit(companyUnitName, promotionName):
         session.commit()
 
 
-def addCompany(companyName, username, image_path='tempCardBackground1.jpg'):
+def addCompany(username, companyName, companyFactionName, companyNotes, image_path='tempCardBackground1.jpg'):
 
-    user_id = session.query(User.user_id).filter(
-        User.username == username).one()[0]
-
-    newCompany = Company(name=companyName, user_id=user_id,
-                         image_path=image_path)
-    session.add(newCompany)
-    session.commit()
+    try:
+        user_id = session.query(User.user_id).filter(
+            User.username == username).one()[0]
+        company_faction_id = session.query(CompanyFaction.company_faction_id).filter(
+            CompanyFaction.name == companyFactionName).one()[0]
+        # handle duplicate entries
+        newCompany = Company(name=companyName, company_faction_id=company_faction_id, user_id=user_id,
+                             image_path=image_path)
+        session.add(newCompany)
+        session.commit()
+    except exc.SQLAlchemyError as error:
+        return 404
+    return 200
 
 
 def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalEquipement, image_path):

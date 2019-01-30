@@ -15,6 +15,15 @@ import BattleInterface from "./components/coreApp/battle/BattleInterface";
 
 const themes = {
   light: createMuiTheme({
+    // overrides: {
+    //   MuiPaper: {
+    //     // Name of the component ⚛️ / style sheet
+    //     root: {
+    //       // Name of the rule
+    //       backgroundColor: "#ECEFF1" // Some CSS
+    //     }
+    //   }
+    // },
     palette: {
       type: "light",
       primary: {

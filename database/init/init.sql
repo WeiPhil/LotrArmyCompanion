@@ -158,6 +158,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company` (
   `effective_rating` INT UNSIGNED NOT NULL DEFAULT 0,
   `user_id` INT NOT NULL,
   `image_path` VARCHAR(100) NOT NULL,
+  `notes` TEXT NULL,
   PRIMARY KEY (`company_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`),
   INDEX `fk_company_user1_idx` (`user_id`),
