@@ -22,3 +22,16 @@ armoured_horse
 bow
 giant_flaming_sword
 fiery_lash
+mithril_crown
+dagger
+fell_beast
+armoured_fell_beast
+two-handed_sword
+pick
+twisted_mass_of_undead
+banner
+two-handed_weapon
+throwing_spears
+troll_chain
+troll_chain
+hand-and-a-half_hammer

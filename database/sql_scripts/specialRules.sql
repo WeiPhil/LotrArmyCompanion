@@ -14,11 +14,11 @@ INSERT INTO special_rule (name,type,description,origin)
          'basic');
 
 -- New Special Rule: fiery_lash
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('fiery_lash','active',
          'This is a throwing weapon with a range of 8" and a Strength of 7. Additionnally, a model that is hit by this weapon and not slain is dragged directly towards and into base contact with the Balrog, even over intervening models or terrain. If the model cannot be placed where it should be placed, instead place it in base contact with the Balrog as close as possible to the position it should have been in. If, for wathever reason, the model cannot be placed anywhere in base contact, then it is not moved at all.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: flame_of_udûn
 INSERT INTO special_rule (name,type,description,origin)
@@ -294,11 +294,11 @@ INSERT INTO special_rule (name,type,description,origin)
          'basic');
 
 -- New Special Rule: mithril_crown
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('mithril_crown','passive',
          'At the start of each fight phase, before Heroic Actions are declared, roll a D6. On a 4+, all friendly Moria Goblin models within 3" of Grôblog gain +1 Fight until the End phase of the turn.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: master_of_the_dark_wild
 INSERT INTO special_rule (name,type,description,origin)
@@ -315,18 +315,18 @@ INSERT INTO special_rule (name,type,description,origin)
          'basic');
 
 -- New Special Rule: nenya
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('nenya','passive',
          'Galadriel can re-roll her dice when using Fate points.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: mirror_of_galadriel
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('mirror_of_galadriel','passive',
          'The mirror is a Heavy Object wit a Defence of 8 and 3 Wounds. It is deployed within 6" of Galadriel at the start of the game. For Scenarios that require both armies to move onto the board, any models within Galadriel''s warband may carry the mirror onto the board. During the End phase of each turn, one friendly Hero model within 6" may restore their Fate to its starting value.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: packlord
 INSERT INTO special_rule (name,type,description,origin)
@@ -336,11 +336,11 @@ INSERT INTO special_rule (name,type,description,origin)
          'basic');
 
 -- New Special Rule: feral
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('feral','passive',
          'If the Ringwraith riding a Fell Beast is slain or dismounts, the creature automatically fails its Courage test and flees the battlefield.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: miasmatic_presence
 INSERT INTO special_rule (name,type,description,origin)
@@ -399,7 +399,7 @@ INSERT INTO special_rule (name,type,description,origin)
          'basic');
 
 -- New Special Rule: banners
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('banners','other',
          'A banner provides a single re-roll to friendly models who are involved in a Fight within 3". Whether it is a model fighting on their own, or several friends all fighting against a common enemy, you can re-roll one D6 in each Duel roll to see who wins. This re-roll can be made after your opponent has rolled their own dice to see who wins, but must be made before any Might points are spent to adjust scores. 
@@ -407,14 +407,14 @@ It makes perfect sense that a banner must be flying in order for its bearer’s 
 It is possible that one player may re-roll a dice and find themselves winning the Fight – in which case their opponent may wish to use a banner of their own. Remember, a banner only provides one re-roll to each Duel roll.
 Any model carrying a banner is encumbered by its weight, and suffers a -1 penalty to their Duel rolls.
 A Warrior model carrying a banner who is slain may pass it on to a friendly Warrior model (but not to a Hero model), who is in base contact, not Prone, and is not Engaged in a Fight. Swap the models over if they are the same type of Warrior, or find a suitable banner-carrying substitute in your collection.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: troll_chain
-INSERT INTO special_rule (name,type,description,origin)
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
     VALUES
         ('troll_chain','active',
          'This is a throwing weapon with a range of 3" and a Strength of 5.',
-         'equipement');
+         'basic','yes');
 
 -- New Special Rule: a_fell_light_is_in_them
 INSERT INTO special_rule (name,type,description,origin)

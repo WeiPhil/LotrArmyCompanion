@@ -8,6 +8,8 @@ export const REHYDRATE = "persist/REHYDRATE";
 // UI related modification
 export const SET_THEME = "SET_THEME";
 export const THUMBNAIL_SWITCHER = "THUMBNAIL_SWITCHER";
+export const LOADING_SCREEN_ON = "LOADING_SCREEN_ON";
+export const LOADING_SCREEN_OFF = "LOADING_SCREEN_OFF";
 
 // Database get and posts
 export const GET_USER_COMPANIES = "GET_USER_COMPANIES";
@@ -16,8 +18,12 @@ export const GET_ARMIES = "GET_ARMIES";
 export const SET_ARMIES = "SET_ARMIES";
 export const GET_COMPANY_FACTIONS = "GET_COMPANY_FACTIONS";
 export const SET_COMPANY_FACTIONS = "SET_COMPANY_FACTIONS";
+export const GET_SPECIAL_RULES = "GET_SPECIAL_RULES";
+export const SET_SPECIAL_RULES = "SET_SPECIAL_RULES";
 
 export const ADD_COMPANY = "ADD_COMPANY";
+export const ADD_COMPANY_UNIT = "ADD_COMPANY_UNIT";
+
 export const POSTING_SUCCESS = "POSTING_SUCCESS";
 export const POSTING_FAILURE = "POSTING_FAILURE";
 export const POST_STATUS_RESET = "POST_STATUS_RESET";

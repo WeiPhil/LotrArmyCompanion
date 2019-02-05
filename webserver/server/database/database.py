@@ -70,8 +70,8 @@ def query():
     # writeArmiesToJson()
 #     writeSpecialRulesToJson()
 #     writeEquipementsToJson()
-    writeCompanyFactionsToJson()
-#     writeUserCompaniesToJson(username)
+#     writeCompanyFactionsToJson()
+    writeUserCompaniesToJson(username)
 
     # for company_unit_name, company_unit in getCompanyUnits(companyName).items():
     #    result = checkAndUpdateCompanyUnitCost(company_unit)

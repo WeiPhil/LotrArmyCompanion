@@ -27,11 +27,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='moria_goblin_warrior'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller'));
 
 -- New Unit: the_balrog
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='moria'),
         'the_balrog',350,
-        6,10,3,9,9,4,10,7,
+        6,10,3,9,9,4,10,7,0,10,0,
         '',
         'tempCardBackground2.jpg');
 
@@ -59,12 +59,12 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 
 
 -- New Unit: grimbold_of_grimslade
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='rohan'),
         'grimbold_of_grimslade',60,
-        6,5,4,4,5,2,2,4,
-        'If your army includes Grimbold, you may upgrade any numbers of Warriors of Rohan to Helmingas for a cost of +1 point per model. Helmingas are Strength4, rather than 3.',
+        6,5,4,4,5,2,2,4,3,1,1,
+        'If your army includes Grimbold, you may upgrade any numbers of Warriors of Rohan to Helmingas for a cost of +1 point per model. Helmingas are Strength 4, rather than 3.',
         'tempCardBackground2.jpg');
 
 INSERT INTO unit_has_keyword (unit_id,keyword_id)
@@ -83,11 +83,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='grimbold_of_grimslade'),(SELECT special_rule_id FROM special_rule WHERE name='mighty_blow'));
 
 -- New Unit: durbûrz_the_goblin_king_of_moria
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='moria'),
         'durbûrz_the_goblin_king_of_moria',70,
-        5,4,5,4,6,2,2,4,
+        5,4,5,4,6,2,2,4,3,2,2,
         '',
         'tempCardBackground2.jpg');
 
@@ -109,11 +109,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT special_rule_id FROM special_rule WHERE name='iron_fist'));
 
 -- New Unit: grôblog
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='moria'),
         'grôblog',50,
-        5,3,5,4,6,2,2,3,
+        5,3,5,4,6,2,2,3,3,1,1,
         '',
         'tempCardBackground2.jpg');
 
@@ -135,11 +135,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='grôblog'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller'));
 
 -- New Unit: drûzhag_the_beastcaller
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='moria'),
         'drûzhag_the_beastcaller',90,
-        5,3,5,3,4,1,2,4,
+        5,3,5,3,4,1,2,4,2,5,2,
         '',
         'tempCardBackground2.jpg');
 
@@ -222,11 +222,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='moria_goblin_prowler'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller'));
 
 -- New Unit: galadriel
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='lothlórien'),
         'galadriel',130,
-        6,6,3,3,3,1,3,7,
+        6,6,3,3,3,1,3,7,3,6,3,
         '',
         'tempCardBackground2.jpg');
 
@@ -255,11 +255,11 @@ INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
 		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='blinding_light'));
 
 -- New Unit: wild_warg_chieftain
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'wild_warg_chieftain',80,
-        10,5,5,6,5,3,3,4,
+        10,5,5,6,5,3,3,4,2,2,1,
         '',
         'tempCardBackground2.jpg');
 
@@ -280,11 +280,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='wild_warg_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='terror'));
 
 -- New Unit: the_tainted
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'the_tainted',120,
-        6,5,4,4,8,1,1,6,
+        6,5,4,4,8,1,1,6,2,14,2,
         '',
         'tempCardBackground2.jpg');
 
@@ -324,11 +324,11 @@ INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
 		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'));
 
 -- New Unit: the_dwimmerlaik
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'the_dwimmerlaik',120,
-        6,5,4,4,8,1,1,6,
+        6,5,4,4,8,1,1,6,0,16,2,
         '',
         'tempCardBackground2.jpg');
 
@@ -367,11 +367,11 @@ INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
 		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'));
 
 -- New Unit: gûlavhar,_the_terror_of_arnor
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'gûlavhar,_the_terror_of_arnor',200,
-        6,7,4,8,5,0,4,0,
+        6,7,4,8,5,0,4,0,3,3,0,
         '',
         'tempCardBackground2.jpg');
 
@@ -400,11 +400,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='gûlavhar,_the_terror_of_arnor'),(SELECT special_rule_id FROM special_rule WHERE name='fly'));
 
 -- New Unit: buhrdûr,_troll_chieftain
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'buhrdûr,_troll_chieftain',110,
-        6,6,4,6,6,3,3,4,
+        6,6,4,6,6,3,3,4,3,1,1,
         'Throw Stones (range 12", Strength 8).',
         'tempCardBackground2.jpg');
 
@@ -427,11 +427,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='throw_stones'));
 
 -- New Unit: shade
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'shade',100,
-        6,1,4,1,8,1,3,1,
+        6,1,4,1,8,1,3,1,0,8,0,
         '',
         'tempCardBackground2.jpg');
 
@@ -453,11 +453,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='shade'),(SELECT special_rule_id FROM special_rule WHERE name='blades_of_the_dead'));
 
 -- New Unit: barrow-wight
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'barrow-wight',50,
-        6,3,4,3,7,1,2,6,
+        6,3,4,3,7,1,2,6,0,5,0,
         '',
         'tempCardBackground2.jpg');
 
@@ -483,11 +483,11 @@ INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
 		((SELECT unit_id FROM unit WHERE name='barrow-wight'),(SELECT magical_power_id FROM magical_power WHERE name='paralyse'));
 
 -- New Unit: angmar_orc_captain
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'angmar_orc_captain',40,
-        6,4,5,4,5,2,2,3,
+        6,4,5,4,5,2,2,3,2,1,1,
         '',
         'tempCardBackground2.jpg');
 
@@ -508,11 +508,11 @@ INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
 		((SELECT unit_id FROM unit WHERE name='angmar_orc_captain'),(SELECT equipement_id FROM equipement WHERE name='sword'),0);
 
 -- New Unit: angmar_orc_shaman
-INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
         ((SELECT faction_id FROM faction WHERE name='angmar'),
         'angmar_orc_shaman',50,
-        6,3,5,3,5,1,2,3,
+        6,3,5,3,5,1,2,3,1,3,1,
         '',
         'tempCardBackground2.jpg');
 

@@ -17,6 +17,9 @@ const renderWikiCards = () => {
       <Grid item>
         <WikiCard imagePath={"equipments.jpg"} title={"Equipments"} text={"Need info about a specific weapon or it's effect?"} />
       </Grid>
+      <Grid item>
+        <WikiCard imagePath={"special_rules.jpg"} title={"Special Rules"} text={"All the Special Rules you have to know"} />
+      </Grid>
     </>
   );
 };

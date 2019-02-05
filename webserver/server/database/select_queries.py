@@ -43,7 +43,7 @@ def getUserCompanies(username):
     companies = json.loads(AlchemyEncoder().encode(companies))
     user_obj = []
     for companyName in companies:
-        company = getCompany(companyName)
+        company = getCompanyBase(companyName)
         company['company_units'] = getCompanyUnits(companyName)
         company['injured'] = getCompanyInjured(companyName)
         user_obj.append(company)
@@ -110,9 +110,31 @@ def getCompanyFactions():
     return company_factions, 200
 
 
+def getAllSpecialRules():
+    specialRules = None
+    try:
+        specialRules = session.query(SpecialRule).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
+    specialRules = json.loads(str(specialRules))
+    order = ["special_rule_id", "name", "type",
+             "origin", "is_weapon_rule", "description"]
+
+    specialRules_obj = {}
+    for specialRule in specialRules:
+        specialRule_name = specialRule['name']
+
+        specialRules_obj[specialRule_name] = OrderedDict(sorted(specialRule.items(),
+                                                                key=lambda i: order.index(i[0])))
+
+    return specialRules_obj, 200
+
 # ------------------------------------
 # Helper queries
 # ------------------------------------
+
 
 def getAllEquipements():
     equipements = session.query(Equipement).all()
@@ -151,21 +173,6 @@ def getAllEquipements():
     return equipements_obj
 
 
-def getAllSpecialRules():
-    specialRules = session.query(SpecialRule).all()
-    specialRules = json.loads(str(specialRules))
-    order = ["special_rule_id", "name", "type", "origin", "description"]
-
-    specialRules_obj = {}
-    for specialRule in specialRules:
-        specialRule_name = specialRule['name']
-
-        specialRules_obj[specialRule_name] = OrderedDict(sorted(specialRule.items(),
-                                                                key=lambda i: order.index(i[0])))
-
-    return specialRules_obj
-
-
 def getUnits(factionName):
     faction_id = session.query(Faction.faction_id).filter(
         Faction.name == factionName)
@@ -182,7 +189,7 @@ def getUnits(factionName):
     return whole_faction
 
 
-def getCompany(companyName):
+def getCompanyBase(companyName):
     company_query = session.query(Company).filter(
         Company.name == companyName).one()
     company = AlchemyEncoder(list=['company_id', 'company_faction_id', 'name', 'gold', 'victories', 'draws',

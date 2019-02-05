@@ -1,4 +1,4 @@
-import { ADD_ATTACK_TO, SET_ARMIES, SET_USER_COMPANIES, SET_COMPANY_FACTIONS } from "./types";
+import { ADD_ATTACK_TO, SET_ARMIES, SET_USER_COMPANIES, SET_COMPANY_FACTIONS, SET_SPECIAL_RULES } from "./types";
 
 /** Local Based actions */
 export function addAttackTo(who) {
@@ -15,4 +15,7 @@ export function setUserCompanies(data) {
 
 export function setCompanyFactions(data) {
   return { type: SET_COMPANY_FACTIONS, payload: data };
+}
+export function setSpecialRules(data) {
+  return { type: SET_SPECIAL_RULES, payload: data };
 }

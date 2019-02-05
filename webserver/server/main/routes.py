@@ -61,34 +61,6 @@ def getCompanies(username):
         return jsonify(companies=companies, hasNoCompanies=False), code
 
 
-@main.route('/postCompany/<user_id>', methods=['POST'])
-def postCompany(user_id):
-    if request.data:
-        company_path = os.path.join(USER_COMPANIES_PATH, user_id + ".json")
-        # TODO: check if company exist, authentication, validation...
-        # for now override data
-        writeJson(request.get_json(), company_path)
-
-        return "JSON written"
-    return "JSON invalid"
-
-
-@main.route('/getArmy/<army_name>', methods=['GET'])
-def getArmy(army_name):
-    # check if army of given user exists
-    company_path = os.path.join(USER_ARMIES_PATH, army_name + ".json")
-    if os.path.exists(company_path):
-
-        json = {army_name: loadJson(os.path.join(
-            USER_ARMIES_PATH, army_name + ".json"))}
-        # respond with data
-        response = jsonify(json)
-        return response
-
-    # company not found
-    abort(404)
-
-
 @main.route('/getArmies', methods=['GET'])
 def getArmies():
     from ..database.select_queries import getArmies
@@ -109,6 +81,17 @@ def getCompanyFactions():
     return jsonify(companyFactions), code
 
 
+@main.route('/getSpecialRules', methods=['GET'])
+def getSpecialRules():
+    from ..database.select_queries import getAllSpecialRules
+
+    # query user
+
+    specialRules, code = getAllSpecialRules()
+
+    return jsonify(specialRules), code
+
+
 @main.route('/addCompany', methods=['POST'])
 def addCompany():
     from ..database.add_queries import addCompany
@@ -119,12 +102,51 @@ def addCompany():
     # get submited data
     data = request.get_json()
 
-    code = addCompany(username=data["username"], companyName=data["companyName"],
-                      companyFactionName=data["companyFactionName"], companyNotes=data["companyNotes"])
+    company, code = addCompany(username=data["username"], companyName=data["companyName"],
+                               companyFactionName=data["companyFactionName"], companyNotes=data["companyNotes"])
     if(code == 404):
-        return "An error occured retry please.", 404
+        return jsonify(message="An error occured retry please."), 404
 
-    return "You have successfully added your new company!", code
+    return jsonify(newCompany=company, message="You have successfully added your new company!"), code
+
+
+@main.route('/addCompanyUnit', methods=['POST'])
+def addCompanyUnit():
+    from ..database.add_queries import addCompanyUnit
+
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+    # companyName, unitName, unitRank, companyUnitName, additionalEquipement
+    updated_company, code = addCompanyUnit(companyName=data["companyName"], unitName=data["unitName"],
+                                           unitRank=data["unitRank"], companyUnitName=data["companyUnitName"], additionalEquipement=data["additionalEquipement"], image_path=data["image_path"])
+    if(code == 404):
+        return jsonify(message="An error occured retry please."), 404
+
+    return jsonify(updatedCompany=updated_company, message="You have successfully added a new company unit!"), code
+
+
+@main.route('/addPromotionToCompanyUnit', methods=['POST'])
+def addPromotionToCompanyUnit():
+    from ..database.add_queries import addPromotionToCompanyUnit
+
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+    companyUnitName = data["companyUnitName"]
+    promotionName = data["promotionName"]
+
+    updated_company_unit, code = addPromotionToCompanyUnit(
+        companyUnitName, promotionName)
+
+    if(code == 404):
+        return jsonify(message="An error occured retry please."), 404
+
+    return jsonify(promotedCompanyUnit=updated_company_unit, message="You have successfully added a promotion!"), code
 
 
 @main.route('/databaseTest', methods=['GET'])

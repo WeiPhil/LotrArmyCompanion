@@ -76,8 +76,9 @@ VALUES
     ('courage_increase','Hero''s Courage characteristic is increased by 1 to a maximum of 6',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('courage',1)),NULL),
     ('will_increase','Hero''s Will characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('will',1)),NULL),
     ('might_increase','Hero''s Might characteristic is increased by 1 to a maximum of 3.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
-    ('lieutenant_might','Lieutenant''s base Might characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
-    ('hero_fate','Hero''s base Fate characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fate',1)),NULL);
+    ('lieutenant_base_might','Lieutenant''s bonus Might characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('might',1)),NULL),
+    ('lieutenant_base_will','Lieutenant''s bonus Will characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('will',1)),NULL),
+    ('hero_base_fate','Hero''s bonus Fate characteristic.',(SELECT altering_effect_id FROM altering_effect WHERE  (characteristic,value) = ('fate',1)),NULL);
     
 
 -- ---------------------------------

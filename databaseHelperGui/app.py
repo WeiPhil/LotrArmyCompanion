@@ -156,22 +156,40 @@ def addUnitToFiles(unitObject):
     with open(unitsSQLFile, "a", encoding='utf8') as file:
         file.write("-- New Unit: "+unitObject["name"]+"\n")
 
-    # unit
-    sqlQuery = """INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
-    VALUES
-        ((SELECT faction_id FROM faction WHERE name='{0}'),
-        '{1}',{2},
-        {3},{4},{5},{6},{7},{8},{9},{10},
-        '{11}',
-        'tempCardBackground2.jpg');\n\n"""
-    sqlQuery = sqlQuery.format(
-        unitObject["faction"],
-        unitObject["name"],unitObject["points"],
-        unitObject["move"],unitObject["fight"],unitObject["shoot"],unitObject["strength"],unitObject["defence"],unitObject["attacks"],unitObject["wounds"],unitObject["courage"],
-        unitObject["description"])
-    with open(unitsSQLFile, "a", encoding='utf8') as file:
-        file.write(sqlQuery)
+    if "warrior" in unitObject["keywords"] :
+        # unit
+        sqlQuery = """INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='{0}'),
+            '{1}',{2},
+            {3},{4},{5},{6},{7},{8},{9},{10},
+            '{11}',
+            'tempCardBackground2.jpg');\n\n"""
+        sqlQuery = sqlQuery.format(
+            unitObject["faction"],
+            unitObject["name"],unitObject["points"],
+            unitObject["move"],unitObject["fight"],unitObject["shoot"],unitObject["strength"],unitObject["defence"],unitObject["attacks"],unitObject["wounds"],unitObject["courage"],
+            unitObject["description"])
+        with open(unitsSQLFile, "a", encoding='utf8') as file:
+            file.write(sqlQuery)
+    else:
+        # unit
+        sqlQuery = """INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='{0}'),
+            '{1}',{2},
+            {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}
+            '{14}',
+            'tempCardBackground2.jpg');\n\n"""
+        sqlQuery = sqlQuery.format(
+            unitObject["faction"],
+            unitObject["name"],unitObject["points"],
+            unitObject["move"],unitObject["fight"],unitObject["shoot"],unitObject["strength"],unitObject["defence"],unitObject["attacks"],unitObject["wounds"],unitObject["courage"],unitObject["might"],unitObject["will"],unitObject["fate"],
+            unitObject["description"])
+        with open(unitsSQLFile, "a", encoding='utf8') as file:
+            file.write(sqlQuery)
 
+            
     # keywords links
     sqlQuery = """INSERT INTO unit_has_keyword (unit_id,keyword_id)\n\tVALUES\n"""
     for keyword in unitObject["keywords"]:

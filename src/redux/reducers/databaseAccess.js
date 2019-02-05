@@ -10,16 +10,20 @@ import {
   ADD_COMPANY,
   POSTING_FAILURE,
   POSTING_SUCCESS,
-  POST_STATUS_RESET
+  POST_STATUS_RESET,
+  ADD_COMPANY_UNIT,
+  GET_SPECIAL_RULES
 } from "../actions/types";
 
 const serverAccessInitialState = {
   isLoadingCompanies: false,
   isLoadingArmies: false,
   isLoadingCompanyFactions: false,
+  isLoadingSpecialRules: false,
   armiesNeedRefetch: true,
   companiesNeedRefetch: false,
   companyFactionsNeedRefetch: true,
+  specialRulesNeedRefetch: true,
   getError: false,
   postingSuccess: false,
   postingToDatabase: false,
@@ -37,7 +41,11 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingArmies: true, getError: false };
       } else if (action.payload === GET_COMPANY_FACTIONS) {
         return { ...state, isLoadingCompanyFactions: true, getError: false };
+      } else if (action.payload === GET_SPECIAL_RULES) {
+        return { ...state, isLoadingSpecialRules: true, getError: false };
       } else if (action.payload === ADD_COMPANY) {
+        return { ...state, postingToDatabase: true };
+      } else if (action.payload === ADD_COMPANY_UNIT) {
         return { ...state, postingToDatabase: true };
       } else {
         return state;
@@ -53,7 +61,11 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingArmies: false, armiesNeedRefetch: state.getError };
       } else if (action.payload === GET_COMPANY_FACTIONS) {
         return { ...state, isLoadingCompanyFactions: false, companyFactionsNeedRefetch: state.getError };
+      } else if (action.payload === GET_SPECIAL_RULES) {
+        return { ...state, isLoadingSpecialRules: false, specialRulesNeedRefetch: state.getError };
       } else if (action.payload === ADD_COMPANY) {
+        return { ...state, postingToDatabase: false };
+      } else if (action.payload === ADD_COMPANY_UNIT) {
         return { ...state, postingToDatabase: false };
       } else {
         return state;
@@ -66,10 +78,10 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
       return { ...state, getError: false };
 
     case POSTING_SUCCESS:
-      return { ...state, postingSuccess: true, postResponse: action.payload };
+      return { ...state, postingSuccess: true, postResponse: action.payload.message };
 
     case POSTING_FAILURE:
-      return { ...state, postingSuccess: false, postResponse: action.payload };
+      return { ...state, postingSuccess: false, postResponse: action.payload.message };
 
     case POST_STATUS_RESET:
       return { ...state, postingToDatabase: false, postingSuccess: false, postResponse: "" };

@@ -1,9 +1,9 @@
 USE lotr;
 
 
-DESC company_faction_has_unit_promotions;
+-- DESC company_faction_has_unit_promotions;
 
--- SELECT * FROM company_faction_has_reinforcement;
+-- SELECT * FROM company_has_injured;
 
 -- -- INSERT INTO user (username,firstname,lastname,email,password)
 -- -- VALUES

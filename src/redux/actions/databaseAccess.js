@@ -1,7 +1,18 @@
-import { GET_ARMIES, GET_USER_COMPANIES, ON_GET_ERROR, GET_COMPANY_FACTIONS, ADD_COMPANY, POSTING_SUCCESS, POSTING_FAILURE, POST_STATUS_RESET } from "./types";
+import {
+  GET_ARMIES,
+  GET_USER_COMPANIES,
+  ON_GET_ERROR,
+  GET_COMPANY_FACTIONS,
+  ADD_COMPANY,
+  ADD_COMPANY_UNIT,
+  POSTING_SUCCESS,
+  POSTING_FAILURE,
+  POST_STATUS_RESET,
+  GET_SPECIAL_RULES
+} from "./types";
 
 import { apiAction } from "./api";
-import { setUserCompanies, setArmies, setCompanyFactions } from "./data";
+import { setUserCompanies, setArmies, setCompanyFactions, setSpecialRules } from "./data";
 
 import { HOST_NAME, WEBSERVER_PORT } from "./../../utils/Constants";
 
@@ -35,6 +46,15 @@ export function getCompanyFactions() {
   });
 }
 
+export function getSpecialRules() {
+  return apiAction({
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/getSpecialRules",
+    onSuccess: setSpecialRules,
+    onFailure: error => ({ type: ON_GET_ERROR, payload: error }),
+    label: GET_SPECIAL_RULES
+  });
+}
+
 export function addCompany(companyData) {
   return apiAction({
     url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/addCompany",
@@ -43,6 +63,17 @@ export function addCompany(companyData) {
     onSuccess: data => ({ type: POSTING_SUCCESS, payload: data }),
     onFailure: error => ({ type: POSTING_FAILURE, payload: error }),
     label: ADD_COMPANY
+  });
+}
+
+export function addCompanyUnit(companyUnitData) {
+  return apiAction({
+    url: "http://" + HOST_NAME + ":" + WEBSERVER_PORT + "/addCompanyUnit",
+    method: "POST",
+    data: companyUnitData,
+    onSuccess: data => ({ type: POSTING_SUCCESS, payload: data }),
+    onFailure: error => ({ type: POSTING_FAILURE, payload: error }),
+    label: ADD_COMPANY_UNIT
   });
 }
 

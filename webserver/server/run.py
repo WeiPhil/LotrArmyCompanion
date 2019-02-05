@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from flask_socketio import SocketIO
-from flask_sqlalchemy import SQLAlchemy
-
+from flask_sqlalchemy import SQLAlchemy as _BaseSQLAlchemy
 
 from settings import WEBSERVER_PORT
 from .app import create_app
+
+
+class SQLAlchemy(_BaseSQLAlchemy):
+    def apply_pool_defaults(self, app, options):
+        super(SQLAlchemy, self).apply_pool_defaults(app, options)
+        options["pool_pre_ping"] = True
+
 
 db = SQLAlchemy()
 

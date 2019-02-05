@@ -217,7 +217,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`special_rule` (
   `name` VARCHAR(45) NOT NULL,
   `type` ENUM('active', 'passive','other') NOT NULL,
   `description` TEXT NOT NULL,
-  `origin` ENUM('basic', 'equipement', 'companies') NOT NULL,
+  `origin` ENUM('basic', 'companies') NOT NULL,
+  `is_weapon_rule` ENUM('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`special_rule_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`)
 );

@@ -7,7 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { disconnect } from "../redux/actions/auth";
-import { getUserCompanies, getArmies, getCompanyFactions } from "../redux/actions/databaseAccess";
+import { getUserCompanies, getArmies, getCompanyFactions, getSpecialRules } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 import { getCommunityChat } from "./../redux/actions/chat";
 
@@ -51,6 +51,7 @@ import { Route, Link, Switch } from "react-router-dom";
 import LoginPanel from "./coreApp/LoginPanel";
 import ChatAppBar from "./coreApp/chat/ChatAppBar";
 import LoadingView from "./LoadingView";
+import SpecialRulesOverview from "./coreApp/wiki/SpecialRulesOverview";
 
 const styles = theme => ({
   root: {
@@ -121,6 +122,7 @@ const styles = theme => ({
 
 const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   themeType: ui.themeType,
+  loadingScreen: ui.loadingScreen,
   companies: data.companies,
   armies: data.armies,
   hasNoCompanies: data.hasNoCompanies,
@@ -130,6 +132,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   isLoadingArmies: databaseAccess.isLoadingArmies,
   isLoadingCompanyFactions: databaseAccess.isLoadingCompanyFactions,
   companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch,
+  isLoadingSpecialRules: databaseAccess.isLoadingSpecialRules,
+  specialRulesNeedRefetch: databaseAccess.specialRulesNeedRefetch,
   username: auth.username,
   loggedIn: auth.loggedIn,
   accessToken: auth.accessToken,
@@ -152,6 +156,7 @@ class MainInterface extends React.Component {
     if (this.props.loggedIn) this.props.getUserCompanies(this.props.username, this.props.accessToken);
     if (this.props.armiesNeedRefetch) this.props.getArmies();
     if (this.props.companyFactionsNeedRefetch) this.props.getCompanyFactions();
+    if (this.props.specialRulesNeedRefetch) this.props.getSpecialRules();
 
     if (this.props.socketConnected) this.props.getCommunityChat();
   }
@@ -238,11 +243,14 @@ class MainInterface extends React.Component {
       companiesNeedRefetch,
       isLoadingArmies,
       isLoadingCompanyFactions,
+      isLoadingSpecialRules,
       companyFactionsNeedRefetch,
+      specialRulesNeedRefetch,
       armiesNeedRefetch,
       loggedIn,
       hasNoCompanies,
-      username
+      username,
+      loadingScreen
     } = this.props;
 
     const menuItems = this.createMenuItems();
@@ -304,8 +312,8 @@ class MainInterface extends React.Component {
         </MenuList>
       </div>
     );
-    const loadingContent = isLoadingArmies || isLoadingCompanies || isLoadingCompanyFactions;
-    const loadingStyle = loadingContent ? { opacity: 0.2 } : undefined;
+    const loadingContent = isLoadingArmies || isLoadingCompanies || isLoadingCompanyFactions || isLoadingSpecialRules;
+    const loadingStyle = loadingContent || loadingScreen ? { opacity: 0.2 } : undefined;
     return (
       <>
         <div className={classes.root}>
@@ -403,6 +411,7 @@ class MainInterface extends React.Component {
               {!loadingContent && <Route exact path="/" component={Welcome} />}
               <Route exact path="/wiki" component={Wiki} />
               {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}
+              {!isLoadingSpecialRules && !specialRulesNeedRefetch && <Route exact path="/wiki/special_rules" render={() => <SpecialRulesOverview />} />}
               {!isLoadingArmies &&
                 !armiesNeedRefetch && [
                   Object.keys(armies).map((armyName, index) => (
@@ -418,7 +427,7 @@ class MainInterface extends React.Component {
             <ChatAppBar />
           </main>
         </div>
-        {loggedIn && loadingContent && <LoadingView />}
+        {((loggedIn && loadingContent) || loadingScreen) && <LoadingView />}
       </>
     );
   }
@@ -433,6 +442,6 @@ MainInterface.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, getUserCompanies, getArmies, getCompanyFactions, disconnect, getCommunityChat }
+    { setTheme, getUserCompanies, getArmies, getCompanyFactions, getSpecialRules, disconnect, getCommunityChat }
   )(withStyles(styles, { withTheme: true })(MainInterface))
 );

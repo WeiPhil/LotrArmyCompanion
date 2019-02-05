@@ -41,7 +41,7 @@ class CompanyUnitsOverview extends Component {
           <Grid container direction="row" spacing={16} alignItems="stretch" justify="center">
             {Object.keys(company_units).map((company_unit_name, index) => this.renderCompanyUnitCard(company_units[company_unit_name], index, true))}
             <Grid item>
-              <Link to="/companyCreator" style={{ textDecoration: "none" }}>
+              <Link to="/troopCreator" style={{ textDecoration: "none" }}>
                 <Fab className={classes.addCompanyUnit} variant="extended" color="primary" aria-label="Add">
                   <AddIcon />
                 </Fab>
@@ -54,7 +54,7 @@ class CompanyUnitsOverview extends Component {
           <Grid container direction="row" alignItems="stretch" justify="center" spacing={16}>
             {Object.keys(company_units).map((company_unit_name, index) => this.renderCompanyUnitCard(company_units[company_unit_name], index, false))}
             <Grid item style={{ margin: "auto 0" }}>
-              <Link to="/companyCreator" style={{ textDecoration: "none" }}>
+              <Link to="/troopCreator" style={{ textDecoration: "none" }}>
                 <Fab className={classes.addCompanyUnit} variant="extended" color="primary" aria-label="Add">
                   <AddIcon style={{ marginRight: theme.spacing.unit, marginBottom: 2 }} /> Buy new Troop
                 </Fab>

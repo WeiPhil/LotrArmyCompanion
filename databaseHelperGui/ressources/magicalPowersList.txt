@@ -33,3 +33,4 @@ tremor
 wither
 wrath_of_bruinen
 your_staff_is_broken
+fury_(x)
