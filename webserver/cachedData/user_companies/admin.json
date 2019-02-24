@@ -3,12 +3,12 @@
     {
       "company_id": 1,
       "name": "The Golden Robbers",
-      "gold": 60,
+      "gold": 51,
       "victories": 0,
       "draws": 0,
       "losses": 0,
-      "rating": 45,
-      "effective_rating": 45,
+      "rating": 19,
+      "effective_rating": 0,
       "image_path": "tempCardBackground1.jpg",
       "company_faction_name": "Misty Mountains",
       "company_units": {
@@ -17,7 +17,7 @@
           "company_unit_name": "Gormungur",
           "company_unit_rank": "lieutenant",
           "experience": 0,
-          "effective_points": 15,
+          "effective_points": 19,
           "can_promote": "no",
           "notes": null,
           "image_path": "moria/moria_goblin_warrior.png",
@@ -37,119 +37,29 @@
             "fate": 0
           },
           "wargear": [
-            { "name": "sword", "points": 0 },
-            { "name": "armour", "points": 0, "altering_effect": { "characteristic": "defence", "value": 1 } },
-            { "name": "shield", "points": 1, "altering_effect": { "characteristic": "defence", "value": 1 } }
+            { "name": "sword", "points": 0, "bought": "no" },
+            { "name": "armour", "points": 0, "bought": "no", "altering_effect": { "characteristic": "defence", "value": 1 } }
           ],
           "magical_powers": [],
           "special_rules": [{ "name": "cave_dweller", "origin": "basic" }],
           "promotions": [
             {
-              "name": "lieutenant_might",
-              "description": "Lieutenant's base Might characteristic.",
+              "name": "lieutenant_base_might",
+              "description": "Lieutenant's bonus Might characteristic.",
               "altering_effect": { "characteristic": "might", "value": 1 },
               "special_rule": null,
               "number": 1
             },
             {
-              "name": "hero_fate",
-              "description": "Hero's base Fate characteristic.",
-              "altering_effect": { "characteristic": "fate", "value": 1 },
-              "special_rule": null,
-              "number": 1
-            }
-          ]
-        },
-        "Slurpus": {
-          "company_id": 1,
-          "company_unit_name": "Slurpus",
-          "company_unit_rank": "lieutenant",
-          "experience": 0,
-          "effective_points": 15,
-          "can_promote": "no",
-          "notes": null,
-          "image_path": "moria/moria_goblin_warrior.png",
-          "unit_name": "moria_goblin_warrior",
-          "company_name": "The Golden Robbers",
-          "characteristics": {
-            "move": 5,
-            "fight": 2,
-            "shoot": 5,
-            "strength": 3,
-            "defence": 4,
-            "attacks": 1,
-            "wounds": 1,
-            "courage": 2,
-            "might": 0,
-            "will": 0,
-            "fate": 0
-          },
-          "wargear": [
-            { "name": "sword", "points": 0 },
-            { "name": "armour", "points": 0, "altering_effect": { "characteristic": "defence", "value": 1 } },
-            { "name": "shield", "points": 1, "altering_effect": { "characteristic": "defence", "value": 1 } }
-          ],
-          "magical_powers": [],
-          "special_rules": [{ "name": "cave_dweller", "origin": "basic" }],
-          "promotions": [
-            {
-              "name": "lieutenant_might",
-              "description": "Lieutenant's base Might characteristic.",
-              "altering_effect": { "characteristic": "might", "value": 1 },
+              "name": "lieutenant_base_will",
+              "description": "Lieutenant's bonus Will characteristic.",
+              "altering_effect": { "characteristic": "will", "value": 1 },
               "special_rule": null,
               "number": 1
             },
             {
-              "name": "hero_fate",
-              "description": "Hero's base Fate characteristic.",
-              "altering_effect": { "characteristic": "fate", "value": 1 },
-              "special_rule": null,
-              "number": 1
-            }
-          ]
-        },
-        "Goblin": {
-          "company_id": 1,
-          "company_unit_name": "Goblin",
-          "company_unit_rank": "lieutenant",
-          "experience": 0,
-          "effective_points": 15,
-          "can_promote": "no",
-          "notes": null,
-          "image_path": "moria/moria_goblin_warrior.png",
-          "unit_name": "moria_goblin_warrior",
-          "company_name": "The Golden Robbers",
-          "characteristics": {
-            "move": 5,
-            "fight": 2,
-            "shoot": 5,
-            "strength": 3,
-            "defence": 4,
-            "attacks": 1,
-            "wounds": 1,
-            "courage": 2,
-            "might": 0,
-            "will": 0,
-            "fate": 0
-          },
-          "wargear": [
-            { "name": "sword", "points": 0 },
-            { "name": "armour", "points": 0, "altering_effect": { "characteristic": "defence", "value": 1 } },
-            { "name": "shield", "points": 1, "altering_effect": { "characteristic": "defence", "value": 1 } }
-          ],
-          "magical_powers": [],
-          "special_rules": [{ "name": "cave_dweller", "origin": "basic" }],
-          "promotions": [
-            {
-              "name": "lieutenant_might",
-              "description": "Lieutenant's base Might characteristic.",
-              "altering_effect": { "characteristic": "might", "value": 1 },
-              "special_rule": null,
-              "number": 1
-            },
-            {
-              "name": "hero_fate",
-              "description": "Hero's base Fate characteristic.",
+              "name": "hero_base_fate",
+              "description": "Hero's bonus Fate characteristic.",
               "altering_effect": { "characteristic": "fate", "value": 1 },
               "special_rule": null,
               "number": 1
@@ -157,34 +67,6 @@
           ]
         }
       },
-      "injured": []
-    },
-    {
-      "company_id": 2,
-      "name": "The Dwarfs",
-      "gold": 60,
-      "victories": 0,
-      "draws": 0,
-      "losses": 0,
-      "rating": 0,
-      "effective_rating": 0,
-      "image_path": "tempCardBackground1.jpg",
-      "company_faction_name": "Erebor & Dale",
-      "company_units": {},
-      "injured": []
-    },
-    {
-      "company_id": 3,
-      "name": "Test Company",
-      "gold": 60,
-      "victories": 0,
-      "draws": 0,
-      "losses": 0,
-      "rating": 0,
-      "effective_rating": 0,
-      "image_path": "tempCardBackground1.jpg",
-      "company_faction_name": "Angmar",
-      "company_units": {},
       "injured": []
     }
   ],

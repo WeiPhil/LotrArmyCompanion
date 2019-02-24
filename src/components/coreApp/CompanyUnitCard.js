@@ -247,7 +247,7 @@ class CompanyUnitCard extends Component {
               ))}
             {/* Optional wargear */}
             {company_unit.wargear
-              .filter(equipement => equipement.points > 0)
+              .filter(equipement => equipement.points > 0 && equipement.bought === "yes")
               .map((equipement, index) => (
                 <Chip variant={isDead ? "outlined" : "default"} clickable={!isDead} key={index} label={prettify(equipement.name)} className={classes.chip} />
               ))}

@@ -71,6 +71,8 @@ def checkAndUpdateCompanyUnitCost(companyUnit):
 
     wargearCost = 0
     for equipement in companyUnit['wargear']:
+        if(equipement["bought"] == "no"):
+            continue
         wargearCost += equipement['points']
 
     values = 0
@@ -98,22 +100,42 @@ def checkAndUpdateCompanyUnitCost(companyUnit):
         special_rules_cost+magical_powers_cost
 
     if(effective_cost != companyUnit['effective_points']):
-        company = session.query(Company).filter(
-            Company.name == companyUnit['company_name']).one()
-        company.effective_rating += effective_cost - \
-            companyUnit['effective_points']
-        company.rating += effective_cost-companyUnit['effective_points']
         companyUnit['effective_points'] = effective_cost
         company_unit = session.query(CompanyUnit).filter(
             CompanyUnit.company_unit_name == companyUnit['company_unit_name']).one()
         company_unit.effective_points = effective_cost
         session.commit()
 
+    checkAndUpdateCompanyCost(companyUnit["company_name"])
+
     return companyUnit
 
 
 def checkAndUpdateCompanyCost(company_name):
-    print(company_name)
+    from .select_queries import getCompanyInjured, getCompanyUnits, getCompany
+    from .models import Company
+    session = db.session
+
+    # get all units of company, set rating points, remove injured points ,set effective rating
+    companyUnits = getCompanyUnits(company_name)
+    companyInjured = getCompanyUnits(company_name)
+    totalCost = 0
+
+    for companyUnit in companyUnits.values():
+        totalCost += companyUnit["effective_points"]
+
+    company = session.query(Company).filter(Company.name == company_name).one()
+
+    company.rating = totalCost
+
+    for companyUnit in companyUnits.values():
+        if(companyUnit["company_unit_name"] in companyInjured):
+            totalCost -= companyUnit["effective_points"]
+
+    company.effective_rating = totalCost
+    session.commit()
+
+    return getCompany(company_name)
 
 
 class AlchemyEncoder(json.JSONEncoder):

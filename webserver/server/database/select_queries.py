@@ -43,9 +43,7 @@ def getUserCompanies(username):
     companies = json.loads(AlchemyEncoder().encode(companies))
     user_obj = []
     for companyName in companies:
-        company = getCompanyBase(companyName)
-        company['company_units'] = getCompanyUnits(companyName)
-        company['injured'] = getCompanyInjured(companyName)
+        company = getCompany(companyName)
         user_obj.append(company)
 
     return user_obj, 200
@@ -131,13 +129,15 @@ def getAllSpecialRules():
 
     return specialRules_obj, 200
 
-# ------------------------------------
-# Helper queries
-# ------------------------------------
-
 
 def getAllEquipements():
-    equipements = session.query(Equipement).all()
+    equipements = None
+    try:
+        equipements = session.query(Equipement).all()
+    except exc.SQLAlchemyError as error:
+        print(error)
+        return {}, 404
+
     equipements = json.loads(str(equipements))
     order = ["equipement_id", "name", "description", "low_cost",
              "high_cost", "is_extra", "altering_effect_id"]
@@ -170,7 +170,11 @@ def getAllEquipements():
 
         equipements_obj[equipement_name] = equipement
 
-    return equipements_obj
+    return equipements_obj, 200
+
+# ------------------------------------
+# Helper queries
+# ------------------------------------
 
 
 def getUnits(factionName):
@@ -187,6 +191,13 @@ def getUnits(factionName):
         whole_faction[unit_name] = getUnit(unit_name, factionName)
 
     return whole_faction
+
+
+def getCompany(companyName):
+    company = getCompanyBase(companyName)
+    company['company_units'] = getCompanyUnits(companyName)
+    company['injured'] = getCompanyInjured(companyName)
+    return company
 
 
 def getCompanyBase(companyName):
@@ -264,7 +275,7 @@ def getCompanyUnit(companyUnitName):
 
 
 def getCompanyUnitEquipement(companyUnitName):
-    has_equipements_query = session.query(Equipement.name, CompanyUnitHasEquipement.points).select_from(
+    has_equipements_query = session.query(Equipement.name, CompanyUnitHasEquipement.points, CompanyUnitHasEquipement.bought).select_from(
         db.join(Equipement, CompanyUnitHasEquipement, isouter=True).join(CompanyUnit, isouter=True))
 
     has_equipements = has_equipements_query.filter(
@@ -273,10 +284,11 @@ def getCompanyUnitEquipement(companyUnitName):
     equipement_list = []
     for hasEquipement in has_equipements:
         hasEquipement = json.loads(AlchemyEncoder(
-            list=["name", 'points'], ordered=True).encode(hasEquipement))
+            list=['name', 'points', 'bought'], ordered=True).encode(hasEquipement))
         equipement_object = {}
-        equipement_object["name"] = hasEquipement[0]
-        equipement_object["points"] = hasEquipement[1]
+        equipement_object['name'] = hasEquipement[0]
+        equipement_object['points'] = hasEquipement[1]
+        equipement_object['bought'] = hasEquipement[2]
 
         altering_effect_query = session.query(Equipement.altering_effect_id).filter(
             Equipement.name == hasEquipement[0]).scalar()

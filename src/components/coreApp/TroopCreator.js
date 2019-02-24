@@ -23,7 +23,8 @@ import {
   IconButton,
   Tooltip,
   Avatar,
-  Popover
+  Popover,
+  Icon
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -34,12 +35,12 @@ import { withRouter } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 // import { Link } from "react-router-dom";
 import { TUMBNAIL_CARD_SIZE, LIEUTENANT, SERGEANT } from "../../utils/Constants";
-import { prettify } from "../../utils/Functions";
+import { prettify, getCharacteristicsValue } from "../../utils/Functions";
 import CompanyCard from "./CompanyCard";
 import UtilsBar from "./UtilsBar";
 import UnitCharacteristics from "./UnitCharacteristics";
 
-import { getCompanyFactions, addCompanyUnit, postStatusReset } from "../../redux/actions/databaseAccess";
+import { getCompanyFactions, addCompanyUnit, deleteCompanyUnit, buyEquipement, postStatusReset } from "../../redux/actions/databaseAccess";
 import { loadingScreenOn, loadingScreenOff } from "../../redux/actions/ui";
 
 import HorizontalScroll from "react-scroll-horizontal";
@@ -47,7 +48,7 @@ import { GoldSackIcon } from "../icons/OverviewIcons";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import SpecialRuleCard from "./wiki/SpecialRuleCard";
 import { SergeantIcon, LieutenantIcon } from "../icons/CardIcons";
-import { WargearIcon } from "../icons/CharacteristicsIcons";
+import { WargearIcon } from "../icons/CardIcons";
 
 const styles = theme => ({
   choosePaper: {
@@ -59,9 +60,6 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       width: "100%"
     }
-  },
-  chooseTitle: {
-    // color: theme.palette.secondary.dark
   },
   companyTitleHeader: {
     color: theme.palette.type === "dark" ? theme.palette.text.secondary : theme.palette.text.secondary
@@ -108,6 +106,9 @@ const styles = theme => ({
   unitPointsBadge: {
     right: theme.spacing.unit * 0.5
   },
+  deleteBadge: {
+    left: -theme.spacing.unit
+  },
   companyUnitImage: {
     width: TUMBNAIL_CARD_SIZE * 2.5,
     height: TUMBNAIL_CARD_SIZE * 2.5,
@@ -134,8 +135,15 @@ const styles = theme => ({
   rankIcons: {
     padding: theme.spacing.unit * 0.8,
     marginRight: theme.spacing.unit,
-    cursor: "initial",
-    defaultColor: "black"
+    cursor: "initial"
+  },
+  deleteIcon: {
+    backgroundColor: theme.palette.type === "dark" ? theme.palette.background.paper : theme.palette.primary.light,
+    padding: theme.spacing.unit * 0.8
+  },
+  equipementPaper: {
+    margin: theme.spacing.unit,
+    padding: theme.spacing.unit * 4
   }
 });
 
@@ -152,8 +160,9 @@ const mapStateToProps = ({ ui, data, databaseAccess }) => ({
   armies: data.armies,
   companies: data.companies,
   companyFactions: data.companyFactions,
-  tempCompanyUnit: data.tempCompanyUnit,
+  activeCompanyUnit: data.activeCompanyUnit,
   specialRules: data.specialRules,
+  equipements: data.equipements,
   companyFactionsNeedRefetch: data.companyFactionsNeedRefetch,
   postingToDatabase: databaseAccess.postingToDatabase,
   postingSuccess: databaseAccess.postingSuccess,
@@ -168,9 +177,10 @@ class TroopCreator extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      tabDisabled: [false, true, true],
+      tabDisabled: [false, true],
       selectedCompanyName: null,
-      selectedRank: "lieutenant",
+      selectedRank: "warrior",
+      rankButtonStyle: [undefined, undefined, { backgroundColor: "rgb(255,255,255,0.1)" }],
       selectedEquipement: [],
       tabValue: 0,
       company: null,
@@ -181,11 +191,13 @@ class TroopCreator extends Component {
       openDialogName: false,
       waitDialogName: false,
       baseUnit: null,
-      tempCompanyUnit: null,
+      activeCompanyUnit: null,
       fromCompanyUnit: false,
       showCompanyUnits: false,
       anchorEl: null,
-      openedPopoverId: null
+      openedPopoverId: null,
+      deleteUnitDialogOpen: false,
+      equipementBuy: { open: false, name: "", value: 0 }
     };
     this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
     this.handlePopoverClose = this.handlePopoverClose.bind(this);
@@ -208,12 +220,12 @@ class TroopCreator extends Component {
     if (this.props.location.state !== undefined && this.props.location.state.editCompanyUnit === true) {
       const companyUnit = this.props.location.state.companyUnit;
       this.setState({ selectedCompanyName: companyUnit.company_name });
-      this.setState({ tempCompanyUnit: companyUnit });
-      this.setState({ tabDisabled: [false, false, false] });
+      this.setState({ activeCompanyUnit: companyUnit });
+      this.setState({ tabDisabled: [false, false] });
 
       const companyIndex = this.props.companies.findIndex(company => company.name === companyUnit.company_name);
       this.setState({ company: this.props.companies[companyIndex] });
-      this.setState({ tabDisabled: [false, false, false] });
+      this.setState({ tabDisabled: [false, false] });
     }
   }
 
@@ -233,17 +245,36 @@ class TroopCreator extends Component {
 
       this.setState({ reinforcementUnits: reinforcementUnits });
     }
-    if (this.props.loadingScreen === true && this.props.postResponse !== "") {
+    if (this.props.loadingScreen === true && this.props.postResponse === "You have successfully added a new company unit!") {
       this.props.loadingScreenOff();
       // this.setState({ waitDialogName: false });
       this.setState({ openDialogName: false });
 
       const index = this.props.companies.findIndex(company => company.name === this.state.selectedCompanyName);
-      // console.log(this.props.companies);
       this.setState({ company: this.props.companies[index] });
 
-      this.setState({ tempCompanyUnit: this.props.companies[index].company_units[this.state.companyUnitName] });
-      this.setState({ tabDisabled: [false, false, false] });
+      this.setState({ activeCompanyUnit: this.props.companies[index].company_units[this.state.companyUnitName] });
+      this.setState({ tabDisabled: [false, false] });
+      this.props.postStatusReset();
+    }
+    if (this.props.loadingScreen === true && this.props.postResponse === "You have successfully deleted a company unit!") {
+      this.props.loadingScreenOff();
+
+      const index = this.props.companies.findIndex(company => company.name === this.state.selectedCompanyName);
+      this.setState({ company: this.props.companies[index] });
+      this.setState({ deleteUnitDialogOpen: false });
+      this.setState({ activeCompanyUnit: null });
+      this.setState({ tabDisabled: [false, true] });
+      this.props.postStatusReset();
+    }
+    if (this.props.loadingScreen === true && this.props.postResponse === "You have successfully added an equipement!") {
+      this.props.loadingScreenOff();
+      this.setState({ equipementBuy: { open: false, name: "", value: 0 } });
+
+      const index = this.props.companies.findIndex(company => company.name === this.state.selectedCompanyName);
+      this.setState({ company: this.props.companies[index] });
+      this.setState({ activeCompanyUnit: this.props.companies[index].company_units[this.state.activeCompanyUnit.company_unit_name] });
+
       this.props.postStatusReset();
     }
   }
@@ -275,12 +306,25 @@ class TroopCreator extends Component {
       unitName: this.state.baseUnit.name,
       unitRank: this.state.selectedRank,
       companyUnitName: this.state.companyUnitName,
-      additionalEquipement: ["shield"],
+      additionalEquipement: [],
       image_path: this.state.baseUnit.image_path
     };
     this.props.addCompanyUnit(newUnitData);
     this.props.loadingScreenOn();
     this.setState({ openDialogName: false });
+  };
+
+  handleRankClick = rank => {
+    if (rank === "warrior") {
+      this.setState({ selectedRank: "warrior" });
+      this.setState({ rankButtonStyle: [undefined, undefined, { backgroundColor: "rgb(255,255,255,0.1)" }] });
+    } else if (rank === "lieutenant") {
+      this.setState({ selectedRank: "lieutenant" });
+      this.setState({ rankButtonStyle: [{ backgroundColor: "rgb(255,255,255,0.1)" }, undefined, undefined] });
+    } else if (rank === "sergeant") {
+      this.setState({ selectedRank: "sergeant" });
+      this.setState({ rankButtonStyle: [undefined, { backgroundColor: "rgb(255,255,255,0.1)" }, undefined] });
+    }
   };
 
   handleUnitClick = index => {
@@ -289,14 +333,41 @@ class TroopCreator extends Component {
   };
 
   handleCompanyUnitChange = companyUnit => {
-    this.setState({ tempCompanyUnit: companyUnit });
-    this.setState({ tabDisabled: [false, false, false] });
+    this.setState({ activeCompanyUnit: companyUnit });
+    this.setState({ tabDisabled: [false, false] });
+  };
+
+  deleteFromCompany = unit => {
+    const companyUnitData = {};
+    companyUnitData["companyUnitName"] = unit.company_unit_name;
+    companyUnitData["companyName"] = unit.company_name;
+    this.props.deleteCompanyUnit(companyUnitData);
+    this.props.loadingScreenOn();
+  };
+
+  handleEquipementDelete = equipementName => {
+    console.log("Delete" + equipementName);
+  };
+
+  handleEquipementBuy = (equipementName, goldValue) => {
+    this.setState({ equipementBuy: { open: true, name: equipementName, value: goldValue } });
+  };
+
+  buyNewEquipement = ({ name, value }) => {
+    const equipementData = {};
+    equipementData["companyUnitName"] = this.state.activeCompanyUnit.company_unit_name;
+    equipementData["equipementName"] = name;
+    equipementData["equipementValue"] = value;
+    this.props.buyEquipement(equipementData);
+    this.props.loadingScreenOn();
   };
 
   render() {
     const { companies, classes, theme } = this.props;
-    const { company, selectedCompanyName, reinforcementUnits, openDialogName, tempCompanyUnit, tabDisabled, anchorEl } = this.state;
+    const { company, selectedCompanyName, reinforcementUnits, openDialogName, activeCompanyUnit, tabDisabled, anchorEl } = this.state;
 
+    const highCostEquipement =
+      activeCompanyUnit !== null && getCharacteristicsValue(activeCompanyUnit, "attacks") + getCharacteristicsValue(activeCompanyUnit, "wounds") >= 3;
     const chooseCompany = (
       <>
         <Paper elevation={1} className={classes.choosePaper}>
@@ -349,7 +420,8 @@ class TroopCreator extends Component {
                     company_units[company_unit_name].company_unit_name,
                     company_units[company_unit_name].effective_points + "Pts",
                     () => this.handleCompanyUnitChange(company_units[company_unit_name]),
-                    true
+                    true,
+                    false
                   )}
                 </div>
               ))}
@@ -366,6 +438,7 @@ class TroopCreator extends Component {
                       company_units[company_unit_name].company_unit_name,
                       company_units[company_unit_name].effective_points + "Pts",
                       () => this.handleCompanyUnitChange(company_units[company_unit_name]),
+                      false,
                       false
                     )}
                   </div>
@@ -384,7 +457,7 @@ class TroopCreator extends Component {
       </Typography>
     );
 
-    const minimalUnitCard = (unit, name, floatValue, onClick, mobile) => {
+    const minimalUnitCard = (unit, name, floatValue, onClick, mobile, forBuying) => {
       const floatingValue = label => (
         <Typography className={classes.pointsMinimal} variant="subtitle2">
           <Chip className={classes.statusAvatarMinimal} label={label} />
@@ -399,14 +472,52 @@ class TroopCreator extends Component {
 
       return (
         <>
-          <Badge classes={{ badge: classes.unitPointsBadge }} badgeContent={floatingValue(floatValue)}>
-            <Card>
-              <CardActionArea onClick={onClick}>
-                <CardMedia className={mobile ? classes.mediaMobile : classes.mediaDesktop} image={require("./../../assets/images/" + unit.image_path)} />
-                {unitName(name)}
-              </CardActionArea>
-            </Card>
-          </Badge>
+          {forBuying ? (
+            <Badge classes={{ badge: classes.unitPointsBadge }} badgeContent={floatingValue(floatValue)}>
+              <Card>
+                <CardActionArea onClick={onClick}>
+                  <CardMedia className={mobile ? classes.mediaMobile : classes.mediaDesktop} image={require("./../../assets/images/" + unit.image_path)} />
+                  {unitName(name)}
+                </CardActionArea>
+              </Card>
+            </Badge>
+          ) : (
+            <>
+              <Badge classes={{ badge: classes.unitPointsBadge }} badgeContent={floatingValue(floatValue)}>
+                <Badge
+                  classes={{ badge: classes.deleteBadge }}
+                  badgeContent={
+                    <IconButton onClick={() => this.setState({ deleteUnitDialogOpen: true })} classes={{ root: classes.deleteIcon }}>
+                      <Icon fontSize="small" style={{ color: theme.palette.type === "dark" ? theme.palette.primary.light : theme.palette.background.paper }}>
+                        delete
+                      </Icon>
+                    </IconButton>
+                  }
+                >
+                  <Card>
+                    <CardActionArea onClick={onClick}>
+                      <CardMedia className={mobile ? classes.mediaMobile : classes.mediaDesktop} image={require("./../../assets/images/" + unit.image_path)} />
+                      {unitName(name)}
+                    </CardActionArea>
+                  </Card>
+                </Badge>
+              </Badge>
+              <Dialog open={this.state.deleteUnitDialogOpen} onClose={() => this.setState({ deleteUnitDialogOpen: false })}>
+                <DialogTitle>{"Delete Company Unit"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>Are you sure you want to delete this company unit?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button variant="contained" onClick={() => this.setState({ deleteUnitDialogOpen: false })} color="primary">
+                    No
+                  </Button>
+                  <Button onClick={() => this.deleteFromCompany(unit)} color="primary" autoFocus>
+                    Yes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
         </>
       );
     };
@@ -423,11 +534,39 @@ class TroopCreator extends Component {
         <DialogTitle id="companyNameChoose">{"Company Unit Name"}</DialogTitle>
 
         <DialogContent>
-          <DialogContentText id="companyNameChoose-description">Choose a name for your new company unit</DialogContentText>
+          <DialogContentText align="center" style={{ marginBottom: theme.spacing.unit * 2 }}>
+            Choose the rank of your unit
+          </DialogContentText>
+          <Grid container direction="row" justify="space-around">
+            <Grid item>
+              <Tooltip title="Lieutenant" placement="top">
+                <Button onClick={() => this.handleRankClick("lieutenant")} style={this.state.rankButtonStyle[0]}>
+                  <LieutenantIcon />
+                </Button>
+              </Tooltip>
+            </Grid>
+            <Grid item>
+              <Tooltip title="Sergeant" placement="top">
+                <Button onClick={() => this.handleRankClick("sergeant")} style={this.state.rankButtonStyle[1]}>
+                  <SergeantIcon />
+                </Button>
+              </Tooltip>
+            </Grid>
+            <Grid item>
+              <Tooltip title="Warrior" placement="top">
+                <Button onClick={() => this.handleRankClick("warrior")} style={this.state.rankButtonStyle[2]}>
+                  <WargearIcon />
+                </Button>
+              </Tooltip>
+            </Grid>
+          </Grid>
+          <DialogContentText style={{ marginTop: theme.spacing.unit * 3 }} id="companyNameChoose-description">
+            Choose a name for your new company unit
+          </DialogContentText>
           <TextField onChange={event => this.setState({ companyUnitName: event.target.value })} autoFocus margin="dense" id="name" label="Name" />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleNameDialogConfirm} color="primary">
+          <Button variant="contained" onClick={this.handleNameDialogConfirm} color="primary">
             Confirm
           </Button>
         </DialogActions>
@@ -442,7 +581,7 @@ class TroopCreator extends Component {
               <Grid container direction="row" justify="space-around" alignItems="center">
                 <Grid item>
                   <Typography className={classes.companyUnitTitle} variant="h5">
-                    {tempCompanyUnit.company_unit_rank === LIEUTENANT && (
+                    {activeCompanyUnit.company_unit_rank === LIEUTENANT && (
                       <Tooltip placement="top" title="Lieutenant">
                         <span>
                           <IconButton className={classes.rankIcons}>
@@ -451,7 +590,7 @@ class TroopCreator extends Component {
                         </span>
                       </Tooltip>
                     )}
-                    {tempCompanyUnit.company_unit_rank === SERGEANT && (
+                    {activeCompanyUnit.company_unit_rank === SERGEANT && (
                       <Tooltip placement="top" title="Sergeant">
                         <span>
                           <IconButton className={classes.rankIcons}>
@@ -460,7 +599,7 @@ class TroopCreator extends Component {
                         </span>
                       </Tooltip>
                     )}
-                    {tempCompanyUnit.company_unit_rank !== LIEUTENANT && tempCompanyUnit.company_unit_rank !== SERGEANT && (
+                    {activeCompanyUnit.company_unit_rank !== LIEUTENANT && activeCompanyUnit.company_unit_rank !== SERGEANT && (
                       <Tooltip placement="top" title="Warrior">
                         <span>
                           <IconButton className={classes.rankIcons}>
@@ -469,56 +608,56 @@ class TroopCreator extends Component {
                         </span>
                       </Tooltip>
                     )}
-                    {prettify(tempCompanyUnit.company_unit_name)}
+                    {prettify(activeCompanyUnit.company_unit_name)}
                   </Typography>
 
-                  <UnitCharacteristics companyUnit={tempCompanyUnit} />
+                  <UnitCharacteristics companyUnit={activeCompanyUnit} />
                   {/* wargear */}
                   <Typography color="textPrimary" variant="button">
                     Wargear
                   </Typography>
                   <div className={classes.chipRoot}>
                     {/* Basic wargear */}
-                    {tempCompanyUnit.wargear
+                    {activeCompanyUnit.wargear
                       .filter(equipement => equipement.points === 0)
                       .map((equipement, index) => (
                         <Chip variant="outlined" key={index} label={prettify(equipement.name)} className={classes.chip} />
                       ))}
                     {/* Optional wargear */}
-                    {tempCompanyUnit.wargear
-                      .filter(equipement => equipement.points > 0)
+                    {activeCompanyUnit.wargear
+                      .filter(equipement => equipement.points > 0 && equipement.bought === "yes")
                       .map((equipement, index) => (
                         <Chip variant={"default"} clickable key={index} label={prettify(equipement.name)} className={classes.chip} />
                       ))}
                   </div>
 
                   {/* special rules */}
-                  {tempCompanyUnit.special_rules.length !== 0 && (
+                  {activeCompanyUnit.special_rules.length !== 0 && (
                     <>
                       <Typography color="textPrimary" variant="button">
                         Special Rules
                       </Typography>
                       <div className={classes.chipRoot}>
                         {/* Basic Special Rules */}
-                        {tempCompanyUnit.special_rules
+                        {activeCompanyUnit.special_rules
                           .filter(special_rule => special_rule.origin === "basic")
                           .map((special_rule, index) => (
                             <div key={index}>
                               <Chip
                                 aria-owns={
-                                  this.state.openedPopoverId === special_rule.name.concat(tempCompanyUnit.name)
-                                    ? special_rule.name.concat(tempCompanyUnit.name)
+                                  this.state.openedPopoverId === special_rule.name.concat(activeCompanyUnit.name)
+                                    ? special_rule.name.concat(activeCompanyUnit.name)
                                     : undefined
                                 }
                                 clickable
-                                onClick={e => this.handlePopoverOpen(e, special_rule.name.concat(tempCompanyUnit.name))}
+                                onClick={e => this.handlePopoverOpen(e, special_rule.name.concat(activeCompanyUnit.name))}
                                 variant="outlined"
                                 label={prettify(special_rule.name)}
                                 className={classes.chip}
                               />
                               <Popover
-                                id={special_rule.name.concat(tempCompanyUnit.name)}
-                                open={this.state.openedPopoverId === special_rule.name.concat(tempCompanyUnit.name)}
+                                id={special_rule.name.concat(activeCompanyUnit.name)}
+                                open={this.state.openedPopoverId === special_rule.name.concat(activeCompanyUnit.name)}
                                 anchorEl={anchorEl}
                                 onClose={this.handlePopoverClose}
                                 anchorOrigin={{
@@ -535,7 +674,7 @@ class TroopCreator extends Component {
                             </div>
                           ))}
                         {/* Optional wargear */}
-                        {tempCompanyUnit.special_rules
+                        {activeCompanyUnit.special_rules
                           .filter(special_rule => special_rule.origin !== "basic")
                           .map((special_rule, index) => (
                             <Chip variant={"default"} clickable key={index} label={prettify(special_rule.name)} className={classes.chip} />
@@ -548,12 +687,12 @@ class TroopCreator extends Component {
                     Notes
                   </Typography>
                   <Typography color="textSecondary" variant="body2">
-                    {tempCompanyUnit.notes === null ? "No notes for now" : tempCompanyUnit.notes}
+                    {activeCompanyUnit.notes === null ? "No notes for now" : activeCompanyUnit.notes}
                   </Typography>
                 </Grid>
                 <Grid item>
                   <Paper elevation={0} style={{ overflow: "hidden" }} className={classes.companyUnitImage}>
-                    <img alt="" style={{ width: "100%", height: "auto" }} src={require("./../../assets/images/" + this.state.tempCompanyUnit.image_path)} />
+                    <img alt="" style={{ width: "100%", height: "auto" }} src={require("./../../assets/images/" + activeCompanyUnit.image_path)} />
                   </Paper>
                 </Grid>
               </Grid>
@@ -586,6 +725,76 @@ class TroopCreator extends Component {
       </>
     );
 
+    const chooseAdditionalEquipement = () => {
+      return (
+        <>
+          <Paper className={classes.equipementPaper}>
+            <Typography variant="h6">{prettify(this.state.activeCompanyUnit.company_unit_name)}'s Wargear</Typography>
+            <div className={classes.chipRoot}>
+              {/* Basic wargear */}
+              {this.state.activeCompanyUnit.wargear
+                .filter(equipement => equipement.points === 0)
+                .map((equipement, index) => (
+                  <Chip variant="outlined" key={index} label={prettify(equipement.name)} className={classes.chip} />
+                ))}
+              {/* Optional wargear */}
+              {this.state.activeCompanyUnit.wargear
+                .filter(equipement => equipement.points > 0 && equipement.bought === "yes")
+                .map((equipement, index) => (
+                  <Chip
+                    variant="default"
+                    key={index}
+                    label={prettify(equipement.name)}
+                    className={classes.chip}
+                    onDelete={() => this.handleEquipementDelete(equipement.name)}
+                  />
+                ))}
+            </div>
+            <Typography variant="h6" style={{ marginBottom: theme.spacing.unit * 2 }}>
+              Additional wargear
+            </Typography>
+            {this.state.activeCompanyUnit.wargear
+              .filter(equipement => equipement.points > 0 && equipement.bought === "no")
+              .map((equipement, index) => {
+                const goldValue = highCostEquipement ? this.props.equipements[equipement.name].high_cost : this.props.equipements[equipement.name].low_cost;
+
+                return (
+                  <Tooltip key={index} title={`Buy for ${goldValue} Gold`} placement="top">
+                    <Chip
+                      clickable
+                      onClick={() => this.handleEquipementBuy(equipement.name, goldValue)}
+                      variant="outlined"
+                      label={
+                        <>
+                          <GoldSackIcon fontSize="small" /> &nbsp;&nbsp; {prettify(equipement.name)}
+                        </>
+                      }
+                      className={classes.chip}
+                    />
+                  </Tooltip>
+                );
+              })}
+          </Paper>
+          <Dialog open={this.state.equipementBuy.open} onClose={() => this.setState({ equipementBuy: { open: false, name: "", value: 0 } })}>
+            <DialogTitle>{"Delete Company Unit"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to buy the item <b>{prettify(this.state.equipementBuy.name)}</b> for {this.state.equipementBuy.value} Gold?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="contained" onClick={() => this.setState({ equipementBuy: { open: false, name: "", value: 0 } })} color="primary">
+                No
+              </Button>
+              <Button onClick={() => this.buyNewEquipement(this.state.equipementBuy)} color="primary" autoFocus>
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </>
+      );
+    };
+
     return (
       <>
         {selectedCompanyName === null ? (
@@ -597,29 +806,28 @@ class TroopCreator extends Component {
             <AppBar position="static" color="default">
               <Tabs fullWidth value={this.state.tabValue} onChange={this.handleTabChange} indicatorColor="primary" textColor="primary" variant="fullWidth">
                 <Tab disabled={tabDisabled[0]} label="Unit Resume" />
-                <Tab disabled={tabDisabled[1]} label="Additional Equipement" />
-                <Tab disabled={tabDisabled[2]} label="Confirm" />
+                <Tab disabled={tabDisabled[1]} label="Buy Additional Equipement" />
               </Tabs>
             </AppBar>
             {!this.props.loadingScreen && chooseNameRankDialog}
             <SwipeableViews index={this.state.tabValue} onChangeIndex={this.handleTabChangeIndex}>
               <TabContainer style={{ padding: theme.spacing.unit * 2 }}>
                 <Grid className={classes.tabMargin} container direction="row" justify="center" spacing={16}>
-                  {tempCompanyUnit === null &&
+                  {activeCompanyUnit === null &&
                     reinforcementUnits.map((unit, index) => (
                       <Grid item key={index}>
                         {/* Mobile */}
                         <MediaQuery query="(max-width: 960px)">
-                          {minimalUnitCard(unit, unit.name, unit.points + " Gold", () => this.handleUnitClick(index), true)}
+                          {minimalUnitCard(unit, unit.name, unit.points + " Gold", () => this.handleUnitClick(index), true, true)}
                         </MediaQuery>
                         {/* Desktop */}
                         <MediaQuery query="(min-width: 960px)">
-                          {minimalUnitCard(unit, unit.name, unit.points + " Gold", () => this.handleUnitClick(index), false)}
+                          {minimalUnitCard(unit, unit.name, unit.points + " Gold", () => this.handleUnitClick(index), false, true)}
                         </MediaQuery>
                       </Grid>
                     ))}
                 </Grid>
-                {tempCompanyUnit !== null && !this.props.loadingScreen && (
+                {activeCompanyUnit !== null && !this.props.loadingScreen && (
                   <>
                     {/* Mobile */}
                     <MediaQuery query="(max-width: 960px)">{unitResumeCard(true)}</MediaQuery>
@@ -628,12 +836,7 @@ class TroopCreator extends Component {
                   </>
                 )}
               </TabContainer>
-              <TabContainer>
-                <Typography>Additional Equipement</Typography>
-              </TabContainer>
-              <TabContainer>
-                <Typography>Confirm</Typography>
-              </TabContainer>
+              <TabContainer>{activeCompanyUnit !== null && chooseAdditionalEquipement()}</TabContainer>
             </SwipeableViews>
           </div>
         )}
@@ -649,6 +852,6 @@ TroopCreator.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { getCompanyFactions, addCompanyUnit, postStatusReset, loadingScreenOn, loadingScreenOff }
+    { getCompanyFactions, addCompanyUnit, deleteCompanyUnit, buyEquipement, postStatusReset, loadingScreenOn, loadingScreenOff }
   )(withStyles(styles, { withTheme: true })(TroopCreator))
 );

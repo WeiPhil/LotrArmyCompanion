@@ -131,7 +131,7 @@
           </font>
          </property>
          <property name="text">
-          <string>(Cost in Gold or Points) If the cost of the weapon is fixed put twice the same cost, if it's a free equipment or not specified let 0.</string>
+          <string>(Cost in Gold or Points) If the cost of the weapon is fixed put twice the same cost, if it's a free equipement or not specified let 0.</string>
          </property>
         </widget>
        </item>

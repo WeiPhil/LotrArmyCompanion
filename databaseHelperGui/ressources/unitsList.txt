@@ -19,4 +19,10 @@ angmar_orc_warrior
 angmar_warg_riders
 cave_troll
 dead_marsh_spectre
-wild_warg
+elendil,_high_king_of_gondor_and_arnor
+isildur
+captain_of_númenor
+warrior_of_númenor
+aragorn,_king_elessar
+gandalf_the_white
+denethor,_steward_of_gondor

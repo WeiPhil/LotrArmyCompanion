@@ -144,4 +144,50 @@ INSERT INTO equipement_has_special_rule (equipement_id,special_rule_id)
 INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
     VALUES
         ('hand-and-a-half_hammer','',0,'0','no',NULL);
+-- New Equipement: narsil
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('narsil','Forged during the First Age, Narsil is the sword of Elendil. It was with the shards of this sword that the Ring was cut from the hand of Sauron.',0,'0','no',NULL);
 
+INSERT INTO equipement_has_special_rule (equipement_id,special_rule_id)
+	VALUES
+		((SELECT equipement_id FROM equipement WHERE name='narsil'),(SELECT special_rule_id FROM special_rule WHERE name='narsil'));
+
+-- New Equipement: the_ring
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('the_ring','As long as your force does not contain either Elendil or Anárion, then Isildur may carry The Ring.',0,'0','no',NULL);
+
+-- New Equipement: hand-and-a-half_sword
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('hand-and-a-half_sword','',0,'0','no',NULL);
+
+-- New Equipement: andúril,_flame_of_the_west
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('andúril,_flame_of_the_west','',0,'0','no',NULL);
+
+-- New Equipement: staff_of_power
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('staff_of_power','',0,'0','no',NULL);
+
+INSERT INTO equipement_has_special_rule (equipement_id,special_rule_id)
+	VALUES
+		((SELECT equipement_id FROM equipement WHERE name='staff_of_power'),(SELECT special_rule_id FROM special_rule WHERE name='staff_of_power'));
+
+-- New Equipement: glamdring
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('glamdring','',0,'0','no',NULL);
+
+-- New Equipement: narya
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('narya','',0,'0','no',NULL);
+
+-- New Equipement: shadowfax
+INSERT INTO equipement (name,description,low_cost,high_cost,is_extra,altering_effect_id)
+    VALUES
+        ('shadowfax','',0,'0','no',NULL);

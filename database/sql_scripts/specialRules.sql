@@ -423,3 +423,114 @@ INSERT INTO special_rule (name,type,description,origin)
          'At any point during its move, a Spectre can choose a single enemy model anywhere within 12" and Line of Sight. This model must pass a Courage test or make a full move under the control of the Spectre''s controlling player - even if it has already moved. This move cannot be used to enter an enemy model''s Control Zone, or perform actions that would cause direct harm to the target (such as jumping down a cliff). It may also not be used to have the target dismount or lie down. Affected models may move no further that turn, and may not use Active abilities for the remainder of the Move phase.',
          'basic');
 
+-- New Special Rule: narsil
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('narsil','active',
+         'Narsil is a Master-forged hand-and-a-half sword. Additionally, Elendil may call a Heroic Combat each turn without expending Might.',
+         'basic','yes');
+
+-- New Special Rule: high_king_of_gondor_and_arnor
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('high_king_of_gondor_and_arnor','active',
+         'The range of Elendil’s Stand Fast! is 12" rather than 6".',
+         'basic');
+
+-- New Special Rule: unbending_resolve
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('unbending_resolve','passive',
+         'Elendil always counts as having had the Fortify Spirit Magical Power cast upon him. This is always in effect, even if his Will is reduced to 0.',
+         'basic');
+
+-- New Special Rule: the_ring
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('the_ring','other',
+         'WEARING THE RING\n
+The model with the Ring(the Ringbearer) can put it on at any time during their Move phase. As soon as they do so, they become Invisible. If a model who put on the Ring is mounted, their steed will bolt and they must immediately take a Thrown Rider test.\n
+INVISIBLE\n
+Whilst they wear the Ring, the Ringbearer cannot be directly targeted by Magical Powers or shooting attacks (and does not count as In The Way). The Ringbearer has no Control Zone while invisible and enemy models may even move ‘through’ the Ringbearer. If an enemy model wishes to end its movement on the space the Ringbearer is taking up, move the Ringbearer the minimum distance to place them out of the way – this could involve hopping low walls, moving through foes or being shoved off a cliff!
+If an enemy wishes to Charge the Ringbearer while they wear the Ring, it must pass a Courage test, applying a penalty of -1 to the roll for every 1" the Ringbearer is away from the foe. Models that automatically pass Courage tests still need to make this test, as it represents them being able to see the "Ringbearer, not how terrifying the Ringbearer is. During the Fight phase, any enemy model Engaged in combat with an invisible Ringbearer halves its Fight value for the duration of the duel.
+None of the above rules apply to Sauronor Ringwraithmodels. Indeed, they actually gain some benefit, as described in their own special rules or the Will of Evil special rule.\n
+REMOVING THE RING\n
+If the controlling player wishes the Ringbearer to take off the Ring, they need to pass a Courage test to remove it. This test can be taken at any point during the Ringbearer’s Move phase, once it has been established which side has control of their movement (see below). If the test is failed, the Ringbearer must wear the Ring until the next turn, when they will have another chance to remove it. The Ringbearer cannot both put on and take off the Ring in the same turn.\n
+SAURON’S WILL\n
+If the Ring is already being worn, then the controlling player must test to see if the Ringbearer can overcome Sauron’s will. To do so, they must roll a dice immediately before they move the Ringbearer in the Move phase. If the player does not wish to move the Ringbearer, they must still roll a dice – but can do so at any time during their Move phase. The roll is made on behalf of the Ringbearer themself, so we allow the controlling player to use the Ringbearer’s Might points to modify this dice roll if they wish to do so. On a 3+, the controlling player moves the Ringbearer as usual. On a 1 or 2, the opposing player moves the Ringbearer instead of the controlling player. Regardless of which side moves the Ringbearer, they are still part of the controlling player’s side and all other actions, such as shooting and fighting, remain under the control of the controlling player. This means that when the opposing player moves the Ringbearer, all they can do is move the model, including Charging (in this case, the Ringbearer does not need to take Courage tests to Charge terrifying foes). They "cannot perform Heroic Actions and cannot pick up or put down other items. They cannot be forced to perform actions that would cause direct harm to the model (such as jumping down a cliff...) or be moved off the table (if the Scenario allows). This represents the struggle between the Ringbearer and the will of Sauron.\n
+MY PRECIOUS!\n
+During Matched Play and Open Play games, if the Ringbearer is the only model left on the controlling player’s side and is wearing the Ring, they count as a casualty – their mind has been taken over by its power. As Scenarios may depend on them surviving, this is very important! If the opposing side’s objective is to kill the Ringbearer, this is achieved if they are the only model remaining on the table from the controlling player’s side and they are wearing the Ring. 
+There may be the odd occasions in Matched Play and Open Play games where there is more than one model on the board with The One Ring. As The One Ring is the only one of its kind (the clue is in the name), we have created a hierarchy of who carries the Ring when this occurs. The model closest to the top of the hierarchy table will get the Ring.\n
+\t1 The Dark Lord Sauron
+\t2 Isildur
+\t3 Bilbo Baggins (from the Thorin’s Company army list) or Bilbo Baggins, Master Burglar (from the Survivors of Lake-town army list).
+\t4 Frodo Baggins
+\t5 Bilbo Baggins (from The Shire or Rivendell army list)
+\t6 Gollum\n
+In the rare situation where both players control models that have the Ring, and both models are the same on the hierarchy table, both players may use the Ring – although one is clearly a fake and only the winner of the battle can claim that theirs was the real one.',
+         'basic','yes');
+
+-- New Special Rule: hand-and-a-half_weapon
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('hand-and-a-half_weapon','other',
+         'A hand-and-a-half weapon can be used as either a single-handed weapon or a two-handed weapon. Whenever a model armed with a hand-and-a-half weapon is involved in a Fight, the controlling player must decide at the start of the Fight whether they will be using their weapon as a single-handed weapon or a two-handed weapon.',
+         'basic','yes');
+
+-- New Special Rule: blood_of_númenor
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('blood_of_númenor','passive',
+         'A model with this special rule gains the Resistant to Magic special rule whilst they are within 6" of Elendil, Isildur or Anárion.',
+         'basic');
+
+-- New Special Rule: andúril,_flame_of_the_west
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('andúril,_flame_of_the_west','active',
+         'Andúril is an Elven–made hand-and-a-half sword. Additionally, when making Strikes with Andúril, Aragorn never requires more than a 4 for his To Wound rolls. Note that if Aragorn elects to use Andúril as a two-handed weapon, he will still get the +1 bonus To Wound meaning that he will Wound on a 3+.',
+         'basic','yes');
+
+-- New Special Rule: stand_men_of_the_west!
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('stand_men_of_the_west!','passive',
+         'Friendly models within 6" of Aragorn, King Elessar count as being in range of a banner',
+         'basic');
+
+-- New Special Rule: staff_of_power
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('staff_of_power','other',
+         'A Staff of Power is a hand-and-a-half staff, and may use the Stun Special Strike like all other staffs. In addition, the bearer can expend 1 point of Will each turn without reducing their own Will store.',
+         'basic','yes');
+
+-- New Special Rule: glamdring
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('glamdring','active',
+         'Glamdring is an Elven-made hand-and-a-half sword. Additionally, Glamdring increases Gandalf’s Strength by 1 when making Strikes with it.',
+         'basic','yes');
+
+-- New Special Rule: narya
+INSERT INTO special_rule (name,type,description,origin,is_weapon_rule)
+    VALUES
+        ('narya','passive',
+         'Gandalf may re-roll his dice when making Fate rolls',
+         'basic','yes');
+
+-- New Special Rule: broken_mind
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('broken_mind','passive',
+         'At the start of every turn, before Priority is rolled, the controlling player must take a Courage test for Denethor. If the test is passed, all is fine. If the test is failed, Denethor is controlled by the opposing player until the End phase of that turn. Whilst under the control of the opposing player, friendly models cannot target Denethor with shooting attacks or Magical Powers that cause damage and may not make Strikes if they beat him in a fight.
+If Boromir is part of the same army as Denethor, then Denethor will automatically pass these Courage tests so long as Boromir is alive. Should Boromir be slain, then Denethor will automatically fail the next Courage test he must take for this special rule.',
+         'basic');
+
+-- New Special Rule: "the_rule_of_gondor_is_mine,_and_no_other''s!"
+INSERT INTO special_rule (name,type,description,origin)
+    VALUES
+        ('"the_rule_of_gondor_is_mine,_and_no_other''s!"','passive',
+         'If your force contains Denethor then he must be your leader, unless your force also contains Aragorn, King Elessar.',
+         'basic');
+

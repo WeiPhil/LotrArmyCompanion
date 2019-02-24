@@ -5,7 +5,7 @@ import { Typography, TableBody, TableCell, TableRow, TableHead, Table, Paper, Po
 
 import { extraPalette } from "./../../utils/UIColors";
 import { prettify } from "../../utils/Functions";
-import { WargearIcon, PromotionIcon } from "../icons/CharacteristicsIcons";
+import { EquipementIcon, PromotionIcon } from "../icons/CharacteristicsIcons";
 
 const CustomTableHeader = withStyles(theme => ({
   root: {
@@ -116,7 +116,7 @@ class UnitCharacteristics extends Component {
     const characteristicChanger = this.getBaseChangerObj();
     equipements.map(equipementObj => {
       if ("altering_effect" in equipementObj) {
-        if (equipementObj.points !== 0) {
+        if (equipementObj.points !== 0 && equipementObj.bought === "yes") {
           characteristicChanger[equipementObj.altering_effect.characteristic].wargear.push({
             name: equipementObj.name,
             value: equipementObj.altering_effect.value
@@ -221,7 +221,7 @@ class UnitCharacteristics extends Component {
                 return (
                   <span key={index}>
                     {index === 0 ? (
-                      <WargearIcon style={{ fontSize: "18px", transform: "translate(0,2px)" }} nativeColor={iconColor} />
+                      <EquipementIcon style={{ fontSize: "18px", transform: "translate(0,2px)" }} nativeColor={iconColor} />
                     ) : (
                       // </IconButton>
                       <Typography className={this.props.classes.popoverName} style={{ display: "inline-block" }}>

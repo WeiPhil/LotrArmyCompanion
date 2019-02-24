@@ -184,8 +184,6 @@ CREATE TABLE IF NOT EXISTS `lotr`.`magical_power` (
   `description` TEXT NOT NULL,
   `description_channelled` TEXT NOT NULL,
   `duration` ENUM('temporary', 'instant', 'exhaustion') NOT NULL,
-  `range` INT NOT NULL DEFAULT 0,
-  `casting` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`magical_power_id`),
   UNIQUE INDEX `name_UNIQUE` (`name`)
 );
@@ -299,6 +297,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`heroic_action` (
 CREATE TABLE IF NOT EXISTS `lotr`.`company_unit_has_magical_power` (
   `company_unit_id` INT NOT NULL,
   `magical_power_id` INT NOT NULL,
+  `range` INT NOT NULL,
+  `casting` INT NOT NULL,
   PRIMARY KEY (`company_unit_id`, `magical_power_id`),
   INDEX `fk_company_unit_has_magical_power_magical_power1_idx` (`magical_power_id`),
   INDEX `fk_company_unit_has_magical_power_company_unit1_idx` (`company_unit_id`),
@@ -385,6 +385,7 @@ CREATE TABLE IF NOT EXISTS `lotr`.`company_unit_has_equipement` (
   `company_unit_id` INT NOT NULL,
   `equipement_id` INT NOT NULL,
   `points` INT NOT NULL DEFAULT 0,
+  `bought` ENUM('yes','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`company_unit_id`, `equipement_id`),
   INDEX `fk_company_unit_has_equipement_equipement1_idx` (`equipement_id`),
   INDEX `fk_company_unit_has_equipement_company_unit1_idx` (`company_unit_id`),
@@ -428,6 +429,8 @@ CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_heroic_action` (
 CREATE TABLE IF NOT EXISTS `lotr`.`unit_has_magical_power` (
   `unit_id` INT NOT NULL,
   `magical_power_id` INT NOT NULL,
+  `range` INT NOT NULL,
+  `casting` INT NOT NULL,
   PRIMARY KEY (`unit_id`, `magical_power_id`),
   INDEX `fk_unit_has_magical_power_magical_power1_idx` (`magical_power_id`),
   INDEX `fk_unit_has_magical_power_unit1_idx` (`unit_id`),

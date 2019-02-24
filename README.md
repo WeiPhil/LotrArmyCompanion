@@ -49,10 +49,10 @@ Build for Windows:
 > Todo Philippe
 
 - `[x]` Make a todo list as suggested by Gregoire
-- `[x]` Add elements to each company card (equipment,totalcost,experience, etc..)
+- `[x]` Add elements to each company card (equipement,totalcost,experience, etc..)
 - `[x]` Add a some more sample elements to the database to work on
 - `[x]` Create a nice presentation of the company overview including stats, totalGold, effective and total cost, a way to add personal notes (+ linking to database)
-- `[x]` Add wiki submenus for all the equipments, special powers, etc..
+- `[x]` Add wiki submenus for all the equipements, special powers, etc..
 - `[x]` You can now have an account and login on your personal companies!
 - `[x]` Add a menu item to go in a fight!
 - `[x]` add a register form and unsecure user account system (just for testing)

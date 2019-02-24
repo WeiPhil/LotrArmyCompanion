@@ -12,7 +12,10 @@ import {
   POSTING_SUCCESS,
   POST_STATUS_RESET,
   ADD_COMPANY_UNIT,
-  GET_SPECIAL_RULES
+  GET_SPECIAL_RULES,
+  GET_EQUIPEMENTS,
+  DELETE_COMPANY_UNIT,
+  BUY_EQUIPEMENT
 } from "../actions/types";
 
 const serverAccessInitialState = {
@@ -20,10 +23,12 @@ const serverAccessInitialState = {
   isLoadingArmies: false,
   isLoadingCompanyFactions: false,
   isLoadingSpecialRules: false,
+  isLoadingEquipements: false,
   armiesNeedRefetch: true,
   companiesNeedRefetch: false,
   companyFactionsNeedRefetch: true,
   specialRulesNeedRefetch: true,
+  equipementsNeedRefetch: true,
   getError: false,
   postingSuccess: false,
   postingToDatabase: false,
@@ -43,9 +48,15 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingCompanyFactions: true, getError: false };
       } else if (action.payload === GET_SPECIAL_RULES) {
         return { ...state, isLoadingSpecialRules: true, getError: false };
+      } else if (action.payload === GET_EQUIPEMENTS) {
+        return { ...state, isLoadingEquipements: true, getError: false };
       } else if (action.payload === ADD_COMPANY) {
         return { ...state, postingToDatabase: true };
       } else if (action.payload === ADD_COMPANY_UNIT) {
+        return { ...state, postingToDatabase: true };
+      } else if (action.payload === DELETE_COMPANY_UNIT) {
+        return { ...state, postingToDatabase: true };
+      } else if (action.payload === BUY_EQUIPEMENT) {
         return { ...state, postingToDatabase: true };
       } else {
         return state;
@@ -63,9 +74,15 @@ export default function databaseAccessReducer(state = serverAccessInitialState, 
         return { ...state, isLoadingCompanyFactions: false, companyFactionsNeedRefetch: state.getError };
       } else if (action.payload === GET_SPECIAL_RULES) {
         return { ...state, isLoadingSpecialRules: false, specialRulesNeedRefetch: state.getError };
+      } else if (action.payload === GET_EQUIPEMENTS) {
+        return { ...state, isLoadingEquipements: false, equipementsNeedRefetch: state.getError };
       } else if (action.payload === ADD_COMPANY) {
         return { ...state, postingToDatabase: false };
       } else if (action.payload === ADD_COMPANY_UNIT) {
+        return { ...state, postingToDatabase: false };
+      } else if (action.payload === DELETE_COMPANY_UNIT) {
+        return { ...state, postingToDatabase: false };
+      } else if (action.payload === BUY_EQUIPEMENT) {
         return { ...state, postingToDatabase: false };
       } else {
         return state;

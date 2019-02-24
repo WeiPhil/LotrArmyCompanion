@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>885</width>
-    <height>924</height>
+    <width>1127</width>
+    <height>1114</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,9 +67,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>859</width>
-        <height>1166</height>
+        <y>-161</y>
+        <width>1086</width>
+        <height>1164</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -876,6 +876,26 @@
          </item>
          <item>
           <widget class="QComboBox" name="magicalPowerComboBox"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Range</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="rangeSpinBox"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Casting</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="castingSpinBox"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_14">

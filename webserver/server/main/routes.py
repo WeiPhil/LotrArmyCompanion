@@ -85,11 +85,18 @@ def getCompanyFactions():
 def getSpecialRules():
     from ..database.select_queries import getAllSpecialRules
 
-    # query user
-
     specialRules, code = getAllSpecialRules()
 
     return jsonify(specialRules), code
+
+
+@main.route('/getEquipements', methods=['GET'])
+def getEquipements():
+    from ..database.select_queries import getAllEquipements
+
+    equipements, code = getAllEquipements()
+
+    return jsonify(equipements), code
 
 
 @main.route('/addCompany', methods=['POST'])
@@ -147,6 +154,48 @@ def addPromotionToCompanyUnit():
         return jsonify(message="An error occured retry please."), 404
 
     return jsonify(promotedCompanyUnit=updated_company_unit, message="You have successfully added a promotion!"), code
+
+
+@main.route('/deleteCompanyUnit', methods=['POST'])
+def deleteCompanyUnit():
+    from ..database.delete_queries import deleteCompanyUnit
+
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+    companyUnitName = data["companyUnitName"]
+    companyName = data["companyName"]
+
+    updated_company, code = deleteCompanyUnit(companyUnitName, companyName)
+
+    if(code == 404):
+        return jsonify(message="An error occured retry please."), 404
+
+    return jsonify(updatedCompany=updated_company, message="You have successfully deleted a company unit!"), code
+
+
+@main.route('/buyEquipement', methods=['POST'])
+def buyEquipement():
+    from ..database.add_queries import addEquipementToCompanyUnit
+
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    # get submited data
+    data = request.get_json()
+    companyUnitName = data["companyUnitName"]
+    equipementName = data["equipementName"]
+    equipementValue = data["equipementValue"]
+
+    updated_company, code = addEquipementToCompanyUnit(
+        companyUnitName, equipementName, equipementValue)
+
+    if(code == 404):
+        return jsonify(message="An error occured retry please."), 404
+
+    return jsonify(updatedCompany=updated_company, message="You have successfully added an equipement!"), code
 
 
 @main.route('/databaseTest', methods=['GET'])

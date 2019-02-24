@@ -15,7 +15,7 @@ const renderWikiCards = () => {
         <WikiCard imagePath={"magical_powers.jpg"} title={"Magical Powers"} text={"Check out all the magical powers available!"} />
       </Grid>
       <Grid item>
-        <WikiCard imagePath={"equipments.jpg"} title={"Equipments"} text={"Need info about a specific weapon or it's effect?"} />
+        <WikiCard imagePath={"equipements.jpg"} title={"Equipements"} text={"Need info about a specific weapon or it's effect?"} />
       </Grid>
       <Grid item>
         <WikiCard imagePath={"special_rules.jpg"} title={"Special Rules"} text={"All the Special Rules you have to know"} />

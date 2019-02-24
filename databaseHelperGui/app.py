@@ -157,7 +157,7 @@ def addUnitToFiles(unitObject):
         file.write("-- New Unit: "+unitObject["name"]+"\n")
 
     if "warrior" in unitObject["keywords"] :
-        # unit
+        # warrior unit
         sqlQuery = """INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
         VALUES
             ((SELECT faction_id FROM faction WHERE name='{0}'),
@@ -173,12 +173,12 @@ def addUnitToFiles(unitObject):
         with open(unitsSQLFile, "a", encoding='utf8') as file:
             file.write(sqlQuery)
     else:
-        # unit
+        # hero unit
         sqlQuery = """INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
         VALUES
             ((SELECT faction_id FROM faction WHERE name='{0}'),
             '{1}',{2},
-            {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}
+            {3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},
             '{14}',
             'tempCardBackground2.jpg');\n\n"""
         sqlQuery = sqlQuery.format(
@@ -221,10 +221,20 @@ def addUnitToFiles(unitObject):
 
     # magical powers links
     if(len(unitObject["magicalPowers"]) > 0 ):
-        sqlQuery = """INSERT INTO unit_has_magical_power (unit_id,magical_power_id)\n\tVALUES\n"""
-        for magicalPower in unitObject["magicalPowers"]:
-            temp = """\t\t((SELECT unit_id FROM unit WHERE name='{0}'),(SELECT magical_power_id FROM magical_power WHERE name='{1}')),\n"""
-            sqlQuery = sqlQuery + temp.format(unitObject["name"],magicalPower)
+        sqlQuery = """INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)\n\tVALUES\n"""
+        for magicalPower,_range,casting in unitObject["magicalPowers"]:
+            temp = """\t\t((SELECT unit_id FROM unit WHERE name='{0}'),(SELECT magical_power_id FROM magical_power WHERE name='{1}'),{2},{3}),\n"""
+            sqlQuery = sqlQuery + temp.format(unitObject["name"],magicalPower,_range,casting)
+        sqlQuery = sqlQuery[:-2] + ';\n\n'
+        with open(unitsSQLFile, "a", encoding='utf8') as file:
+            file.write(sqlQuery)
+
+    # heroic actions links
+    if(len(unitObject["heroicActions"]) > 0 ):
+        sqlQuery = """INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)\n\tVALUES\n"""
+        for heroicAction in unitObject["heroicActions"]:
+            temp = """\t\t((SELECT unit_id FROM unit WHERE name='{0}'),(SELECT heroic_action_id FROM heroic_action WHERE name='{1}')),\n"""
+            sqlQuery = sqlQuery + temp.format(unitObject["name"],heroicAction)
         sqlQuery = sqlQuery[:-2] + ';\n\n'
         with open(unitsSQLFile, "a", encoding='utf8') as file:
             file.write(sqlQuery)
@@ -291,13 +301,13 @@ def addSpecialRuleToFiles(specialRuleObject):
         file.write("-- New Special Rule: "+specialRuleObject["name"]+"\n")
 
     # unit
-    sqlQuery = """INSERT INTO special_rule (name,type,description,origin)
+    sqlQuery = """INSERT INTO special_rule (name,type,description,origin,is_weapon_rule))
     VALUES
         ('{0}','{1}',
          '{2}',
-         '{3}');\n\n"""
+         '{3}','{4}');\n\n"""
     sqlQuery = sqlQuery.format(
-        specialRuleObject["name"],specialRuleObject["type"],specialRuleObject["description"],specialRuleObject["origin"])
+        specialRuleObject["name"],specialRuleObject["type"],specialRuleObject["description"],specialRuleObject["origin"],specialRuleObject["isWeaponRule"])
     with open(specialRulesSQLFile, "a", encoding='utf8') as file:
         file.write(sqlQuery)
 
@@ -372,6 +382,7 @@ class SpecialRuleForm(QtWidgets.QDialog, Ui_SpecialRuleForm):
         specialRuleObject["type"] = sanitize(self.typeComboBox.currentText())
         specialRuleObject["description"] = sanitizeText(self.description.toPlainText())
         specialRuleObject["origin"] = sanitize(self.originComboBox.currentText())
+        specialRuleObject["isWeaponRule"] = 'yes' if self.isWeaponRule.isChecked()  else 'no'
 
         valid = True
         if(specialRuleObject['name'] == '' or specialRuleObject['description'] == ''):
@@ -684,7 +695,11 @@ class UnitForm(QtWidgets.QDialog, Ui_UnitForm):
         container.takeItem(container.row(container.currentItem()))
 
     def addMagicalPower(self):
-        newMagicalPower = self.magicalPowerComboBox.currentText()
+        newMagicalPower = 'Range '+self.rangeSpinBox.cleanText()+'"\t Casting '+self.castingSpinBox.cleanText()+'+ \t'+self.magicalPowerComboBox.currentText()
+        self.rangeSpinBox.setValue(0)
+        self.rangeSpinBox.repaint()
+        self.castingSpinBox.setValue(0)
+        self.castingSpinBox.repaint()
         if(self.magicalPowerListWidget.findItems(newMagicalPower, QtCore.Qt.MatchFixedString) == []):
             self.magicalPowerListWidget.insertItem(0, newMagicalPower)
 
@@ -753,7 +768,10 @@ class UnitForm(QtWidgets.QDialog, Ui_UnitForm):
                 heroicActions.append(sanitize(container.item(i).text()))
             container = self.magicalPowerListWidget
             for i in range(0, container.count()):
-                magicalPowers.append(sanitize(container.item(i).text()))
+                _range,casting_magicalPower = container.item(i).text().split('"\t Casting ')
+                _range = _range.split('Range ')[1]
+                casting,magicalPower = casting_magicalPower.split('+ \t')
+                magicalPowers.append((sanitize(magicalPower),_range,casting))
 
         specialRules = []
         container = self.specialRuleslistWidget

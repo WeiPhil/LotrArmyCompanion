@@ -4,8 +4,8 @@ from sqlalchemy import and_, or_, exc
 
 from server.run import db
 from .models import *
-from .select_queries import getCompanyUnit, getCompanyBase, getCompanyUnits, getCompanyInjured
-from .utility import checkAndUpdateCompanyUnitCost
+from .select_queries import getCompanyUnit, getCompany
+from .utility import checkAndUpdateCompanyUnitCost, checkAndUpdateCompanyCost
 
 session = db.session
 
@@ -43,6 +43,43 @@ def addPromotionToCompanyUnit(companyUnitName, promotionName, updateCost=True):
         return
 
 
+def addEquipementToCompanyUnit(companyUnitName, equipementName, equipementValue):
+    equipement_id = session.query(Equipement.equipement_id).filter(
+        Equipement.name == equipementName).one()[0]
+    #  TODO check for double
+
+    company_unit_id = session.query(CompanyUnit.company_unit_id).filter(
+        CompanyUnit.company_unit_name == companyUnitName).one()[0]
+
+    exists = session.query(CompanyUnitHasEquipement).filter(and_(CompanyUnitHasEquipement.equipement_id ==
+                                                                 equipement_id, CompanyUnitHasEquipement.company_unit_id == company_unit_id)).scalar() is not None
+    if(exists):
+        updateHasEquipement = session.query(CompanyUnitHasEquipement).filter(and_(
+            CompanyUnitHasEquipement.equipement_id == equipement_id, CompanyUnitHasEquipement.company_unit_id == company_unit_id)).one()
+        updateHasEquipement.bought = "yes"
+        session.commit()
+    else:
+        newHasEquipement = CompanyUnitHasEquipement(
+            equipement_id=equipement_id, company_unit_id=company_unit_id, points=equipementValue, bought="yes")
+        session.add(newHasEquipement)
+        session.commit()
+
+    updated_company_unit = None
+    company_name = None
+    try:
+        updated_company_unit = checkAndUpdateCompanyUnitCost(
+            getCompanyUnit(companyUnitName))
+        company_name = updated_company_unit["company_name"]
+        company = session.query(Company).filter(
+            Company.name == company_name).one()
+        company.gold -= equipementValue
+        session.commit()
+    except exc.SQLAlchemyError as error:
+        return {}, 404
+
+    return getCompany(company_name), 200
+
+
 def addCompany(username, companyName, companyFactionName, companyNotes, image_path='tempCardBackground1.jpg'):
 
     try:
@@ -57,7 +94,7 @@ def addCompany(username, companyName, companyFactionName, companyNotes, image_pa
         session.commit()
     except exc.SQLAlchemyError as error:
         return {}, 404
-    return getCompanyBase(companyName), 200
+    return getCompany(companyName), 200
 
 
 def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalEquipement, image_path):
@@ -76,12 +113,17 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
             UnitHasEquipement.unit_id == unit_id
         ).filter(UnitHasEquipement.points == 0).all()
 
+        optional_equipement_ids_points = session.query(UnitHasEquipement.equipement_id, UnitHasEquipement.points).filter(
+            UnitHasEquipement.unit_id == unit_id
+        ).filter(UnitHasEquipement.points > 0).all()
+
         additional_equipement_ids_points = []
         if(additionalEquipement):
             additional_equipement_ids_points = session.query(Equipement.equipement_id, Equipement.low_cost).filter(
                 or_(Equipement.name == e for e in additionalEquipement)).all()
 
-        equipements = base_equipement_ids_points + additional_equipement_ids_points
+        equipements = base_equipement_ids_points + \
+            optional_equipement_ids_points + additional_equipement_ids_points
 
         equipement_cost = 0
         for (_, points) in equipements:
@@ -127,8 +169,10 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
 
         # add equipements to has_equipements
         for (equipement_id, points) in equipements:
+            isBought = "no" if not [
+                equipement for equipement in additional_equipement_ids_points if equipement[0] == equipement_id] else "yes"
             unit_has_new_equipement = CompanyUnitHasEquipement(
-                company_unit_id=company_unit_id, equipement_id=equipement_id, points=points)
+                company_unit_id=company_unit_id, equipement_id=equipement_id, points=points, bought=isBought)
             session.add(unit_has_new_equipement)
 
         session.commit()
@@ -147,11 +191,10 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
         # This should basically do nothing
         checkAndUpdateCompanyUnitCost(getCompanyUnit(companyUnitName))
 
-        updated_company = getCompanyBase(companyName)
-        updated_company['company_units'] = getCompanyUnits(companyName)
-        updated_company['injured'] = getCompanyInjured(companyName)
+        updated_company = getCompany(companyName)
 
     except exc.SQLAlchemyError as error:
+        print(error)
         return {}, 404
 
     return updated_company, 200

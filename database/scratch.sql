@@ -1,7 +1,7 @@
 USE lotr;
 
 
--- DESC company_faction_has_unit_promotions;
+DESC equipement;
 
 -- SELECT * FROM company_has_injured;
 

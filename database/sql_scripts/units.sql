@@ -82,6 +82,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 	VALUES
 		((SELECT unit_id FROM unit WHERE name='grimbold_of_grimslade'),(SELECT special_rule_id FROM special_rule WHERE name='mighty_blow'));
 
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='grimbold_of_grimslade'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence'));
+
+
 -- New Unit: durbûrz_the_goblin_king_of_moria
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
@@ -108,6 +113,12 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller')),
 		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT special_rule_id FROM special_rule WHERE name='iron_fist'));
 
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike')),
+		((SELECT unit_id FROM unit WHERE name='durbûrz_the_goblin_king_of_moria'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_resolve'));
+
 -- New Unit: grôblog
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
@@ -133,6 +144,12 @@ INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
 INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 	VALUES
 		((SELECT unit_id FROM unit WHERE name='grôblog'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller'));
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='grôblog'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='grôblog'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike'));
+
 
 -- New Unit: drûzhag_the_beastcaller
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -161,10 +178,15 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT special_rule_id FROM special_rule WHERE name='master_of_the_dark_wild')),
 		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT special_rule_id FROM special_rule WHERE name='cave_dweller'));
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT magical_power_id FROM magical_power WHERE name='fury_(x)')),
-		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT magical_power_id FROM magical_power WHERE name='enrage_beast'));
+		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT magical_power_id FROM magical_power WHERE name='fury_(x)'),0,3),
+		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT magical_power_id FROM magical_power WHERE name='enrage_beast'),12,3);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='drûzhag_the_beastcaller'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling'));
+
 
 -- New Unit: moria_blackshield
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
@@ -247,12 +269,18 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT special_rule_id FROM special_rule WHERE name='woodland_creature')),
 		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT special_rule_id FROM special_rule WHERE name='terror'));
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel')),
-		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix')),
-		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='blessing_of_the_valar')),
-		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='blinding_light'));
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel'),12,4),
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix'),12,3),
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='blessing_of_the_valar'),12,3),
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT magical_power_id FROM magical_power WHERE name='blinding_light'),0,2);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling')),
+		((SELECT unit_id FROM unit WHERE name='galadriel'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_resolve'));
 
 -- New Unit: wild_warg_chieftain
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -278,6 +306,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 	VALUES
 		((SELECT unit_id FROM unit WHERE name='wild_warg_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='packlord')),
 		((SELECT unit_id FROM unit WHERE name='wild_warg_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='terror'));
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='wild_warg_chieftain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_march')),
+		((SELECT unit_id FROM unit WHERE name='wild_warg_chieftain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strength'));
 
 -- New Unit: the_tainted
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -314,14 +347,18 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT special_rule_id FROM special_rule WHERE name='terror')),
 		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT special_rule_id FROM special_rule WHERE name='harbinger_of_evil'));
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='sap_will')),
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear')),
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='black_dart')),
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel')),
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix')),
-		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'));
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='sap_will'),12,5),
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear'),3,5),
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='black_dart'),12,5),
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel'),12,4),
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix'),12,3),
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'),12,2);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='the_tainted'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling'));
 
 -- New Unit: the_dwimmerlaik
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -357,14 +394,18 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT special_rule_id FROM special_rule WHERE name='will_of_evil')),
 		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT special_rule_id FROM special_rule WHERE name='harbinger_of_evil'));
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='sap_will')),
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear')),
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='black_dart')),
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel')),
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix')),
-		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'));
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='sap_will'),12,5),
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear'),3,5),
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='black_dart'),12,5),
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel'),12,4),
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix'),12,3),
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT magical_power_id FROM magical_power WHERE name='drain_courage'),12,2);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='the_dwimmerlaik'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling'));
 
 -- New Unit: gûlavhar,_the_terror_of_arnor
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -399,6 +440,11 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='gûlavhar,_the_terror_of_arnor'),(SELECT special_rule_id FROM special_rule WHERE name='harbinger_of_evil')),
 		((SELECT unit_id FROM unit WHERE name='gûlavhar,_the_terror_of_arnor'),(SELECT special_rule_id FROM special_rule WHERE name='fly'));
 
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='gûlavhar,_the_terror_of_arnor'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='gûlavhar,_the_terror_of_arnor'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strength'));
+
 -- New Unit: buhrdûr,_troll_chieftain
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
@@ -426,6 +472,12 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='terror')),
 		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT special_rule_id FROM special_rule WHERE name='throw_stones'));
 
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike')),
+		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='buhrdûr,_troll_chieftain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_challenge'));
+
 -- New Unit: shade
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
@@ -451,6 +503,7 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='shade'),(SELECT special_rule_id FROM special_rule WHERE name='chill_aura')),
 		((SELECT unit_id FROM unit WHERE name='shade'),(SELECT special_rule_id FROM special_rule WHERE name='terror')),
 		((SELECT unit_id FROM unit WHERE name='shade'),(SELECT special_rule_id FROM special_rule WHERE name='blades_of_the_dead'));
+
 
 -- New Unit: barrow-wight
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -478,9 +531,9 @@ INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
 		((SELECT unit_id FROM unit WHERE name='barrow-wight'),(SELECT special_rule_id FROM special_rule WHERE name='terror')),
 		((SELECT unit_id FROM unit WHERE name='barrow-wight'),(SELECT special_rule_id FROM special_rule WHERE name='blades_of_the_dead'));
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='barrow-wight'),(SELECT magical_power_id FROM magical_power WHERE name='paralyse'));
+		((SELECT unit_id FROM unit WHERE name='barrow-wight'),(SELECT magical_power_id FROM magical_power WHERE name='paralyse'),6,4);
 
 -- New Unit: angmar_orc_captain
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
@@ -507,6 +560,10 @@ INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
 		((SELECT unit_id FROM unit WHERE name='angmar_orc_captain'),(SELECT equipement_id FROM equipement WHERE name='armour'),0),
 		((SELECT unit_id FROM unit WHERE name='angmar_orc_captain'),(SELECT equipement_id FROM equipement WHERE name='sword'),0);
 
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='angmar_orc_captain'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_march'));
+
 -- New Unit: angmar_orc_shaman
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
     VALUES
@@ -530,10 +587,14 @@ INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
 		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT equipement_id FROM equipement WHERE name='heavy_armour'),0),
 		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT equipement_id FROM equipement WHERE name='dagger'),0);
 
-INSERT INTO unit_has_magical_power (unit_id,magical_power_id)
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
 	VALUES
-		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear')),
-		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT magical_power_id FROM magical_power WHERE name='wither'));
+		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT magical_power_id FROM magical_power WHERE name='instill_fear'),3,5),
+		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT magical_power_id FROM magical_power WHERE name='wither'),12,3);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='angmar_orc_shaman'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling'));
 
 -- New Unit: angmar_orc_warrior
 INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
@@ -663,3 +724,232 @@ INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
 		((SELECT unit_id FROM unit WHERE name='wild_warg'),(SELECT equipement_id FROM equipement WHERE name='teeth'),0),
 		((SELECT unit_id FROM unit WHERE name='wild_warg'),(SELECT equipement_id FROM equipement WHERE name='claws'),0);
 
+-- New Unit: elendil,_high_king_of_gondor_and_arnor
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='númenor'),
+            'elendil,_high_king_of_gondor_and_arnor',185,
+            6,7,4,5,7,3,3,6,3,3,1,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT keyword_id FROM keyword WHERE name='númenor')),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT keyword_id FROM keyword WHERE name='hero_of_legend'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT equipement_id FROM equipement WHERE name='shield'),5),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT equipement_id FROM equipement WHERE name='horse'),10),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT equipement_id FROM equipement WHERE name='narsil'),0),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT equipement_id FROM equipement WHERE name='heavy_armour'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT special_rule_id FROM special_rule WHERE name='unbending_resolve')),
+		((SELECT unit_id FROM unit WHERE name='elendil,_high_king_of_gondor_and_arnor'),(SELECT special_rule_id FROM special_rule WHERE name='high_king_of_gondor_and_arnor'));
+
+-- New Unit: isildur
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='númenor'),
+            'isildur',120,
+            6,6,4,5,7,3,3,6,3,2,2,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT keyword_id FROM keyword WHERE name='númenor')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT keyword_id FROM keyword WHERE name='hero_of_valor'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT equipement_id FROM equipement WHERE name='shield'),5),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT equipement_id FROM equipement WHERE name='the_ring'),0),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT equipement_id FROM equipement WHERE name='horse'),10),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT equipement_id FROM equipement WHERE name='heavy_armour'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT special_rule_id FROM special_rule WHERE name='blood_of_númenor'));
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_challenge')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strength')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='isildur'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike'));
+
+
+-- New Unit: captain_of_númenor
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='númenor'),
+            'captain_of_númenor',50,
+            6,5,4,4,5,2,2,4,2,1,1,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='númenor')),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='hero_of_fortitude'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='horse'),10),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='shield'),5),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='heavy_armour'),5),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='bow'),5),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='armour'),0),
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='sword'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT special_rule_id FROM special_rule WHERE name='blood_of_númenor'));
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='captain_of_númenor'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_march'));
+
+-- New Unit: warrior_of_númenor
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='númenor'),
+            'warrior_of_númenor',8,
+            6,4,4,4,4,1,1,3,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='númenor')),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT keyword_id FROM keyword WHERE name='warrior'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='bow'),1),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='spear'),1),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='shield'),1),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='banner'),25),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='armour'),0),
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT equipement_id FROM equipement WHERE name='sword'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='warrior_of_númenor'),(SELECT special_rule_id FROM special_rule WHERE name='blood_of_númenor'));
+
+-- New Unit: aragorn,_king_elessar
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='minas_tirith'),
+            'aragorn,_king_elessar',225,
+            6,6,3,4,7,3,3,6,3,3,3,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT keyword_id FROM keyword WHERE name='gondor')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT keyword_id FROM keyword WHERE name='hero_of_legend'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT equipement_id FROM equipement WHERE name='armoured_horse'),15),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT equipement_id FROM equipement WHERE name='andúril,_flame_of_the_west'),0),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT equipement_id FROM equipement WHERE name='heavy_armour'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT special_rule_id FROM special_rule WHERE name='stand_men_of_the_west!')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT special_rule_id FROM special_rule WHERE name='horse_lord')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT special_rule_id FROM special_rule WHERE name='mighty_hero'));
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_challenge')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strength')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_defence')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_march')),
+		((SELECT unit_id FROM unit WHERE name='aragorn,_king_elessar'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_resolve'));
+
+
+-- New Unit: gandalf_the_white
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='minas_tirith'),
+            'gandalf_the_white',220,
+            6,5,4,4,6,2,3,7,3,6,3,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT keyword_id FROM keyword WHERE name='wizard')),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT keyword_id FROM keyword WHERE name='hero_of_valor'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT equipement_id FROM equipement WHERE name='shadowfax'),20),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT equipement_id FROM equipement WHERE name='narya'),0),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT equipement_id FROM equipement WHERE name='glamdring'),0),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT equipement_id FROM equipement WHERE name='staff_of_power'),0);
+
+INSERT INTO unit_has_magical_power (unit_id,magical_power_id,`range`,casting)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='your_staff_is_broken'),12,4),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='sorcerous_blast'),12,4),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='banishment'),12,4),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='strengthen_will'),12,3),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='fortify_spirit'),12,3),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='command/compel'),12,3),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='terrifying_aura'),0,2),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='immobilise/transfix'),12,2),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT magical_power_id FROM magical_power WHERE name='blinding_light'),0,2);
+
+INSERT INTO unit_has_heroic_action (unit_id,heroic_action_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_strike')),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_channelling')),
+		((SELECT unit_id FROM unit WHERE name='gandalf_the_white'),(SELECT heroic_action_id FROM heroic_action WHERE name='heroic_resolve'));
+
+
+-- New Unit: denethor,_steward_of_gondor
+INSERT INTO unit (faction_id,name,points,move,fight,shoot,strength,defence,attacks,wounds,courage,might,will,fate,description,image_path)
+        VALUES
+            ((SELECT faction_id FROM faction WHERE name='minas_tirith'),
+            'denethor,_steward_of_gondor',35,
+            6,5,4,4,5,2,2,5,0,3,0,
+            '',
+            'tempCardBackground2.jpg');
+
+INSERT INTO unit_has_keyword (unit_id,keyword_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT keyword_id FROM keyword WHERE name='gondor')),
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT keyword_id FROM keyword WHERE name='man')),
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT keyword_id FROM keyword WHERE name='infantry')),
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT keyword_id FROM keyword WHERE name='hero_of_valor'));
+
+INSERT INTO unit_has_equipement (unit_id,equipement_id,points)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT equipement_id FROM equipement WHERE name='armour'),0),
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT equipement_id FROM equipement WHERE name='sword'),0);
+
+INSERT INTO unit_has_special_rule (unit_id,special_rule_id)
+	VALUES
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT special_rule_id FROM special_rule WHERE name='broken_mind')),
+		((SELECT unit_id FROM unit WHERE name='denethor,_steward_of_gondor'),(SELECT special_rule_id FROM special_rule WHERE name='"the_rule_of_gondor_is_mine,_and_no_other''s!"'));

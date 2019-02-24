@@ -35,3 +35,7 @@ throwing_spears
 troll_chain
 troll_chain
 hand-and-a-half_hammer
+staff_of_power
+glamdring
+narya
+shadowfax

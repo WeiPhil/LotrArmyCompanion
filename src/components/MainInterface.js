@@ -7,7 +7,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import { disconnect } from "../redux/actions/auth";
-import { getUserCompanies, getArmies, getCompanyFactions, getSpecialRules } from "../redux/actions/databaseAccess";
+import { getUserCompanies, getArmies, getCompanyFactions, getSpecialRules, getEquipements } from "../redux/actions/databaseAccess";
 import { setTheme } from "./../redux/actions/ui";
 import { getCommunityChat } from "./../redux/actions/chat";
 
@@ -52,6 +52,7 @@ import LoginPanel from "./coreApp/LoginPanel";
 import ChatAppBar from "./coreApp/chat/ChatAppBar";
 import LoadingView from "./LoadingView";
 import SpecialRulesOverview from "./coreApp/wiki/SpecialRulesOverview";
+import EquipementsOverview from "./coreApp/wiki/EquipementsOverview";
 
 const styles = theme => ({
   root: {
@@ -134,6 +135,8 @@ const mapStateToProps = ({ ui, data, databaseAccess, auth, chat }) => ({
   companyFactionsNeedRefetch: databaseAccess.companyFactionsNeedRefetch,
   isLoadingSpecialRules: databaseAccess.isLoadingSpecialRules,
   specialRulesNeedRefetch: databaseAccess.specialRulesNeedRefetch,
+  isLoadingEquipements: databaseAccess.isLoadingEquipements,
+  equipementsNeedRefetch: databaseAccess.equipementsNeedRefetch,
   username: auth.username,
   loggedIn: auth.loggedIn,
   accessToken: auth.accessToken,
@@ -157,6 +160,7 @@ class MainInterface extends React.Component {
     if (this.props.armiesNeedRefetch) this.props.getArmies();
     if (this.props.companyFactionsNeedRefetch) this.props.getCompanyFactions();
     if (this.props.specialRulesNeedRefetch) this.props.getSpecialRules();
+    if (this.props.equipementsNeedRefetch) this.props.getEquipements();
 
     if (this.props.socketConnected) this.props.getCommunityChat();
   }
@@ -244,8 +248,10 @@ class MainInterface extends React.Component {
       isLoadingArmies,
       isLoadingCompanyFactions,
       isLoadingSpecialRules,
+      isLoadingEquipements,
       companyFactionsNeedRefetch,
       specialRulesNeedRefetch,
+      equipementsNeedRefetch,
       armiesNeedRefetch,
       loggedIn,
       hasNoCompanies,
@@ -312,7 +318,7 @@ class MainInterface extends React.Component {
         </MenuList>
       </div>
     );
-    const loadingContent = isLoadingArmies || isLoadingCompanies || isLoadingCompanyFactions || isLoadingSpecialRules;
+    const loadingContent = isLoadingArmies || isLoadingCompanies || isLoadingCompanyFactions || isLoadingSpecialRules || isLoadingEquipements;
     const loadingStyle = loadingContent || loadingScreen ? { opacity: 0.2 } : undefined;
     return (
       <>
@@ -412,6 +418,7 @@ class MainInterface extends React.Component {
               <Route exact path="/wiki" component={Wiki} />
               {!isLoadingArmies && !armiesNeedRefetch && <Route exact path="/wiki/armies" render={() => <WikiArmies armies={armies} />} />}
               {!isLoadingSpecialRules && !specialRulesNeedRefetch && <Route exact path="/wiki/special_rules" render={() => <SpecialRulesOverview />} />}
+              {!isLoadingEquipements && !equipementsNeedRefetch && <Route exact path="/wiki/equipements" render={() => <EquipementsOverview />} />}
               {!isLoadingArmies &&
                 !armiesNeedRefetch && [
                   Object.keys(armies).map((armyName, index) => (
@@ -442,6 +449,6 @@ MainInterface.propTypes = {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setTheme, getUserCompanies, getArmies, getCompanyFactions, getSpecialRules, disconnect, getCommunityChat }
+    { setTheme, getUserCompanies, getArmies, getCompanyFactions, getSpecialRules, getEquipements, disconnect, getCommunityChat }
   )(withStyles(styles, { withTheme: true })(MainInterface))
 );
