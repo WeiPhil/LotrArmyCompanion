@@ -27,15 +27,15 @@ const themes = {
     palette: {
       type: "light",
       primary: {
-        light: "#428e92",
-        main: "#006064",
-        dark: "#00363a",
+        light: "#455A64",
+        main: "#37474F",
+        dark: "#263238",
         contrastText: "#ffffff"
       },
       secondary: {
-        light: "#be9c91",
-        main: "#8d6e63",
-        dark: "#5f4339",
+        light: "#9E9E9E",
+        main: "#757575",
+        dark: "#616161",
         contrastText: "#ffffff"
       }
     },
@@ -53,9 +53,9 @@ const themes = {
         contrastText: "#ffffff"
       },
       secondary: {
-        light: "#be9c91",
-        main: "#8d6e63",
-        dark: "#5f4339",
+        light: "#90A4AE",
+        main: "#607D8B",
+        dark: "#455A64",
         contrastText: "#ffffff"
       }
     },

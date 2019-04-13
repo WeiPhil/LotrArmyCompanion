@@ -42,7 +42,7 @@ const styles = theme => ({
     color: theme.palette.type === "dark" ? extraPalette.dark.malus.light : extraPalette.light.malus.dark
   },
   neutralTypography: {
-    color: theme.palette.text.secondary
+    color: theme.palette.type === "dark" ? theme.palette.text.secondary : theme.palette.primary.dark
   },
   popover: {
     pointerEvents: "none",

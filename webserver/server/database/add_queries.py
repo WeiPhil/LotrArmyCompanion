@@ -126,7 +126,7 @@ def addCompanyUnit(companyName, unitName, unitRank, companyUnitName, additionalE
             optional_equipement_ids_points + additional_equipement_ids_points
 
         equipement_cost = 0
-        for (_, points) in equipements:
+        for (_, points) in additional_equipement_ids_points:
             equipement_cost += points
 
         unit_total_cost = unit_base_points+equipement_cost
